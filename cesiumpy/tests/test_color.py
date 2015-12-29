@@ -3,6 +3,7 @@
 
 # do not import unicode_literals here to test ASCII in Python 2.7
 
+import nose
 import unittest
 
 import cesiumpy
@@ -23,6 +24,13 @@ class TestColor(unittest.TestCase):
         aqua = cesiumpy.color.AQUA
         exp = "Cesium.Color.AQUA"
         self.assertEqual(repr(aqua), exp)
+
+    def test_named_colors_constant(self):
+        aqua = cesiumpy.color.AQUA
+
+        with nose.tools.assert_raises(AttributeError):
+            aqua.name = 'XXX'
+
 
 
 if __name__ == '__main__':

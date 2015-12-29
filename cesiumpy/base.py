@@ -19,11 +19,11 @@ class CesiumBase(object):
 
         # ToDo: Py3 compat
         if not isinstance(width, six.string_types):
-            raise ValueError('height must be str, {0} given'.format(type(width)))
+            raise ValueError('height must be str: {0}'.format(type(width)))
         self.width = width
 
         if not isinstance(height, six.string_types):
-            raise ValueError('height must be str, {0} given'.format(type(height)))
+            raise ValueError('height must be str: {0}'.format(type(height)))
         self.height = height
 
     @property
@@ -128,26 +128,16 @@ class Viewer(CesiumBase):
 
         results = []
         for entity in self.entities:
-            entity = com.to_jsobject(entity, priorities=['name'])
-            entity = ''.join(entity)
             script = """viewer.entities.add({entity});""".format(entity=entity)
             results.append(script)
 
         return results
 
-    def add(self, entity, name=None, position=None):
-
-        from cesiumpy.cartesian import _maybe_cartesian
+    def add(self, entity):
         from cesiumpy.entity import CesiumEntity
-
-        if position is not None:
-            position = _maybe_cartesian(position)
-
         if not isinstance(entity, CesiumEntity):
-            msg = 'entity must be a CesiumEntity instance, {0} given'
+            msg = 'entity must be a CesiumEntity instance: {0}'
             raise ValueError(msg.format(type(entity)))
 
-        kwargs = dict(name=name, position=position)
-        kwargs[entity._klass] = entity
-        self.entities.append(kwargs)
+        self.entities.append(entity)
 

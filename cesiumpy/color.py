@@ -9,14 +9,31 @@ import six
 class CesiumColor(object):
 
     def __init__(self, red, green, blue, alpha=None):
-        self.red = red
-        self.green = green
-        self.blue = blue
-        self.alpha = alpha
+
+        self._red = red
+        self._green = green
+        self._blue = blue
+        self._alpha = alpha
+
+    @property
+    def red(self):
+        return self._red
+
+    @property
+    def green(self):
+        return self._green
+
+    @property
+    def blue(self):
+        return self._blue
+
+    @property
+    def alpha(self):
+        return self._alpha
 
     def set_alpha(self, alpha):
         c = self.copy()
-        c.alpha = alpha
+        c._alpha = alpha
         return c
 
     def __repr__(self):
@@ -31,10 +48,14 @@ class NamedColor(CesiumColor):
 
     def __init__(self, name, alpha=None):
         if not isinstance(name, six.string_types):
-            raise ValueError('name must be str')
+            raise ValueError('name must be a str')
 
-        self.name = name
-        self.alpha = alpha
+        self._name = name
+        self._alpha = alpha
+
+    @property
+    def name(self):
+        return self._name
 
     def __repr__(self):
         if self.alpha is None:
@@ -46,6 +67,7 @@ class NamedColor(CesiumColor):
 
     def copy(self):
         return NamedColor(name=self.name, alpha=self.alpha)
+
 
 # --------------------------------------------------
 # COLOR CONSTANTS
