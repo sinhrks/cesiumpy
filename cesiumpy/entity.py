@@ -85,7 +85,8 @@ class _CesiumEntity(_CesiumInstance):
 
 
 class Ellipse(_CesiumEntity):
-    """ EllipseGraphics
+    """
+    EllipseGraphics
 
     Parameters
     ----------
@@ -143,7 +144,8 @@ class Ellipse(_CesiumEntity):
 
 
 class Ellipsoid(_CesiumEntity):
-    """ EllipsoidGraphics
+    """
+    EllipsoidGraphics
 
     Parameters
     ----------
@@ -194,7 +196,8 @@ class Ellipsoid(_CesiumEntity):
 
 
 class Cylinder(_CesiumEntity):
-    """ CylinderGraphics
+    """
+    CylinderGraphics
 
     Parameters
     ----------
@@ -246,7 +249,8 @@ class Cylinder(_CesiumEntity):
 
 
 class Polyline(_CesiumEntity):
-    """ PolylineGraphics
+    """
+    PolylineGraphics
 
     Parameters
     ----------
@@ -280,7 +284,8 @@ class Polyline(_CesiumEntity):
 
 
 class PolylineVolume(_CesiumEntity):
-    """ PolylineVolumeGraphics
+    """
+    PolylineVolumeGraphics
 
     Parameters
     ----------
@@ -333,7 +338,8 @@ class PolylineVolume(_CesiumEntity):
 
 
 class Corridor(_CesiumEntity):
-    """ CorridorGraphics
+    """
+    CorridorGraphics
 
     Parameters
     ----------
@@ -388,7 +394,8 @@ class Corridor(_CesiumEntity):
 
 
 class Wall(_CesiumEntity):
-    """ WallGraphics
+    """
+    WallGraphics
 
     Parameters
     ----------
@@ -445,7 +452,8 @@ class Wall(_CesiumEntity):
 
 
 class Rectangle(_CesiumEntity):
-    """ RectangleGraphics
+    """
+    RectangleGraphics
 
     Parameters
     ----------
@@ -502,7 +510,8 @@ class Rectangle(_CesiumEntity):
 
 
 class Box(_CesiumEntity):
-    """ BoxGraphics
+    """
+    BoxGraphics
 
     Parameters
     ----------
@@ -545,7 +554,8 @@ class Box(_CesiumEntity):
 
 
 class Polygon(_CesiumEntity):
-    """ PolygonGraphics
+    """
+    PolygonGraphics
 
     Parameters
     ----------

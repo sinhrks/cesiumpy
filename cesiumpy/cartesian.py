@@ -199,7 +199,7 @@ def _maybe_rectangle(x):
         return x
     elif isinstance(x, (tuple, list)):
         if len(x) == 4:
-            return Rectangle(*x)
+            return Rectangle.fromDegrees(*x)
         else:
             raise ValueError('length must be 4: {0}'.format(x))
     else:
@@ -208,14 +208,29 @@ def _maybe_rectangle(x):
 
 class Rectangle(CesiumCartesian):
 
-    def __init__(self, west, south, east, north):
+    def __init__(self, west, south, east, north, degrees=False):
 
-        self.west = com.validate_longtitude(west, key='west')
-        self.south = com.validate_latitude(south, key='south')
-        self.east = com.validate_longtitude(east, key='east')
-        self.north = com.validate_latitude(north, key='north')
+        self.west = com.validate_numeric(west, key='west')
+        self.south = com.validate_numeric(south, key='south')
+        self.east = com.validate_numeric(east, key='east')
+        self.north = com.validate_numeric(north, key='north')
+
+        self._is_degrees = com.validate_bool(degrees, key='degrees')
+
+        if degrees:
+            self.west = com.validate_longtitude(west, key='west')
+            self.south = com.validate_latitude(south, key='south')
+            self.east = com.validate_longtitude(east, key='east')
+            self.north = com.validate_latitude(north, key='north')
+
+    @classmethod
+    def fromDegrees(cls, west, south, east, north):
+        return Rectangle(west, south, east, north, degrees=True)
 
     def __repr__(self):
-        rep = """Cesium.Rectangle.fromDegrees({west}, {south}, {east}, {north})"""
-        return rep.format(west=self.west, south=self.south, east=self.east, north=self.north)
-
+        if self._is_degrees:
+            rep = """Cesium.Rectangle.fromDegrees({west}, {south}, {east}, {north})"""
+            return rep.format(west=self.west, south=self.south, east=self.east, north=self.north)
+        else:
+            rep = """Cesium.Rectangle({west}, {south}, {east}, {north})"""
+            return rep.format(west=self.west, south=self.south, east=self.east, north=self.north)

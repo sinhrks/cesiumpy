@@ -7,10 +7,12 @@ import collections
 import json
 
 from cesiumpy.base import _CesiumBase
+import cesiumpy.common as com
 
 
 class Viewer(_CesiumBase):
-    """ Viewer
+    """
+    Viewer
 
     Parameters
     ----------
@@ -134,31 +136,43 @@ class Viewer(_CesiumBase):
                                      creditContainer=creditContainer,
                                      terrainExaggeration=terrainExaggeration)
 
-        self.animation = animation
-        self.baseLayerPicker = baseLayerPicker
-        self.fullscreenButton = fullscreenButton
-        self.geocoder = geocoder
-        self.homeButton = homeButton
-        self.infoBox = infoBox
-        self.sceneModePicker = sceneModePicker
-        self.selectionIndicator = selectionIndicator
-        self.timeline = timeline
-        self.navigationHelpButton = navigationHelpButton
-        self.navigationInstructionsInitiallyVisible = navigationInstructionsInitiallyVisible
+        self.animation = com.validate_bool_or_none(animation, key='animation')
+        self.baseLayerPicker = com.validate_bool_or_none(baseLayerPicker, key='baseLayerPicker')
+        self.fullscreenButton = com.validate_bool_or_none(fullscreenButton, key='fullscreenButton')
+        self.geocoder = com.validate_bool_or_none(geocoder, key='geocoder')
+        self.homeButton = com.validate_bool_or_none(homeButton, key='homeButton')
+        self.infoBox = com.validate_bool_or_none(infoBox, key='infoBox')
+        self.sceneModePicker = com.validate_bool_or_none(sceneModePicker, key='sceneModePicker')
+        self.selectionIndicator = com.validate_bool_or_none(selectionIndicator, key='selectionIndicator')
+        self.timeline = com.validate_bool_or_none(timeline, key='timeline')
+        self.navigationHelpButton = com.validate_bool_or_none(navigationHelpButton, key='navigationHelpButton')
+        self.navigationInstructionsInitiallyVisible = com.validate_bool_or_none(navigationInstructionsInitiallyVisible, key='navigationInstructionsInitiallyVisible')
 
+        if selectedImageryProviderViewModel is not None:
+            raise NotImplementedError
         self.selectedImageryProviderViewModel = selectedImageryProviderViewModel
+        if imageryProviderViewModels is not None:
+            raise NotImplementedError
         self.imageryProviderViewModels = imageryProviderViewModels
+        if selectedTerrainProviderViewModel is not None:
+            raise NotImplementedError
         self.selectedTerrainProviderViewModel = selectedTerrainProviderViewModel
+        if terrainProviderViewModels is not None:
+            raise NotImplementedError
         self.terrainProviderViewModels = terrainProviderViewModels
 
+        if fullscreenElement is not None:
+            raise NotImplementedError
         self.fullscreenElement = fullscreenElement
-        self.automaticallyTrackDataSourceClocks = automaticallyTrackDataSourceClocks
+        self.automaticallyTrackDataSourceClocks = com.validate_bool_or_none(automaticallyTrackDataSourceClocks, key='automaticallyTrackDataSourceClocks')
+
+        if dataSources is not None:
+            raise NotImplementedError
         self.dataSources = dataSources
 
         # ToDo: API to disable all flags to False
         # store cesium objects as entities
         self._entities = EntityList()
-
 
     @property
     def script(self):

@@ -11,12 +11,13 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   basics
+   examples
 
 
-Indices and tables
-==================
+API:
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. toctree::
+   :maxdepth: 2
 
+   generated/cesiumpy

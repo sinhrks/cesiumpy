@@ -9,7 +9,8 @@ import cesiumpy.common as com
 
 
 class CesiumWidget(_CesiumBase):
-    """ CesiumWidget
+    """
+    CesiumWidget
 
     Parameters
     ----------
