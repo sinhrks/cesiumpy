@@ -39,7 +39,9 @@ class _CesiumInstance(object):
 
 
 class _CesiumBase(_CesiumInstance):
-    """ Base class for Cesium Widget / Viewer """
+    """
+    Base class for Cesium Widget / Viewer
+    """
 
     _props = ['clock', 'imageryProvider', 'terrainProvider',
               'skyBox', 'skyAtmosphere', 'sceneMode',

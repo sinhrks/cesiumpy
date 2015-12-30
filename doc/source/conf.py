@@ -290,3 +290,12 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'https://docs.python.org/': None}
+
+# -- Build API doc ----------------------------------------------------------
+
+numpydoc_show_class_members = False
+
+fpath = os.path.dirname(__file__)
+gen_path = os.path.join(fpath, 'generated')
+app_path = os.path.join(os.path.dirname(os.path.dirname(fpath)), 'cesiumpy')
+os.system('sphinx-apidoc -f -E -o {0} {1}'.format(gen_path, app_path))
