@@ -62,7 +62,7 @@ def to_jsobject(x):
 
 def _maybe_shapely_polygon(x):
     try:
-        import shapely
+        import shapely.geometry
     except ImportError:
         return x
 

@@ -3,6 +3,7 @@
 
 from __future__ import unicode_literals
 
+import collections
 import json
 import os
 import six
@@ -53,7 +54,7 @@ class CesiumBase(object):
         for a in args:
             if isinstance(a, list):
                 results.extend(a)
-            elif isinstance(a, (str, unicode)):
+            elif isinstance(a, six.string_types):
                 results.append(a)
             else:
                 raise ValueError(type(a))
@@ -98,17 +99,18 @@ class Viewer(CesiumBase):
                  timeline=True, navigationInstructionsInitiallyVisible=True):
         super(Viewer, self).__init__(divid=divid, width=width, height=height)
 
-        self.options = dict(animation=animation,
-                            baseLayerPicker=baseLayerPicker,
-                            fullscreenButton=fullscreenButton,
-                            geocoder=geocoder,
-                            homeButton=homeButton,
-                            infoBox=infoBox,
-                            sceneModePicker=sceneModePicker,
-                            selectionIndicator=selectionIndicator,
-                            navigationHelpButton=navigationHelpButton,
-                            timeline=timeline,
-                            navigationInstructionsInitiallyVisible=navigationInstructionsInitiallyVisible)
+        self.options = collections.OrderedDict()
+        self.options['animation'] = animation
+        self.options['baseLayerPicker'] = baseLayerPicker
+        self.options['fullscreenButton'] = fullscreenButton
+        self.options['geocoder'] = geocoder
+        self.options['homeButton'] = homeButton
+        self.options['infoBox'] = infoBox
+        self.options['sceneModePicker'] = sceneModePicker
+        self.options['selectionIndicator'] = selectionIndicator
+        self.options['navigationHelpButton'] = navigationHelpButton
+        self.options['timeline'] = timeline
+        self.options['navigationInstructionsInitiallyVisible'] = navigationInstructionsInitiallyVisible
 
         # ToDo: API to disable all flags to False
         # store cesium objects as entities
