@@ -1,10 +1,21 @@
 Basics
 ======
 
+This section describes the basic usage of ``cesiumpy``. ``cesiumpy`` is the lightweight
+wrapper for `Cesium.js <http://cesiumjs.org/>`_.
+
+This package offers limited API intended for:
+
+- Interactive data visualization using ``Jupyter Notebook``
+
+This package DOES NOT intended for:
+
+- Website development using whole functionality of `Cesium.js <http://cesiumjs.org/>`_.
+
 Installation
 ------------
 
-Use ``pip``
+Use ``pip``.
 
 .. code-block:: sh
 
@@ -15,8 +26,10 @@ Display Cesium Widget
 ---------------------
 
 The easiest way to show the ``Cesium`` on your browser is to use ``CesiumWidget`` on
-``Jupyter Notebook``.  Because ``CesiumWidget`` has ``_repr_html_`` method to render
-``HTML`` on ``Jupyter Notebook``, the ``Cesium`` will be implemented on the output cell.
+``Jupyter Notebook``.
+
+Because ``CesiumWidget`` has ``_repr_html_`` method to render ``HTML`` on ``Jupyter Notebook``,
+placing variable contains ``CesiumWidget`` will output the map implemented on the output cell.
 
 .. code-block:: python
 
@@ -27,7 +40,7 @@ The easiest way to show the ``Cesium`` on your browser is to use ``CesiumWidget`
 
 .. image:: ./_static/main.png
 
-If you do not use ``Jupyter Notebook``, you can use ``.to_html`` method to output ``HTML``.
+If you do not use ``Jupyter Notebook``, you can use ``.to_html`` method to output rendered ``HTML``.
 Save the output as a file then open with your web browser.
 
 .. code-block:: python
@@ -39,8 +52,7 @@ Save the output as a file then open with your web browser.
 Add Entities
 ------------
 
-``Cesium`` allows you to add various entities on the map. To do this, create ``Viewer`` instance and
-add preferable entity.
+`Cesium.js <http://cesiumjs.org/>`_ allows you to add various entities on the map. To do this, create ``Viewer`` instance and add preferable entity.
 
 Even though ``Viewer`` also has various type of user control menus, below example disable almost of them because some of them are not displayed on ``Jupyter Notebook`` properly.
 
@@ -57,6 +69,25 @@ Even though ``Viewer`` also has various type of user control menus, below exampl
   >>> v
 
 .. image:: ./_static/viewer01.png
+
+Refer to following document to see the whole list of `Cesium.js <http://cesiumjs.org/>`_ entities:
+
+- http://cesiumjs.org/tutorials/Visualizing-Spatial-Data/
+
+``cesiumpy`` currently supports following entities. Refer to ``cesiumpy`` API document for more details.
+
+- ``Box``
+- ``Ellipse``
+- ``Cylinder``
+- ``Polygon``
+- ``Rectangle``
+- ``Ellipsoid``
+- ``Wall``
+- ``Corridor``
+- ``Polyline``
+- ``PolylineVolume``
+
+The below example draws all entities on the map.
 
 .. code-block:: python
 
@@ -112,13 +143,20 @@ Even though ``Viewer`` also has various type of user control menus, below exampl
 Add Providers
 -------------
 
-``Cesium`` has 2 types of providers:
+`Cesium.js <http://cesiumjs.org/>`_ supports some "layers" to cover the map. Objects which provides "layers" are called as "provider". There are 2 types of providers as below:
 
-* ``ImageryProvider``
-* ``TerrainProvider``
+* ``ImageryProvider``: Provides layers with imagery
+* ``TerrainProvider``: Provides layers with terrain and water effects
 
 ImageryProvider
 ^^^^^^^^^^^^^^^
+
+Refer to following document for the general explanation of ``ImageryProvider``:
+
+- http://cesiumjs.org/tutorials/Imagery-Layers-Tutorial/
+
+The below example outputs the map covered by the image provided by the ArcGIS MapServer,
+as the same as the above tutorial.
 
 .. code-block:: python
 
@@ -130,6 +168,8 @@ ImageryProvider
 
 .. image:: ./_static/imagery01.png
 
+
+Also you can use other providers.
 
 .. code-block:: python
 
@@ -145,6 +185,13 @@ ImageryProvider
 TerrainProvider
 ^^^^^^^^^^^^^^^
 
+Refer to following document for the general explanation of ``TerrainProvider``:
+
+- http://cesiumjs.org/tutorials/Terrain-Tutorial/
+
+The below example outputs the map covered by the terrain provided by the Cesium Terrain Server,
+as the same as the above tutorial.
+
 .. code-block:: python
 
   >>> url = '//assets.agi.com/stk-terrain/world'
@@ -152,9 +199,10 @@ TerrainProvider
   >>> v = cesiumpy.Viewer(terrainProvider=terrainProvider, **options)
   >>> v
 
-
 .. image:: ./_static/terrain01.png
 
+
+Passing ``requestWaterMask=True`` enables water effects.
 
 .. code-block:: python
 

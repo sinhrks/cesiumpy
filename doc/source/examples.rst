@@ -1,8 +1,20 @@
 Examples
 ========
 
+This section lists some examples using ``cesiumpy`` and other packages. You
+can find ``Jupyter Notebook`` of these exampless under ``GitHub`` repository
+(maps are not rendered on ``GitHub``. Download an run them on local).
+
+- https://github.com/sinhrks/cesiumpy/tree/master/examples
+
 Use with pandas
 ---------------
+
+Following example shows retrieving ``US National Parks`` data from Wikipedia,
+then plot number of visitors on the map.
+
+First, load data from Wikipedia using ``pd.read_html`` functionality. The data
+contains latitude and longtitude as text, thus some preprocessing is required.
 
 .. code-block:: python
 
@@ -31,6 +43,11 @@ Use with pandas
 
   >>> df = pd.concat([df, locations], axis=1)
 
+Once prepared the data, iterate over rows and plot its values. The below script adds
+``cesiumpy.Cylinder`` which height is corresponding to the number of visitors.
+
+.. code-block:: python
+
   >>> import cesiumpy
 
   >>> options = dict(animation=True, baseLayerPicker=False, fullscreenButton=False,
@@ -54,6 +71,11 @@ Use with pandas
 Use with shapely / geopandas
 ----------------------------
 
+Following example shows how to handle ``geojson`` files using ``cesiumpy``.
+
+First, read ``geojson`` file of US, California using ``geopandas`` function.
+The content will be ``shapely`` instance.
+
 .. code-block:: python
 
   >>> import geopandas as gpd
@@ -66,6 +88,12 @@ Use with shapely / geopandas
   >>> g = df.loc[0, "geometry"]
   >>> type(g)
   shapely.geometry.polygon.Polygon
+
+
+We can use this ``shapely`` instance to specify the shape of ``cesiumpy`` instances.
+The below script adds ``cesiumpy.Wall`` which has the shape of California.
+
+.. code-block:: python
 
   >>> import cesiumpy
 
