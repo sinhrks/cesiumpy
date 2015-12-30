@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# do not import unicode_literals here to test ASCII in Python 2.7
-
 import unittest
 import nose
 
@@ -12,12 +10,15 @@ import cesiumpy
 class TestEntity(unittest.TestCase):
 
     def test_ellipse(self):
-        e = cesiumpy.Ellipse(semiMinorAxis=25.0, semiMajorAxis=40.0)
-        exp = "{ellipse : {semiMinorAxis : 25.0, semiMajorAxis : 40.0}}"
+        e = cesiumpy.Ellipse(position=[-110, 40, 0], semiMinorAxis=25.0, semiMajorAxis=40.0)
+        exp = "{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), ellipse : {semiMinorAxis : 25.0, semiMajorAxis : 40.0}}"
         self.assertEqual(repr(e), exp)
 
-        e = cesiumpy.Ellipse(semiMinorAxis=25.0, semiMajorAxis=40.0, material=cesiumpy.color.RED)
-        exp = "{ellipse : {semiMinorAxis : 25.0, semiMajorAxis : 40.0, material : Cesium.Color.RED}}"
+        e = cesiumpy.Ellipse(position=[-110, 40, 0], semiMinorAxis=25.0, semiMajorAxis=40.0, material=cesiumpy.color.RED)
+        exp = "{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), ellipse : {semiMinorAxis : 25.0, semiMajorAxis : 40.0, material : Cesium.Color.RED}}"
+        self.assertEqual(repr(e), exp)
+
+        e = cesiumpy.Ellipse(position=[-110, 40, 0], semiMinorAxis=25.0, semiMajorAxis=40.0, material='red')
         self.assertEqual(repr(e), exp)
 
     def test_ellipsoid(self):
@@ -30,12 +31,12 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(repr(e), exp)
 
     def test_cylinder(self):
-        e = cesiumpy.Cylinder(10, 100, 200, material=cesiumpy.color.AQUA)
-        exp = "{cylinder : {length : 10, topRadius : 100, bottomRadius : 200, material : Cesium.Color.AQUA}}"
+        e = cesiumpy.Cylinder(position=(-70, 40, 0), length=10, topRadius=100, bottomRadius=200, material=cesiumpy.color.AQUA)
+        exp = "{position : Cesium.Cartesian3.fromDegrees(-70, 40, 0), cylinder : {length : 10, topRadius : 100, bottomRadius : 200, material : Cesium.Color.AQUA}}"
         self.assertEqual(repr(e), exp)
 
-        e = cesiumpy.Cylinder(10, 100, 200)
-        exp = "{cylinder : {length : 10, topRadius : 100, bottomRadius : 200}}"
+        e = cesiumpy.Cylinder(position=(-70, 40, 0), length=10, topRadius=100, bottomRadius=200)
+        exp = "{position : Cesium.Cartesian3.fromDegrees(-70, 40, 0), cylinder : {length : 10, topRadius : 100, bottomRadius : 200}}"
         self.assertEqual(repr(e), exp)
 
     def test_polyline(self):
@@ -87,6 +88,13 @@ class TestEntity(unittest.TestCase):
     def test_rectangle(self):
         e = cesiumpy.Rectangle(coordinates=(-80, 20, -60, 40), material=cesiumpy.color.GREEN)
         exp = "{rectangle : {coordinates : Cesium.Rectangle.fromDegrees(-80, 20, -60, 40), material : Cesium.Color.GREEN}}"
+        self.assertEqual(repr(e), exp)
+
+        e = cesiumpy.Rectangle(coordinates=(-80, 20, -60, 40), material=cesiumpy.color.GREEN, outlineColor=cesiumpy.color.RED)
+        exp = "{rectangle : {coordinates : Cesium.Rectangle.fromDegrees(-80, 20, -60, 40), material : Cesium.Color.GREEN, outlineColor : Cesium.Color.RED}}"
+        self.assertEqual(repr(e), exp)
+
+        e = cesiumpy.Rectangle(coordinates=(-80, 20, -60, 40), material='green', outlineColor='red')
         self.assertEqual(repr(e), exp)
 
     def test_box(self):

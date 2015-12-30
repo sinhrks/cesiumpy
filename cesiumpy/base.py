@@ -11,21 +11,103 @@ import six
 import cesiumpy.common as com
 
 
-class CesiumBase(object):
+class _CesiumInstance(object):
+    """
+    Base class for Cesium instances, which can be converted to
+    JavaScript instance
+    """
 
-    def __init__(self, divid=None, width='100%', height='100%'):
+    @property
+    def _klass(self):
+        return "Cesium.{0}".format(self.__class__.__name__)
+
+    @property
+    def _props(self):
+        raise NotImplementedError('must be overriden in child classes')
+
+    @property
+    def _property_dict(self):
+        props = collections.OrderedDict()
+        for p in self._props:
+            props[p] = getattr(self, p)
+        return props
+
+    def __repr__(self):
+        props = self._property_dict
+        results = com.to_jsobject(props)
+        return ''.join(results)
+
+
+class _CesiumBase(_CesiumInstance):
+    """ Base class for Cesium Widget / Viewer """
+
+    _props = ['clock', 'imageryProvider', 'terrainProvider',
+              'skyBox', 'skyAtmosphere', 'sceneMode',
+              'scene3DOnly', 'orderIndependentTranslucency',
+              'mapProjection', 'globe', 'useDefaultRenderLoop',
+              'targetFrameRate', 'showRenderLoopErrors',
+              'contextOptions', 'creditContainer',
+              'terrainExaggeration']
+
+    def __init__(self, divid=None, width='100%', height='100%',
+                 clock=None, imageryProvider=None, terrainProvider=None,
+                 skyBox=None, skyAtmosphere=None, sceneMode=None,
+                 scene3DOnly=None, orderIndependentTranslucency=None,
+                 mapProjection=None, globe=None, useDefaultRenderLoop=None,
+                 targetFrameRate=None, showRenderLoopErrors=None,
+                 contextOptions=None, creditContainer=None,
+                 terrainExaggeration=None):
+
         if divid is None:
             divid = 'container-{0}'.format(id(self))
         self.divid = divid
 
-        # ToDo: Py3 compat
-        if not isinstance(width, six.string_types):
-            raise ValueError('height must be str: {0}'.format(type(width)))
-        self.width = width
+        self.width = com.validate_str(width, key='width')
+        self.height = com.validate_str(height, key='width')
 
-        if not isinstance(height, six.string_types):
-            raise ValueError('height must be str: {0}'.format(type(height)))
-        self.height = height
+        if clock is not None:
+            raise NotImplementedError
+        self.clock = clock
+
+        self.imageryProvider = imageryProvider
+        self.terrainProvider = terrainProvider
+
+        if skyBox is not None:
+            raise NotImplementedError
+        self.skyBox = skyBox
+
+        if skyAtmosphere is not None:
+            raise NotImplementedError
+        self.skyAtmosphere = skyAtmosphere
+
+        if sceneMode is not None:
+            raise NotImplementedError
+        self.sceneMode = sceneMode
+
+        self.scene3DOnly = com.validate_bool_or_none(scene3DOnly, key='scene3DOnly')
+        self.orderIndependentTranslucency = com.validate_bool_or_none(orderIndependentTranslucency, key='orderIndependentTranslucency')
+
+        if mapProjection is not None:
+            raise NotImplementedError
+        self.mapProjection = mapProjection
+
+        if globe is not None:
+            raise NotImplementedError
+        self.globe = globe
+
+        self.useDefaultRenderLoop = com.validate_bool_or_none(useDefaultRenderLoop, key='useDefaultRenderLoop')
+        self.targetFrameRate = com.validate_numeric_or_none(targetFrameRate, key='targetFrameRate')
+        self.showRenderLoopErrors = com.validate_bool_or_none(showRenderLoopErrors, key='showRenderLoopErrors')
+
+        if contextOptions is not None:
+            raise NotImplementedError
+        self.contextOptions = contextOptions
+
+        if creditContainer is not None:
+            raise NotImplementedError
+        self.creditContainer = creditContainer
+
+        self.terrainExaggeration = com.validate_numeric_or_none(terrainExaggeration, key='terrainExaggeration')
 
     @property
     def _load_scripts(self):
@@ -49,6 +131,10 @@ class CesiumBase(object):
         results = self._build_html(headers, container, script)
         return results
 
+    def __repr__(self):
+        # do not use CesiumInstance.__repr__
+        return object.__repr__(self)
+
     def _build_html(self, *args):
         results = []
         for a in args:
@@ -62,7 +148,15 @@ class CesiumBase(object):
 
     @property
     def script(self):
-        raise NotImplementedError
+        props = com.to_jsobject(self._property_dict)
+        props = ''.join(props)
+        if props != '':
+            script = """var widget = new {klass}("{divid}", {props});"""
+            script = script.format(klass=self._klass, divid=self.divid, props=''.join(props))
+        else:
+            script = """var widget = new {klass}("{divid}");"""
+            script = script.format(klass=self._klass, divid=self.divid)
+        return script
 
     def _wrap_js(self, script):
         if not isinstance(script, list):
@@ -77,69 +171,3 @@ class CesiumBase(object):
 
         indent = ' ' * indent
         return [indent + s for s in script]
-
-
-class CesiumWidget(CesiumBase):
-
-    @property
-    def script(self):
-        script = """var widget = new Cesium.CesiumWidget("{divid}");"""
-        script = script.format(divid=self.divid)
-        return script
-
-
-class Viewer(CesiumBase):
-
-    # ToDo: Fix the order and default to meet the cesium doc
-    def __init__(self, divid=None, width='100%', height='100%',
-                 animation=True,
-                 baseLayerPicker=True, fullscreenButton=True,
-                 geocoder=True, homeButton=True, infoBox=True, sceneModePicker=True,
-                 selectionIndicator=True, navigationHelpButton=True,
-                 timeline=True, navigationInstructionsInitiallyVisible=True):
-        super(Viewer, self).__init__(divid=divid, width=width, height=height)
-
-        self.options = collections.OrderedDict()
-        self.options['animation'] = animation
-        self.options['baseLayerPicker'] = baseLayerPicker
-        self.options['fullscreenButton'] = fullscreenButton
-        self.options['geocoder'] = geocoder
-        self.options['homeButton'] = homeButton
-        self.options['infoBox'] = infoBox
-        self.options['sceneModePicker'] = sceneModePicker
-        self.options['selectionIndicator'] = selectionIndicator
-        self.options['navigationHelpButton'] = navigationHelpButton
-        self.options['timeline'] = timeline
-        self.options['navigationInstructionsInitiallyVisible'] = navigationInstructionsInitiallyVisible
-
-        # ToDo: API to disable all flags to False
-        # store cesium objects as entities
-        self.entities = []
-
-    @property
-    def script(self):
-        script = """var viewer = new Cesium.Viewer("{divid}", {options});"""
-        script = script.format(divid=self.divid, options=json.dumps(self.options))
-        return [script] + self._build_entities()
-
-    def _build_entities(self):
-        """
-        return list of scripts built from entities
-        each script may be a list of comamnds also
-        """
-
-        results = []
-        for entity in self.entities:
-            script = """viewer.entities.add({entity});""".format(entity=entity)
-            results.append(script)
-
-        return results
-
-    def add(self, entity):
-        from cesiumpy.entity import CesiumEntity
-        if not isinstance(entity, CesiumEntity):
-            msg = 'entity must be a CesiumEntity instance: {0}'
-            raise ValueError(msg.format(type(entity)))
-
-        self.entities.append(entity)
-

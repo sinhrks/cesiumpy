@@ -5,14 +5,35 @@ from __future__ import unicode_literals
 
 import six
 
+import cesiumpy
+import cesiumpy.common as com
 
-class CesiumColor(object):
+
+def _maybe_color(x):
+    """ Convert str to NamedColor constant """
+
+    if isinstance(x, six.string_types):
+        cname = x.upper()
+
+        color = getattr(cesiumpy.color, cname, None)
+
+        if color is not None and isinstance(color, NamedColor):
+            return color
+
+    return x
+
+
+
+class Color(object):
 
     def __init__(self, red, green, blue, alpha=None):
 
-        self._red = red
-        self._green = green
-        self._blue = blue
+        if alpha is not None:
+            com.validate_numeric(alpha, 'alpha')
+
+        self._red = com.validate_numeric(red, key='red')
+        self._green = com.validate_numeric(green, key='green')
+        self._blue = com.validate_numeric(blue, key='blue')
         self._alpha = alpha
 
     @property
@@ -32,25 +53,31 @@ class CesiumColor(object):
         return self._alpha
 
     def set_alpha(self, alpha):
+        if alpha is not None:
+            com.validate_numeric(alpha, key='alpha')
+
         c = self.copy()
         c._alpha = alpha
         return c
 
     def __repr__(self):
-        raise NotImplementedError
+        if self.alpha is None:
+            rep = """Cesium.Color({red}, {green}, {blue})"""
+            return rep.format(red=self.red, green=self.green, blue=self.blue)
+        else:
+            rep = """Cesium.Color({red}, {green}, {blue}, {alpha})"""
+            return rep.format(red=self.red, green=self.green,
+                              blue=self.blue, alpha=self.alpha)
 
     def copy(self):
         return CesiumColor(red=self.red, green=self.green,
                            blue=self.blue, alpha=self.alpha)
 
 
-class NamedColor(CesiumColor):
+class NamedColor(Color):
 
     def __init__(self, name, alpha=None):
-        if not isinstance(name, six.string_types):
-            raise ValueError('name must be a str')
-
-        self._name = name
+        self._name = com.validate_str(name, key='name')
         self._alpha = alpha
 
     @property
@@ -69,8 +96,10 @@ class NamedColor(CesiumColor):
         return NamedColor(name=self.name, alpha=self.alpha)
 
 
+
 # --------------------------------------------------
 # COLOR CONSTANTS
+# --------------------------------------------------
 
 # How to create
 

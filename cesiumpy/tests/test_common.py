@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# do not import unicode_literals here to test ASCII in Python 2.7
-
 import unittest
 import nose
 

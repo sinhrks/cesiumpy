@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# do not import unicode_literals here to test ASCII in Python 2.7
-
 import unittest
 import nose
 
@@ -20,12 +18,11 @@ class TestCartesian(unittest.TestCase):
         exp = "Cesium.Cartesian2.fromDegrees(5, 10)"
         self.assertEqual(repr(c), exp)
 
-
-        msg = "x must be between -180 to 180"
+        msg = "x must be longtitude, between -180 to 180"
         with nose.tools.assert_raises_regexp(ValueError, msg):
             cesiumpy.Cartesian2.fromDegrees(200, 10)
 
-        msg = "y must be between -90 to 90"
+        msg = "y must be latitude, between -90 to 90"
         with nose.tools.assert_raises_regexp(ValueError, msg):
             cesiumpy.Cartesian2.fromDegrees(50, 100)
 
@@ -38,11 +35,11 @@ class TestCartesian(unittest.TestCase):
         exp = "Cesium.Cartesian3.fromDegrees(5, 10, 20)"
         self.assertEqual(repr(c), exp)
 
-        msg = "x must be between -180 to 180"
+        msg = "x must be longtitude, between -180 to 180"
         with nose.tools.assert_raises_regexp(ValueError, msg):
             cesiumpy.Cartesian3.fromDegrees(200, 10, 20)
 
-        msg = "y must be between -90 to 90"
+        msg = "y must be latitude, between -90 to 90"
         with nose.tools.assert_raises_regexp(ValueError, msg):
             cesiumpy.Cartesian3.fromDegrees(50, 100, 20)
 
@@ -59,6 +56,14 @@ class TestCartesian(unittest.TestCase):
         with nose.tools.assert_raises_regexp(ValueError, msg):
             cesiumpy.Cartesian3.fromDegreesArray([1, 2, 3])
 
+        msg = "input must be a list consists from longtitude and latitude"
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            cesiumpy.Cartesian3.fromDegreesArray([10, 20, 200, 20])
+
+        msg = "input must be a list consists from longtitude and latitude"
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            cesiumpy.Cartesian3.fromDegreesArray([10, 20, 20, 91])
+
     def test_cartesian4(self):
         c = cesiumpy.Cartesian4(5, 10, 20, 30)
         exp = "new Cesium.Cartesian4(5, 10, 20, 30)"
@@ -68,11 +73,11 @@ class TestCartesian(unittest.TestCase):
         exp = "Cesium.Cartesian4.fromDegrees(5, 10, 20, 30)"
         self.assertEqual(repr(c), exp)
 
-        msg = "x must be between -180 to 180"
+        msg = "x must be longtitude, between -180 to 180"
         with nose.tools.assert_raises_regexp(ValueError, msg):
             cesiumpy.Cartesian4.fromDegrees(200, 10, 20, 50)
 
-        msg = "y must be between -90 to 90"
+        msg = "y must be latitude, between -90 to 90"
         with nose.tools.assert_raises_regexp(ValueError, msg):
             cesiumpy.Cartesian4.fromDegrees(50, 100, 20, 50)
 
