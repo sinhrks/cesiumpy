@@ -55,7 +55,7 @@ class TestViewer(unittest.TestCase):
 <link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/CesiumUnminified/Widgets/CesiumWidget/CesiumWidget.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
-  var viewer = new Cesium.Viewer("viewertest", {"geocoder": false, "fullscreenButton": false, "timeline": false, "baseLayerPicker": false, "sceneModePicker": true, "navigationHelpButton": false, "infoBox": false, "animation": true, "homeButton": false, "selectionIndicator": false, "navigationInstructionsInitiallyVisible": false});
+  var viewer = new Cesium.Viewer("viewertest", {"animation": true, "baseLayerPicker": false, "fullscreenButton": false, "geocoder": false, "homeButton": false, "infoBox": false, "sceneModePicker": true, "selectionIndicator": false, "navigationHelpButton": false, "timeline": false, "navigationInstructionsInitiallyVisible": false});
 </script>"""
         self.assertEqual(result, exp)
 
@@ -71,7 +71,7 @@ class TestViewer(unittest.TestCase):
 <link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/CesiumUnminified/Widgets/CesiumWidget/CesiumWidget.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
-  var viewer = new Cesium.Viewer("viewertest", {"geocoder": false, "fullscreenButton": false, "timeline": false, "baseLayerPicker": false, "sceneModePicker": true, "navigationHelpButton": false, "infoBox": false, "animation": true, "homeButton": false, "selectionIndicator": false, "navigationInstructionsInitiallyVisible": false});
+  var viewer = new Cesium.Viewer("viewertest", {"animation": true, "baseLayerPicker": false, "fullscreenButton": false, "geocoder": false, "homeButton": false, "infoBox": false, "sceneModePicker": true, "selectionIndicator": false, "navigationHelpButton": false, "timeline": false, "navigationInstructionsInitiallyVisible": false});
   viewer.entities.add({name : "x", position : Cesium.Cartesian3.fromDegrees(-110, 50, 2000000), cylinder : {length : 4000000, topRadius : 100000, bottomRadius : 100000, material : Cesium.Color.AQUA}});
 </script>"""
         self.assertEqual(result, exp)
@@ -92,7 +92,7 @@ class TestViewer(unittest.TestCase):
 <link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/CesiumUnminified/Widgets/CesiumWidget/CesiumWidget.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
-  var viewer = new Cesium.Viewer("viewertest", {"geocoder": false, "fullscreenButton": false, "timeline": false, "baseLayerPicker": false, "sceneModePicker": true, "navigationHelpButton": false, "infoBox": false, "animation": true, "homeButton": false, "selectionIndicator": false, "navigationInstructionsInitiallyVisible": false});
+  var viewer = new Cesium.Viewer("viewertest", {"animation": true, "baseLayerPicker": false, "fullscreenButton": false, "geocoder": false, "homeButton": false, "infoBox": false, "sceneModePicker": true, "selectionIndicator": false, "navigationHelpButton": false, "timeline": false, "navigationInstructionsInitiallyVisible": false});
   viewer.entities.add({name : "x", polygon : {hierarchy : Cesium.Cartesian3.fromDegreesArray([-109.080842, 45.002073, -105.91517, 45.002073, -104.058488, 44.996596, -104.053011, 43.002989, -104.053011, 41.003906, -105.728954, 40.998429, -107.919731, 41.003906, -109.04798, 40.998429, -111.047063, 40.998429, -111.047063, 42.000709, -111.047063, 44.476286, -111.05254, 45.002073]), material : Cesium.Color.RED}});
 </script>"""
         self.assertEqual(result, exp)
@@ -131,7 +131,7 @@ class TestViewer(unittest.TestCase):
 <link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/CesiumUnminified/Widgets/CesiumWidget/CesiumWidget.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
-  var viewer = new Cesium.Viewer("viewertest", {"geocoder": false, "fullscreenButton": false, "timeline": false, "baseLayerPicker": false, "sceneModePicker": true, "navigationHelpButton": false, "infoBox": false, "animation": true, "homeButton": false, "selectionIndicator": false, "navigationInstructionsInitiallyVisible": false});
+  var viewer = new Cesium.Viewer("viewertest", {"animation": true, "baseLayerPicker": false, "fullscreenButton": false, "geocoder": false, "homeButton": false, "infoBox": false, "sceneModePicker": true, "selectionIndicator": false, "navigationHelpButton": false, "timeline": false, "navigationInstructionsInitiallyVisible": false});
   viewer.entities.add({position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), box : {dimensions : new Cesium.Cartesian3(400000.0, 300000.0, 500000.0), material : Cesium.Color.RED}});
   viewer.entities.add({position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), ellipse : {semiMinorAxis : 250000.0, semiMajorAxis : 400000.0, material : Cesium.Color.BLUE}});
   viewer.entities.add({position : Cesium.Cartesian3.fromDegrees(-100, 40, 500000.0), cylinder : {length : 1000000.0, topRadius : 100000.0, bottomRadius : 100000.0, material : Cesium.Color.AQUA}});
