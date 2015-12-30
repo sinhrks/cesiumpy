@@ -19,4 +19,4 @@ Example
                      material=cesiumpy.color.RED, position=[-120, 40, 0]))
   v
 
-![rendered_image](sinhrks.github.com/cesiumpy/doc/source/_static/main.png)
+.. image:: https://raw.githubusercontent.com/sinhrks/cesiumpy/master/doc/source/_static/main.png
