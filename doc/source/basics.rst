@@ -38,7 +38,7 @@ placing variable contains ``CesiumWidget`` will output the map implemented on th
   >>> v = cesiumpy.CesiumWidget()
   >>> v
 
-.. image:: ./_static/main.png
+.. image:: ./_static/widget01.png
 
 If you do not use ``Jupyter Notebook``, you can use ``.to_html`` method to output rendered ``HTML``.
 Save the output as a file then open with your web browser.
