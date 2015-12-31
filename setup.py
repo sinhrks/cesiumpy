@@ -9,7 +9,7 @@ PACKAGE = 'cesiumpy'
 README = 'README.rst'
 REQUIREMENTS = 'requirements.txt'
 
-VERSION = '0.1.0.dev'
+VERSION = '0.0.1'
 
 def read(fname):
   # file must be read as utf-8 in py3 to avoid to be bytes
