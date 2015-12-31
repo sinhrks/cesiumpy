@@ -3,6 +3,15 @@ cesiumpy
 
 Lightweight Python wrapper for `Cesium.js <http://cesiumjs.org/>`_. Mainly intended to be used with ``Jupyter Notebook``.
 
+Installation
+------------
+
+Use ``pip``.
+
+.. code-block:: sh
+
+  pip install cesiumpy
+
 Example
 -------
 
@@ -19,4 +28,7 @@ Running following script on ``Jupyter`` Notebook will show an embedded interacti
 
 .. image:: https://raw.githubusercontent.com/sinhrks/cesiumpy/master/doc/source/_static/main.png
 
+Documentation
+-------------
 
+- http://cesiumpy.readthedocs.org/en/latest/
