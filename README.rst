@@ -1,12 +1,12 @@
 cesiumpy
 ========
 
-Lightweight Python wrapper for `Cesium.js <http://cesiumjs.org/>`_ Mainly intended to be used with ``Jupyter`` Notebook.
+Lightweight Python wrapper for `Cesium.js <http://cesiumjs.org/>`_. Mainly intended to be used with ``Jupyter Notebook``.
 
 Example
-=======
+-------
 
-Running following script on ``Jupyter`` Notebook will show the embedded interactive 3D map.
+Running following script on ``Jupyter`` Notebook will show an embedded interactive 3D map.
 
 .. code-block:: python
 
@@ -18,3 +18,5 @@ Running following script on ``Jupyter`` Notebook will show the embedded interact
   >>> v
 
 .. image:: https://raw.githubusercontent.com/sinhrks/cesiumpy/master/doc/source/_static/main.png
+
+
