@@ -6,20 +6,20 @@ from __future__ import unicode_literals
 import six
 
 import cesiumpy
-from cesiumpy.base import _CesiumInstance
+from cesiumpy.base import _CesiumObject
 import cesiumpy.cartesian as cartesian
 import cesiumpy.common as com
 
 
-class _CesiumProvider(_CesiumInstance):
+class _CesiumProvider(_CesiumObject):
 
     _props = ['url']
 
-    def __repr__(self):
-        props = super(_CesiumProvider, self).__repr__()
+    @property
+    def script(self):
+        props = super(_CesiumProvider, self).script
         rep = """new {klass}({props})"""
         return rep.format(klass=self._klass, props=props)
-
 
 # --------------------------------------------------
 # Terrain Provider
@@ -32,20 +32,11 @@ class TerrainProvider(_CesiumProvider):
 
     def __init__(self, url=None, proxy=None, tilingScheme=None,
                  ellipsoid=None, credit=None):
+
         self.url = com.validate_str_or_none(url, key='url')
-
-        if proxy is not None:
-            raise NotImplementedError
-        self.proxy = proxy
-
-        if tilingScheme is not None:
-            raise NotImplementedError
-        self.tilingScheme = tilingScheme
-
-        if ellipsoid is not None:
-            raise NotImplementedError
-        self.ellipsoid = ellipsoid
-
+        self.proxy = com.notimplemented(proxy)
+        self.tilingScheme = com.notimplemented(tilingScheme)
+        self.ellipsoid = com.notimplemented(ellipsoid)
         self.credit = com.validate_str_or_none(credit, key='credit')
 
 
@@ -171,36 +162,24 @@ class ImageryProvider(_CesiumProvider):
         self.fileExtension = com.validate_str_or_none(fileExtension, key='fileExtension')
 
         if rectangle is not None:
-            rectangle = cartesian._maybe_rectangle(rectangle)
+            rectangle = cartesian._maybe_rectangle(rectangle, key='rectangle')
         self.rectangle = rectangle
 
-        if tillingScheme is not None:
-            raise NotImplementedError
-        self.tillingScheme = tillingScheme
-
-        if ellipsoid is not None:
-            raise NotImplementedError
-        self.ellipsoid = ellipsoid
+        self.tillingScheme = com.notimplemented(tillingScheme)
+        self.ellipsoid = com.notimplemented(ellipsoid)
 
         self.tileWidth = com.validate_numeric_or_none(tileWidth, key='tileWidth')
         self.tileHeight = com.validate_numeric_or_none(tileHeight, key='tileHeight')
-
-        if tileDiscardPolicy is not None:
-            raise NotImplementedError
-        self.tileDiscardPolicy = tileDiscardPolicy
+        self.tileDiscardPolicy = com.notimplemented(tileDiscardPolicy)
 
         self.minimumLevel = com.validate_numeric_or_none(minimumLevel, key='minimumLevel')
         self.maximumLevel = com.validate_numeric_or_none(maximumLevel, key='maximumLevel')
 
         self.credit = com.validate_str_or_none(credit, key='credit')
 
-        if proxy is not None:
-            raise NotImplementedError
-        self.proxy = proxy
+        self.proxy = com.notimplemented(proxy)
 
-        if subdomains is not None:
-            raise NotImplementedError
-        self.subdomains = subdomains
+        self.subdomains = com.notimplemented(subdomains)
 
 
 class ArcGisMapServerImageryProvider(ImageryProvider):
@@ -611,19 +590,12 @@ class WebMapServiceImageryProvider(ImageryProvider):
 
         self.layers = com.validate_str(layers, key='layers')
 
-        if parameters is not None:
-            raise NotImplementedError
-        self.parameters = parameters
-
-        if getFeatureInfoParameters is not None:
-            raise NotImplementedError
-        self.getFeatureInfoParameters = getFeatureInfoParameters
+        self.parameters = com.notimplemented(parameters)
+        self.getFeatureInfoParameters = com.notimplemented(getFeatureInfoParameters)
 
         self.enablePickFeatures = com.validate_bool_or_none(enablePickFeatures, key='enablePickFeatures')
 
-        if getFeatureInfoFormats is not None:
-            raise NotImplelemtedError
-        self.getFeatureInfoFormats = getFeatureInfoFormats
+        self.getFeatureInfoFormats = com.notimplemented(getFeatureInfoFormats)
 
 
 class WebMapTileServiceImageryProvider(ImageryProvider):
@@ -692,7 +664,5 @@ class WebMapTileServiceImageryProvider(ImageryProvider):
         self.format = com.validate_str_or_none(format, key='format')
         self.tileMatrixSetID = com.validate_str_or_none(tileMatrixSetID, key='tileMatrixSetID')
 
-        if tileMatrixLabels is not None:
-            raise NotImplementedError
-        self.tileMatrixLabels = tileMatrixLabels
+        self.tileMatrixLabels = com.notimplemented(tileMatrixLabels)
 

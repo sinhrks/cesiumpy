@@ -1,9 +1,11 @@
 language: python
 env:
   matrix:
-    - PYTHON=2.7
-    - PYTHON=3.4
-    - PYTHON=3.5
+    - PYTHON=2.7 SHAPELY=true
+    - PYTHON=2.7 SHAPELY=false
+    - PYTHON=3.4 SHAPELY=true
+    - PYTHON=3.5 SHAPELY=true
+    - PYTHON=3.5 SHAPELY=false
 
 install:
   - sudo pip install python-coveralls coverage
@@ -19,8 +21,11 @@ install:
   - conda config --add channels pandas
   - conda update -q conda
   - conda info -a
-  - conda create -q -n test-environment python=$PYTHON pip numpy shapely nose
+  - conda create -q -n test-environment python=$PYTHON pip numpy nose
   - source activate test-environment
+  - if [[ "$SHAPELY" == "true" ]]; then
+      conda install shapely;
+    fi
   - "pip install -r requirements.txt"
 script:
   - nosetests --with-coverage
