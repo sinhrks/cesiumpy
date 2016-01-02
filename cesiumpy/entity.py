@@ -4,30 +4,32 @@
 from __future__ import unicode_literals
 
 import six
+import collections
 
-from cesiumpy.base import _CesiumInstance
+from cesiumpy.base import _CesiumObject
 import cesiumpy.cartesian as cartesian
-import cesiumpy.color as color
+import cesiumpy.color
 import cesiumpy.common as com
 
 
-import collections
-
-
-class _CesiumEntity(_CesiumInstance):
+class _CesiumEntity(_CesiumObject):
 
     # name and position should not be included,
     # because these are handled separetedly in _properties_dict
     _common_props = ['width', 'height', 'extrudedHeight', 'show', 'fill',
                      'material', 'outline', 'outlineColor', 'outlineWidth',
                      'numberOfVerticalLines', 'rotation', 'stRotation',
-                     'granularity']
+                     'granularity', 'scaleByDistance', 'translucencyByDistance',
+                     'scale', 'horizontalOrigin', 'verticalOrigin',
+                     'eyeOffset', 'pixelOffset', 'pixelOffsetScaleByDistance']
 
     def __init__(self, width=None, height=None, extrudedHeight=None,
                  show=None, fill=None, material=None,
                  outline=None, outlineColor=None, outlineWidth=None,
                  numberOfVerticalLines=None, rotation=None, stRotation=None,
-                 granularity=None,
+                 granularity=None, scaleByDistance=None, translucencyByDistance=None,
+                 scale=None, verticalOrigin=None, horizontalOrigin=None,
+                 eyeOffset=None, pixelOffset=None, pixelOffsetScaleByDistance=None,
                  position=None, name=None):
 
         self.width = com.validate_numeric_or_none(width, key='width')
@@ -36,39 +38,33 @@ class _CesiumEntity(_CesiumInstance):
         self.show = com.validate_bool_or_none(show, key='show')
         self.fill = com.validate_bool_or_none(fill, key='fill')
 
-        if material is not None:
-            material = color._maybe_color(material)
-            if not isinstance(material, color.Color):
-                msg = 'material must be a Color instance: {0}'
-                raise ValueError(msg.format(type(material)))
-        self.material = material
+        self.material = cesiumpy.color.validate_color_or_none(material, key='material')
 
         self.outline = com.validate_bool_or_none(outline, key='outline')
-
-        if outlineColor is not None:
-            outlineColor = color._maybe_color(outlineColor)
-            if not isinstance(outlineColor, color.Color):
-                msg = 'material must be a Color instance: {0}'
-                raise ValueError(msg.format(type(outlineColor)))
-        self.outlineColor = outlineColor
+        self.outlineColor = cesiumpy.color.validate_color_or_none(outlineColor, key='outlineColor')
 
         self.outlineWidth = com.validate_numeric_or_none(outlineWidth, key='outlineWidth')
         self.numberOfVerticalLines = com.validate_numeric_or_none(numberOfVerticalLines, key='numberOfVerticalLines')
         self.rotation = com.validate_numeric_or_none(rotation, key='rotation')
         self.stRotation = com.validate_numeric_or_none(stRotation, key='stRotation')
-        if granularity is not None:
-            raise NotImplementedError
-        self.granularity = granularity
+
+        self.granularity = com.notimplemented(granularity)
+        self.scaleByDistance = com.notimplemented(scaleByDistance)
+        self.translucencyByDistance = com.notimplemented(translucencyByDistance)
+
+        self.scale = com.validate_numeric_or_none(scale, key='scale')
+
+        self.horizontalOrigin = com.notimplemented(horizontalOrigin)
+        self.verticalOrigin = com.notimplemented(verticalOrigin)
+        self.eyeOffset = com.notimplemented(eyeOffset)
+        self.pixelOffset = com.notimplemented(pixelOffset)
+        self.pixelOffsetScaleByDistance = com.notimplemented(pixelOffsetScaleByDistance)
 
         if position is not None:
-            position = cartesian._maybe_cartesian_degrees(position)
-            if not isinstance(position, cartesian.Cartesian3):
-                msg = 'position must be Cartesian3 or its compat: {0}'
-                raise ValueError(msg.format(position))
+            position = cartesian._maybe_cartesian3(position, key='position', degrees=True)
         self.position = position
 
         self.name = name
-        # ToDo: instanciate corredt Cartesian from input
 
     @property
     def _property_dict(self):
@@ -82,6 +78,207 @@ class _CesiumEntity(_CesiumInstance):
             childs[p] = getattr(self, p)
         props[self._klass] = childs
         return props
+
+
+    def __repr__(self):
+        if self.position is not None:
+            rep = """{klass}({x}, {y}, {z})"""
+            return rep.format(klass=self.__class__.__name__, x=self.position.x,
+                              y=self.position.y, z=self.position.z)
+
+        elif self.positions is not None:
+            rep = """{klass}({x})"""
+            return rep.format(klass=self.__class__.__name__,
+                              x=self.positions.x)
+        else:
+            # should be defined in each classes
+            raise NotImplementedError
+
+
+class Point(_CesiumEntity):
+    """
+    PointGraphics
+
+    Parameters
+    ----------
+
+    position: Cartesian3
+        A Property specifying the Cartesian3 positions.
+    color: Color, default WHITE
+        A Property specifying the Color of the point.
+    pixelSize: int, default 10
+        A numeric Property specifying the size in pixels.
+    outlineColor: Color, default BLACK
+        A Property specifying the Color of the outline.
+    outlineWidth: int, default 0
+        A numeric Property specifying the the outline width in pixels.
+    show: bool, default True
+        A boolean Property specifying the visibility of the point.
+    scaleByDistance:
+        A NearFarScalar Property used to scale the point based on distance.
+    translucencyByDistance:
+        A NearFarScalar Property used to set translucency based on distance from the camera.
+    """
+
+    _klass = 'point'
+    # props should contains property which is unique in the class
+    # (which is not included in _common_props)
+    _props = ['color', 'pixelSize', ]
+
+    def __init__(self, position, color=None, pixelSize=10, outlineColor=None, outlineWidth=None,
+                 show=None, scaleByDistance=None, translucencyByDistance=None,
+                 name=None):
+
+        super(Point, self).__init__(show=show, outlineColor=outlineColor,
+                                    outlineWidth=outlineWidth,
+                                    scaleByDistance=scaleByDistance,
+                                    translucencyByDistance=translucencyByDistance,
+                                    position=position, name=name)
+
+        # ToDo: scaleByDistance and translucencyByDistance are umbiguous from cesium doc
+
+        if color is None:
+            # Add default color explicitly to avoid all values to be None
+            color = cesiumpy.color.WHITE
+        self.color = cesiumpy.color.validate_color_or_none(color, key='color')
+        self.pixelSize = com.validate_numeric_or_none(pixelSize, key='pixelSize')
+
+
+class Label(_CesiumEntity):
+    """
+    LabelGraphics
+
+    Parameters
+    ----------
+
+    position: Cartesian3
+        A Property specifying the Cartesian3 positions.
+    text: str
+        A Property specifying the text.
+    font: str, default '10px sans-serif'
+        A Property specifying the CSS font.
+    style: LabeStyle, default LabelStyle.FILL
+        A Property specifying the LabelStyle.
+    fillColor: Color, default Color.WHITE
+        A Property specifying the fill Color.
+    outlineColor: Color, default, Color.BLACK
+        A Property specifying the outline Color.
+    outlineWidth: float, default 1.
+        A numeric Property specifying the outline width.
+    show: bool, default True
+        A boolean Property specifying the visibility of the label.
+    scale: float, default 1.
+        A numeric Property specifying the scale to apply to the text.
+    horizontalOrigin: HorizontalOrigin, default HorizontalOrigin.CENTER
+        A Property specifying the HorizontalOrigin.
+    verticalOrigin: VerticalOrigin, default VerticalOrigin.CENTER
+        A Property specifying the VerticalOrigin.
+    eyeOffset: Cartesian3, default Cartesian3.ZERO
+        A Cartesian3 Property specifying the eye offset.
+    pixelOffset: Cartesian2, default Cartesian2.ZERO
+        A Cartesian2 Property specifying the pixel offset.
+    translucencyByDistance:
+        A NearFarScalar Property used to set translucency based on distance from the camera.
+    pixelOffsetScaleByDistance:
+        A NearFarScalar Property used to set pixelOffset based on distance from the camera.
+    """
+    _klass = 'label'
+    _props = ['text', 'style', 'fillColor']
+
+    def __init__(self, position, text, style=None, fillColor=None,
+                 outlineColor=None, outlineWidth=None, show=None,
+                 scale=None, horizontalOrigin=None, verticalOrigin=None,
+                 eyeOffset=None, pixelOffset=None, translucencyByDistance=None,
+                 pixelOffsetScaleByDistance=None, name=None):
+
+        super(Label, self).__init__(show=show, outlineColor=outlineColor,
+                                    outlineWidth=outlineWidth,
+                                    translucencyByDistance=translucencyByDistance,
+                                    scale=scale, horizontalOrigin=horizontalOrigin,
+                                    verticalOrigin=verticalOrigin,
+                                    eyeOffset=eyeOffset, pixelOffset=pixelOffset,
+                                    pixelOffsetScaleByDistance=pixelOffsetScaleByDistance,
+                                    position=position, name=name)
+
+        self.text = com.validate_str(text, key='text')
+        self.style = com.notimplemented(style)
+        self.fillColor = cesiumpy.color.validate_color_or_none(fillColor, key='fillColor')
+
+
+class Billboard(_CesiumEntity):
+    """
+    PointGraphics
+
+    Parameters
+    ----------
+
+    position: Cartesian3
+        A Property specifying the Cartesian3 positions.
+    image:
+        A Property specifying the Image, URI, or Canvas to use for the billboard.
+    show: bool, default True
+        A boolean Property specifying the visibility of the billboard.
+    scale: float, default 1.
+        A numeric Property specifying the scale to apply to the image size.
+    horizontalOrigin: HorizontalOrigin, default HorizontalOrigin.CENTER
+        A Property specifying the HorizontalOrigin.
+    verticalOrigin: VerticalOrigin, default VerticalOrigin.CENTER
+        A Property specifying the VerticalOrigin.
+    eyeOffset: Cartesian3, default Cartesian3.ZERO
+        A Cartesian3 Property specifying the eye offset.
+    pixelOffset: Cartesian2, default Cartesian2.ZERO
+        A Cartesian2 Property specifying the pixel offset.
+    rotation: float, default 0.
+        A numeric Property specifying the rotation about the alignedAxis.
+    alignedAxis: Cartesian3, default Cartesian3.ZERO
+        A Cartesian3 Property specifying the axis of rotation.
+    width: float
+        A numeric Property specifying the width of the billboard in pixels, overriding the native size.
+    height: float
+        A numeric Property specifying the height of the billboard in pixels, overriding the native size.
+    color: Color, default Color.WHITE
+        A Property specifying the tint Color of the image.
+    scaleByDistance:
+        A NearFarScalar Property used to scale the point based on distance from the camera.
+    translucencyByDistance:
+        optional A NearFarScalar Property used to set translucency based on distance from the camera.
+    pixelOffsetScaleByDistance:
+        optional A NearFarScalar Property used to set pixelOffset based on distance from the camera.
+    imageSubRegion:
+        A Property specifying a BoundingRectangle that defines a sub-region of the image to use for the billboard, rather than the entire image.
+    sizeInMeters: bool
+        A boolean Property specifying whether this billboard's size should be measured in meters.
+    """
+    _klass = 'billboard'
+    _props = ['image', 'alignedAxis', 'color', 'imageSubRegion', 'sizeInMeters']
+
+    def __init__(self, position, image, show=None, scale=None,
+                 horizontalOrigin=None, verticalOrigin=None,
+                 eyeOffset=None, pixelOffset=None, rotation=None,
+                 alignedAxis=None, width=None, height=None, color=None,
+                 scaleByDistance=None, translucencyByDistance=None,
+                 pixelOffsetScaleByDistance=None, imageSubRegion=None,
+                 sizeInMeters=None, name=None):
+
+        super(Billboard, self).__init__(show=show, scale=scale,
+                                        horizontalOrigin=horizontalOrigin,
+                                        verticalOrigin=verticalOrigin,
+                                        eyeOffset=eyeOffset, pixelOffset=pixelOffset,
+                                        rotation=rotation, width=width, height=height,
+                                        scaleByDistance=scaleByDistance,
+                                        translucencyByDistance=translucencyByDistance,
+                                        pixelOffsetScaleByDistance=pixelOffsetScaleByDistance,
+                                        position=position, name=name)
+
+        if isinstance(image, cesiumpy.PinBuilder):
+            self.image = image
+        else:
+            self.image = com.validate_str(image, key='image')
+
+        self.alignedAxis = com.notimplemented(alignedAxis)
+        self.color = cesiumpy.color.validate_color_or_none(color, key='color')
+        self.imageSubRegion = com.notimplemented(imageSubRegion)
+        self.sizeInMeters = com.notimplemented(sizeInMeters)
 
 
 class Ellipse(_CesiumEntity):
@@ -105,11 +302,11 @@ class Ellipse(_CesiumEntity):
         A boolean Property specifying the visibility of the ellipse.
     fill: bool, default True
         A boolean Property specifying whether the ellipse is filled with the provided material.
-    material: cesiumpy.color.Color, default WHITE
+    material: cesiumpy.cesiumpy.color.Color, default WHITE
         A Property specifying the material used to fill the ellipse.
     outline: bool, default False
         A boolean Property specifying whether the ellipse is outlined.
-    outlineColor: cesiumpy.color.Color, default BLACK
+    outlineColor: cesiumpy.cesiumpy.color.Color, default BLACK
         A Property specifying the Color of the outline.
     outlineWidth: float, default 1.
         A numeric Property specifying the width of the outline.
@@ -157,7 +354,7 @@ class Ellipsoid(_CesiumEntity):
         A boolean Property specifying the visibility of the ellipsoid.
     fill: bool, default True
         A boolean Property specifying whether the ellipsoid is filled with the provided material.
-    material: cesiumpy.color.Color, default WHITE
+    material: cesiumpy.cesiumpy.color.Color, default WHITE
         A Property specifying the material used to fill the ellipsoid.
     outline: bool, default False
         A boolean Property specifying whether the ellipsoid is outlined.
@@ -184,10 +381,7 @@ class Ellipsoid(_CesiumEntity):
                                         outline=outline, outlineColor=outlineColor,
                                         outlineWidth=outlineWidth,
                                         position=position, name=name)
-        radii = cartesian._maybe_cartesian(radii)
-        if not isinstance(radii, cartesian.Cartesian3):
-            msg = 'radii must be Cartesian3 or its compat: {0}'
-            raise ValueError(msg.format(radii))
+        radii = cartesian._maybe_cartesian3(radii, key='radii')
         self.radii = radii
 
         self.subdivisions = com.validate_numeric_or_none(subdivisions, key='subdivisions')
@@ -214,11 +408,11 @@ class Cylinder(_CesiumEntity):
         A boolean Property specifying the visibility of the cylinder.
     fill: bool, default True
         A boolean Property specifying whether the cylinder is filled with the provided material.
-    material: cesiumpy.color.Color, default WHITE
+    material: cesiumpy.cesiumpy.color.Color, default WHITE
         A Property specifying the material used to fill the cylinder.
     outline: bool, default False
         A boolean Property specifying whether the cylinder is outlined.
-    outlineColor: cesiumpy.color.Color, default BLACK
+    outlineColor: cesiumpy.cesiumpy.color.Color, default BLACK
         A Property specifying the Color of the outline.
     outlineWidth: float, default 1.
         A numeric Property specifying the width of the outline.
@@ -263,7 +457,7 @@ class Polyline(_CesiumEntity):
         A numeric Property specifying the width in pixels.
     show: bool, default True
         A boolean Property specifying the visibility of the polyline.
-    material: cesiumpy.color.Color, default WHITE
+    material: cesiumpy.cesiumpy.color.Color, default WHITE
         A Property specifying the material used to draw the polyline.
     granularity: float, default cesiumpy.math.RADIANS_PER_DEGREE
         A numeric Property specifying the angular distance between each latitude and longitude if followSurface is true.
@@ -300,11 +494,11 @@ class PolylineVolume(_CesiumEntity):
         A boolean Property specifying the visibility of the volume.
     fill: bool, default True
         A boolean Property specifying whether the volume is filled with the provided material.
-    material: cesiumpy.color.Color, default WHITE
+    material: cesiumpy.cesiumpy.color.Color, default WHITE
         A Property specifying the material used to fill the volume.
     outline: bool, default False
         A boolean Property specifying whether the volume is outlined.
-    outlineColor: cesiumpy.color.Color, default BLACK
+    outlineColor: cesiumpy.cesiumpy.color.Color, default BLACK
         A Property specifying the Color of the outline.
     outlineWidth: float, default 1.
         A numeric Property specifying the width of the outline.
@@ -327,14 +521,8 @@ class PolylineVolume(_CesiumEntity):
 
         self.positions = cartesian.Cartesian3.fromDegreesArray(positions)
 
-        # ToDo: automatic conversion from numeric list
-        shape = cartesian._maybe_cartesian2_list(shape)
-        self.shape = shape
-
-        if cornerType is not None:
-            raise NotImplementedError
-
-        self.cornerType = cornerType
+        self.shape = cartesian._maybe_cartesian2_list(shape, key='shape')
+        self.cornerType = com.notimplemented(cornerType)
 
 
 class Corridor(_CesiumEntity):
@@ -358,11 +546,11 @@ class Corridor(_CesiumEntity):
         A boolean Property specifying the visibility of the corridor.
     fill: bool, default True
         A boolean Property specifying whether the corridor is filled with the provided material.
-    material: cesiumpy.color.Color, default WHITE
+    material: cesiumpy.cesiumpy.color.Color, default WHITE
         A Property specifying the material used to fill the corridor.
     outline: bool, default False
         A boolean Property specifying whether the corridor is outlined.
-    outlineColor: cesiumpy.color.Color, default BLACK
+    outlineColor: cesiumpy.cesiumpy.color.Color, default BLACK
         A Property specifying the Color of the outline.
     outlineWidth: float, default 1.
         A numeric Property specifying the width of the outline.
@@ -387,10 +575,7 @@ class Corridor(_CesiumEntity):
                                        granularity=granularity, name=name)
 
         self.positions = cartesian.Cartesian3.fromDegreesArray(positions)
-
-        if cornerType is not None:
-            raise NotImplementedError
-        self.cornerType = cornerType
+        self.cornerType = com.notimplemented(cornerType)
 
 
 class Wall(_CesiumEntity):
@@ -410,11 +595,11 @@ class Wall(_CesiumEntity):
         A boolean Property specifying the visibility of the wall.
     fill: bool, default True
         A boolean Property specifying whether the wall is filled with the provided material.
-    material: cesiumpy.color.Color, default WHITE
+    material: cesiumpy.cesiumpy.color.Color, default WHITE
         A Property specifying the material used to fill the wall.
     outline: bool, default False
         A boolean Property specifying whether the wall is outlined.
-    outlineColor: cesiumpy.color.Color, default BLACK
+    outlineColor: cesiumpy.cesiumpy.color.Color, default BLACK
         A Property specifying the Color of the outline.
     outlineWidth: float, default 1.
         A numeric Property specifying the width of the outline.
@@ -472,11 +657,11 @@ class Rectangle(_CesiumEntity):
         A boolean Property specifying the visibility of the rectangle.
     fill: bool, default True
         A boolean Property specifying whether the rectangle is filled with the provided material.
-    material: cesiumpy.color.Color, default WHITE
+    material: cesiumpy.cesiumpy.color.Color, default WHITE
         A Property specifying the material used to fill the rectangle.
     outline: bool, default False
         A boolean Property specifying whether the rectangle is outlined.
-    outlineColor: cesiumpy.color.Color, default BLACK
+    outlineColor: cesiumpy.cesiumpy.color.Color, default BLACK
         A Property specifying the Color of the outline.
     outlineWidth: float, default 1.
         A numeric Property specifying the width of the outline.
@@ -503,10 +688,15 @@ class Rectangle(_CesiumEntity):
                                         outlineWidth=outlineWidth, stRotation=stRotation,
                                         granularity=granularity, name=name)
 
-        self.coordinates = cartesian._maybe_rectangle(coordinates)
+        self.coordinates = cartesian._maybe_rectangle(coordinates, key='coordinates')
 
         self.closeTop = com.validate_bool_or_none(closeTop, key='closeTop')
         self.closeBottom = com.validate_bool_or_none(closeBottom, key='closeBottom')
+
+    def __repr__(self):
+        rep = """{klass}({rep})""".format(klass=self.__class__.__name__,
+                                        rep=self.coordinates._inner_repr)
+        return rep
 
 
 class Box(_CesiumEntity):
@@ -524,11 +714,11 @@ class Box(_CesiumEntity):
         A boolean Property specifying the visibility of the box.
     fill: bool, default True
         A boolean Property specifying whether the box is filled with the provided material.
-    material: cesiumpy.color.Color, default WHITE
+    material: cesiumpy.cesiumpy.color.Color, default WHITE
         A Property specifying the material used to fill the box.
     outline: bool, default False
         A boolean Property specifying whether the box is outlined.
-    outlineColor: cesiumpy.color.Color, default BLACK
+    outlineColor: cesiumpy.cesiumpy.color.Color, default BLACK
         A Property specifying the Color of the outline.
     outlineWidth: float, default 1.
         A numeric Property specifying the width of the outline.
@@ -546,10 +736,7 @@ class Box(_CesiumEntity):
                                   outlineWidth=outlineWidth,
                                   position=position, name=name)
 
-        dimensions = cartesian._maybe_cartesian(dimensions)
-        if not isinstance(dimensions, cartesian.Cartesian3):
-            msg = 'dimensions must be Cartesian3 or its compat: {0}'
-            raise ValueError(msg.format(dimensions))
+        dimensions = cartesian._maybe_cartesian3(dimensions, key='dimensions')
         self.dimensions = dimensions
 
 
@@ -570,11 +757,11 @@ class Polygon(_CesiumEntity):
         A boolean Property specifying the visibility of the polygon.
     fill: bool, default True
         A boolean Property specifying whether the polygon is filled with the provided material.
-    material: cesiumpy.color.Color, default WHITE
+    material: cesiumpy.cesiumpy.color.Color, default WHITE
         A Property specifying the material used to fill the polygon.
     outline: bool, default False
         A boolean Property specifying whether the polygon is outlined.
-    outlineColor: cesiumpy.color.Color, default Color.BLACK
+    outlineColor: cesiumpy.cesiumpy.color.Color, default cesiumpy.color.BLACK
         A Property specifying the Color of the outline.
     outlineWidth: float, default 1.
         A numeric Property specifying the width of the outline.
@@ -604,3 +791,7 @@ class Polygon(_CesiumEntity):
 
         self.perPositionHeight = com.validate_bool_or_none(perPositionHeight, key='perPositionHeight')
 
+    @property
+    def positions(self):
+        # for compat
+        return self.hierarchy

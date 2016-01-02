@@ -118,34 +118,50 @@ class TestViewer(unittest.TestCase):
     def test_add_entities(self):
 
         viewer = cesiumpy.Viewer(divid="viewertest", **self.options)
-        viewer.entities.add(cesiumpy.Box(dimensions=(40e4, 30e4, 50e4),
-                                         material=cesiumpy.color.RED, position=[-120, 40, 0]))
-        viewer.entities.add(cesiumpy.Ellipse(semiMinorAxis=25e4, semiMajorAxis=40e4,
-                                             material=cesiumpy.color.BLUE, position=[-110, 40, 0]))
+
+        box = cesiumpy.Box(dimensions=(40e4, 30e4, 50e4),
+                           material=cesiumpy.color.RED, position=[-120, 40, 0])
+        viewer.entities.add(box)
+
+        ellipse = cesiumpy.Ellipse(semiMinorAxis=25e4, semiMajorAxis=40e4,
+                                   material=cesiumpy.color.BLUE, position=[-110, 40, 0])
+        viewer.entities.add(ellipse)
+
         cyl = cesiumpy.Cylinder(position=[-100, 40, 50e4], length=100e4, topRadius=10e4,
                                 bottomRadius=10e4, material=cesiumpy.color.AQUA)
         viewer.entities.add(cyl)
-        viewer.entities.add(cesiumpy.Polygon([-90, 40, -95, 40, -95, 45, -90, 40],
-                                             material=cesiumpy.color.ORANGE))
-        viewer.entities.add(cesiumpy.Rectangle(coordinates=(-85, 40, -80, 45),
-                                               material=cesiumpy.color.GREEN))
-        viewer.entities.add(cesiumpy.Ellipsoid(position=(-70, 40, 0), radii=(20e4, 20e4, 30e4),
-                                               material=cesiumpy.color.GREEN))
+
+        pol = cesiumpy.Polygon([-90, 40, -95, 40, -95, 45, -90, 40],
+                               material=cesiumpy.color.ORANGE)
+        viewer.entities.add(pol)
+
+        rect = cesiumpy.Rectangle(coordinates=(-85, 40, -80, 45),
+                                  material=cesiumpy.color.GREEN)
+        viewer.entities.add(rect)
+
+        ellipsoid = cesiumpy.Ellipsoid(position=(-70, 40, 0), radii=(20e4, 20e4, 30e4),
+                                       material=cesiumpy.color.GREEN)
+        viewer.entities.add(ellipsoid)
+
         wall = cesiumpy.Wall(positions=[-60, 40, -65, 40, -65, 45, -60, 45],
                              maximumHeights=[10e4] * 4, minimumHeights=[0] * 4,
                              material=cesiumpy.color.RED)
         viewer.entities.add(wall)
-        viewer.entities.add(cesiumpy.Corridor(positions=[-120, 30, -90, 35, -60, 30],
-                                              width=2e5, material=cesiumpy.color.RED))
-        viewer.entities.add(cesiumpy.Polyline(positions=[-120, 25, -90, 30, -60, 25], width=0.5,
-                                              material=cesiumpy.color.BLUE))
-        pol = cesiumpy.PolylineVolume(positions=[-120, 20, -90, 25, -60, 20],
-                                      shape=[cesiumpy.Cartesian2(-50000, -50000),
-                                             cesiumpy.Cartesian2(50000, -50000),
-                                             cesiumpy.Cartesian2(50000, 50000),
-                                             cesiumpy.Cartesian2(-50000, 50000)],
-                                      material=cesiumpy.color.GREEN)
-        viewer.entities.add(pol)
+
+        corridor = cesiumpy.Corridor(positions=[-120, 30, -90, 35, -60, 30],
+                                     width=2e5, material=cesiumpy.color.RED)
+        viewer.entities.add(corridor)
+
+        polyline = cesiumpy.Polyline(positions=[-120, 25, -90, 30, -60, 25], width=0.5,
+                                     material=cesiumpy.color.BLUE)
+        viewer.entities.add(polyline)
+        polylinevolume = cesiumpy.PolylineVolume(positions=[-120, 20, -90, 25, -60, 20],
+                                                 shape=[cesiumpy.Cartesian2(-50000, -50000),
+                                                        cesiumpy.Cartesian2(50000, -50000),
+                                                        cesiumpy.Cartesian2(50000, 50000),
+                                                        cesiumpy.Cartesian2(-50000, 50000)],
+                                                 material=cesiumpy.color.GREEN)
+        viewer.entities.add(polylinevolume)
         result = viewer.to_html()
 
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
@@ -169,13 +185,24 @@ class TestViewer(unittest.TestCase):
         # clear entities
         viewer.entities.clear()
         result = viewer.to_html()
-        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+        exp_clear = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
 <link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/CesiumUnminified/Widgets/CesiumWidget/CesiumWidget.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest", {animation : true, baseLayerPicker : false, fullscreenButton : false, geocoder : false, homeButton : false, infoBox : false, sceneModePicker : true, selectionIndicator : false, timeline : false, navigationHelpButton : false, navigationInstructionsInitiallyVisible : false});
 </script>"""
+        self.assertEqual(result, exp_clear)
+
+        # add multiple objects at once
+        viewer = cesiumpy.Viewer(divid="viewertest", **self.options)
+        objs = [box, ellipse, cyl, pol, rect, ellipsoid, wall, corridor, polyline, polylinevolume]
+        viewer.entities.add(objs)
+        result = viewer.to_html()
         self.assertEqual(result, exp)
+
+        viewer.entities.clear()
+        result = viewer.to_html()
+        self.assertEqual(result, exp_clear)
 
 
 if __name__ == '__main__':

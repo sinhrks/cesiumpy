@@ -14,7 +14,7 @@ Following example shows retrieving ``US National Parks`` data from Wikipedia,
 then plot number of visitors on the map.
 
 First, load data from Wikipedia using ``pd.read_html`` functionality. The data
-contains latitude and longtitude as text, thus some preprocessing is required.
+contains latitude and longitude as text, thus some preprocessing is required.
 
 .. code-block:: python
 

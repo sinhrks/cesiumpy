@@ -87,12 +87,13 @@ class Viewer(_CesiumBase):
         If true and the configuration supports it, use order independent translucency.
     creditContainer: Element or str
         The DOM element or ID that will contain the CreditDisplay. If not specified, the credits are added to the bottom of the widget itself.
-    dataSources: DataSourceCollection, default new DataSourceCollection()
+    dataSources: list of DataSource
         The collection of data sources visualized by the widget. If this parameter is provided, the instance is assumed to be owned by the caller and will not be destroyed when the viewer is destroyed.
     terrainExaggeration: float, default 1.
         A scalar used to exaggerate the terrain. Note that terrain exaggeration will not modify any other primitive as they are positioned relative to the ellipsoid.
     """
 
+    # dataSources should be excluded from init, as it is handled separately
     _props = ['animation', 'baseLayerPicker', 'fullscreenButton',
               'geocoder', 'homeButton', 'infoBox', 'sceneModePicker',
               'selectionIndicator', 'timeline', 'navigationHelpButton',
@@ -103,7 +104,7 @@ class Viewer(_CesiumBase):
               'fullscreenElement', 'useDefaultRenderLoop', 'targetFrameRate',
               'showRenderLoopErrors', 'automaticallyTrackDataSourceClocks',
               'contextOptions', 'sceneMode', 'mapProjection', 'globe',
-              'orderIndependentTranslucency', 'creditContainer', 'dataSources',
+              'orderIndependentTranslucency', 'creditContainer',
               'terrainExaggeration']
 
     def __init__(self, divid=None, width='100%', height='100%',
@@ -148,63 +149,73 @@ class Viewer(_CesiumBase):
         self.navigationHelpButton = com.validate_bool_or_none(navigationHelpButton, key='navigationHelpButton')
         self.navigationInstructionsInitiallyVisible = com.validate_bool_or_none(navigationInstructionsInitiallyVisible, key='navigationInstructionsInitiallyVisible')
 
-        if selectedImageryProviderViewModel is not None:
-            raise NotImplementedError
-        self.selectedImageryProviderViewModel = selectedImageryProviderViewModel
-        if imageryProviderViewModels is not None:
-            raise NotImplementedError
-        self.imageryProviderViewModels = imageryProviderViewModels
-        if selectedTerrainProviderViewModel is not None:
-            raise NotImplementedError
-        self.selectedTerrainProviderViewModel = selectedTerrainProviderViewModel
-        if terrainProviderViewModels is not None:
-            raise NotImplementedError
-        self.terrainProviderViewModels = terrainProviderViewModels
 
-        if fullscreenElement is not None:
-            raise NotImplementedError
-        self.fullscreenElement = fullscreenElement
+        self.selectedImageryProviderViewModel = com.notimplemented(selectedImageryProviderViewModel)
+        self.imageryProviderViewModels = com.notimplemented(imageryProviderViewModels)
+        self.selectedTerrainProviderViewModel = com.notimplemented(selectedTerrainProviderViewModel)
+        self.terrainProviderViewModels = com.notimplemented(terrainProviderViewModels)
+        self.fullscreenElement = com.notimplemented(fullscreenElement)
         self.automaticallyTrackDataSourceClocks = com.validate_bool_or_none(automaticallyTrackDataSourceClocks, key='automaticallyTrackDataSourceClocks')
-
-        if dataSources is not None:
-            raise NotImplementedError
-        self.dataSources = dataSources
 
         # ToDo: API to disable all flags to False
         # store cesium objects as entities
-        self._entities = EntityList()
+        from cesiumpy.entity import _CesiumEntity
+        self._entities = RistrictedList(allowed=_CesiumEntity,
+                                        varname=self._varname,
+                                        propertyname='entities')
+        from cesiumpy.datasource import DataSource
+        self._dataSources = RistrictedList(allowed=DataSource,
+                                           varname=self._varname,
+                                           propertyname='dataSources')
 
-    @property
-    def script(self):
-        script = super(Viewer, self).script
-        return [script] + self.entities.script
+        if dataSources is not None:
+            dataSources = com.validate_listlike(dataSources, key='dataSources')
+            for ds in dataSources:
+                self._dataSources.add(ds)
 
     @property
     def entities(self):
         return self._entities
 
+    @property
+    def _entities_script(self):
+        return self._entities.script
 
-class EntityList(object):
+    @property
+    def dataSources(self):
+        return self._dataSources
 
-    def __init__(self):
-        self._entities = []
+    @property
+    def _dataSources_script(self):
+        return self._dataSources.script
 
-    def add(self, entity):
-        from cesiumpy.entity import _CesiumEntity
-        if not isinstance(entity, _CesiumEntity):
-            msg = 'entity must be a CesiumEntity instance: {0}'
-            raise ValueError(msg.format(type(entity)))
+class RistrictedList(object):
 
-        self._entities.append(entity)
+    def __init__(self, allowed, varname, propertyname):
+        self._items = []
+        self._allowed = allowed
+        self._varname = varname
+        self._propertyname = propertyname
+
+    def add(self, item):
+        if com.is_listlike(item):
+            for i in item:
+                self.add(i)
+        elif isinstance(item, self._allowed):
+            self._items.append(item)
+        else:
+            # ToDo: msg format when allowed is a tuple of class
+            msg = 'item must be a {allowed} instance: {item}'
+            raise ValueError(msg.format(allowed=self._allowed, item=item))
 
     def clear(self):
-        self._entities = []
+        self._items = []
 
     def __len__(self):
-        return len(self._entities)
+        return len(self._items)
 
     def __getitem__(self, item):
-        return self._entities[item]
+        return self._items[item]
 
     @property
     def script(self):
@@ -213,8 +224,11 @@ class EntityList(object):
         each script may be a list of comamnds also
         """
         results = []
-        for entity in self._entities:
-            script = """widget.entities.add({entity});""".format(entity=entity)
+        for item in self._items:
+            script = """{varname}.{propertyname}.add({item});"""
+            script = script.format(varname=self._varname,
+                                   propertyname=self._propertyname,
+                                   item=item.script)
             results.append(script)
         return results
 

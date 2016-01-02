@@ -25,8 +25,7 @@ Use ``pip``.
 Display Cesium Widget
 ---------------------
 
-The easiest way to show the ``Cesium`` on your browser is to use ``CesiumWidget`` on
-``Jupyter Notebook``.
+The easiest way to show the `Cesium.js <http://cesiumjs.org/>`_ on your browser is to use ``CesiumWidget`` on ``Jupyter Notebook``.
 
 Because ``CesiumWidget`` has ``_repr_html_`` method to render ``HTML`` on ``Jupyter Notebook``,
 placing variable contains ``CesiumWidget`` will output the map implemented on the output cell.
@@ -76,6 +75,8 @@ Refer to following document to see the whole list of `Cesium.js <http://cesiumjs
 
 ``cesiumpy`` currently supports following entities. Refer to ``cesiumpy`` API document for more details.
 
+- ``Point``
+- ``Label``
 - ``Box``
 - ``Ellipse``
 - ``Cylinder``
@@ -86,6 +87,7 @@ Refer to following document to see the whole list of `Cesium.js <http://cesiumjs
 - ``Corridor``
 - ``Polyline``
 - ``PolylineVolume``
+- ``Billboard``
 
 The below example draws all entities on the map.
 
@@ -97,7 +99,7 @@ The below example draws all entities on the map.
   ...                    material=cesiumpy.color.RED)
   >>> v.entities.add(box)
 
-  >>> ellipse = cesiumpy.Ellipse( position=[-110, 40, 0], semiMinorAxis=25e4,
+  >>> ellipse = cesiumpy.Ellipse(position=[-110, 40, 0], semiMinorAxis=25e4,
   ...                            semiMajorAxis=40e4, material=cesiumpy.color.BLUE)
   >>> v.entities.add(ellipse)
 
@@ -139,6 +141,32 @@ The below example draws all entities on the map.
 
 .. image:: ./_static/viewer02.png
 
+Camera
+------
+
+``CesiumWidget`` and ``Viewer`` has a ``camera`` property which allows you to
+specify the location to be displayed. You can call ``flyTo`` method to specify
+the location passing ``tuple`` or ``list``.
+
+If input length is 3, it will be regarded as the point specified by (``longitude``, ``latitude``, ``height``).
+
+.. code-block:: python
+
+  >>> v = cesiumpy.Viewer(**options)
+  >>> v.camera.flyTo((-117.16, 32.71, 15000))
+  >>> v
+
+.. image:: ./_static/camera01.png
+
+- If input length is 4, it will be regarded as the rectangle specified by (``west``, ``south``, ``east``, ``north``).
+
+.. code-block:: python
+
+  >>> v = cesiumpy.Viewer(**options)
+  >>> v.camera.flyTo((135, 30, 145, 45))
+  >>> v
+
+.. image:: ./_static/camera02.png
 
 Add Providers
 -------------
@@ -210,5 +238,58 @@ Passing ``requestWaterMask=True`` enables water effects.
   >>> v = cesiumpy.Viewer(terrainProvider=terrainProvider, **options)
   >>> v
 
-
 .. image:: ./_static/terrain02.png
+
+
+Add Data Sources
+----------------
+
+`Cesium.js <http://cesiumjs.org/>`_ has a ``DataSource`` function which
+can draw external data as entities.
+
+``cesiumpy`` currently supports following ``DataSource``.
+
+- ``GeoJsonDataSource``
+
+Assuming we hanve following ``.geojson`` file named "example.geojson".
+
+::
+
+  {
+      "type": "Point",
+      "coordinates": [-118.27, 34.05 ]
+  }
+
+You can create ``GeoJsonDataSource`` instannce then add to ``Viewer.DataSources``.
+``markerSymbol`` option specifies the symbol displayed on the marker.
+
+.. code-block:: python
+
+  >>> ds = cesiumpy.GeoJsonDataSource('./example.geojson', markerSymbol='!')
+  >>> v = cesiumpy.Viewer(**options)
+  >>> v.dataSources.add(ds)
+  >>> v
+
+.. image:: ./_static/datasources01.png
+
+Geocoding
+---------
+
+`Cesium.js <http://cesiumjs.org/>`_ handles coordinates via ``Cartesian3`` class,
+which specifies coordinates using numerics.
+
+For convenience, ``cesiumpy`` automatically converts ``str`` input to ``Cartesian3``
+via geocoding. The geocoding function is internally provided by ``geopy``'s ``Nominatim`` geocoder.
+
+You can use ``str`` specifying location where you can use ``Cartesian3`` as below.
+
+.. code-block:: python
+
+  >>> viewer = cesiumpy.Viewer(**options)
+  >>> cyl = cesiumpy.Cylinder(position='Los Angeles', length=30000, topRadius=10000,
+  ...                         bottomRadius=10000, material='AQUA')
+  >>> v.entities.add(cyl)
+  >>> v.camera.flyTo('Los Angeles')
+  >>> v
+
+.. image:: ./_static/geocoding01.png

@@ -11,7 +11,7 @@ import six
 import cesiumpy.common as com
 
 
-class _CesiumInstance(object):
+class _CesiumObject(object):
     """
     Base class for Cesium instances, which can be converted to
     JavaScript instance
@@ -32,13 +32,27 @@ class _CesiumInstance(object):
             props[p] = getattr(self, p)
         return props
 
-    def __repr__(self):
+    @property
+    def script(self):
         props = self._property_dict
         results = com.to_jsobject(props)
         return ''.join(results)
 
 
-class _CesiumBase(_CesiumInstance):
+class _CesiumConstant(object):
+
+    def __init__(self, constant):
+        self._constant = constant
+
+    def __repr__(self):
+        return self._constant
+
+    @property
+    def script(self):
+        return self._constant
+
+
+class _CesiumBase(_CesiumObject):
     """
     Base class for Cesium Widget / Viewer
     """
@@ -50,6 +64,7 @@ class _CesiumBase(_CesiumInstance):
               'targetFrameRate', 'showRenderLoopErrors',
               'contextOptions', 'creditContainer',
               'terrainExaggeration']
+    _varname = 'widget'
 
     def __init__(self, divid=None, width='100%', height='100%',
                  clock=None, imageryProvider=None, terrainProvider=None,
@@ -67,49 +82,33 @@ class _CesiumBase(_CesiumInstance):
         self.width = com.validate_str(width, key='width')
         self.height = com.validate_str(height, key='width')
 
-        if clock is not None:
-            raise NotImplementedError
-        self.clock = clock
+        self.clock = com.notimplemented(clock)
 
         self.imageryProvider = imageryProvider
         self.terrainProvider = terrainProvider
 
-        if skyBox is not None:
-            raise NotImplementedError
-        self.skyBox = skyBox
-
-        if skyAtmosphere is not None:
-            raise NotImplementedError
-        self.skyAtmosphere = skyAtmosphere
-
-        if sceneMode is not None:
-            raise NotImplementedError
-        self.sceneMode = sceneMode
+        self.skyBox = com.notimplemented(skyBox)
+        self.skyAtmosphere = com.notimplemented(skyAtmosphere)
+        self.sceneMode = com.notimplemented(sceneMode)
 
         self.scene3DOnly = com.validate_bool_or_none(scene3DOnly, key='scene3DOnly')
         self.orderIndependentTranslucency = com.validate_bool_or_none(orderIndependentTranslucency, key='orderIndependentTranslucency')
 
-        if mapProjection is not None:
-            raise NotImplementedError
-        self.mapProjection = mapProjection
-
-        if globe is not None:
-            raise NotImplementedError
-        self.globe = globe
+        self.mapProjection = com.notimplemented(mapProjection)
+        self.globe = com.notimplemented(globe)
 
         self.useDefaultRenderLoop = com.validate_bool_or_none(useDefaultRenderLoop, key='useDefaultRenderLoop')
         self.targetFrameRate = com.validate_numeric_or_none(targetFrameRate, key='targetFrameRate')
         self.showRenderLoopErrors = com.validate_bool_or_none(showRenderLoopErrors, key='showRenderLoopErrors')
 
-        if contextOptions is not None:
-            raise NotImplementedError
-        self.contextOptions = contextOptions
+        self.contextOptions = com.notimplemented(contextOptions)
 
-        if creditContainer is not None:
-            raise NotImplementedError
-        self.creditContainer = creditContainer
+        self.creditContainer = com.notimplemented(creditContainer)
 
         self.terrainExaggeration = com.validate_numeric_or_none(terrainExaggeration, key='terrainExaggeration')
+
+        from cesiumpy.camera import Camera
+        self._camera = Camera()
 
     @property
     def _load_scripts(self):
@@ -133,10 +132,6 @@ class _CesiumBase(_CesiumInstance):
         results = self._build_html(headers, container, script)
         return results
 
-    def __repr__(self):
-        # do not use CesiumInstance.__repr__
-        return object.__repr__(self)
-
     def _build_html(self, *args):
         results = []
         for a in args:
@@ -153,16 +148,45 @@ class _CesiumBase(_CesiumInstance):
         props = com.to_jsobject(self._property_dict)
         props = ''.join(props)
         if props != '':
-            script = """var widget = new {klass}("{divid}", {props});"""
-            script = script.format(klass=self._klass, divid=self.divid, props=''.join(props))
+            script = """var {varname} = new {klass}("{divid}", {props});"""
+            script = script.format(varname=self._varname, klass=self._klass,
+                                   divid=self.divid, props=''.join(props))
         else:
-            script = """var widget = new {klass}("{divid}");"""
-            script = script.format(klass=self._klass, divid=self.divid)
-        return script
+            script = """var {varname} = new {klass}("{divid}");"""
+            script = script.format(varname=self._varname, klass=self._klass,
+                                   divid=self.divid)
+        return ([script] + self._entities_script +
+                self._dataSources_script + [self._camera_script])
+
+    @property
+    def _entities_script(self):
+        # temp, should return list
+        return []
+
+    @property
+    def _dataSources_script(self):
+        # temp, should return list
+        return []
+    @property
+    def _camera_script(self):
+        camera = self.camera.script
+        if camera != '':
+            script = """{varname}.camera.flyTo({camera});"""
+            script = script.format(varname=self._varname,
+                                   camera=camera)
+            return script
+        else:
+            return ''
+
+    @property
+    def camera(self):
+        return self._camera
 
     def _wrap_js(self, script):
         if not isinstance(script, list):
             script = [script]
+        # filter None and empty str
+        script = [s for s in script if s is not None and len(s) > 0]
         script = self._add_indent(script)
         return ["""<script type="text/javascript">"""] + script + ["""</script>"""]
 

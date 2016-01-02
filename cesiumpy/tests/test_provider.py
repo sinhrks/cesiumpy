@@ -28,23 +28,23 @@ class TestTerrainProvider(unittest.TestCase):
     def test_CesiumTerrainProvider(self):
         url = '//assets.agi.com/stk-terrain/world'
         terrainProvider = cesiumpy.CesiumTerrainProvider(url=url)
-        result = repr(terrainProvider)
+        result = terrainProvider.script
         exp = """new Cesium.CesiumTerrainProvider({url : "//assets.agi.com/stk-terrain/world"})"""
         self.assertEqual(result, exp)
 
         terrainProvider = cesiumpy.CesiumTerrainProvider(url=url, requestWaterMask=True)
-        result = repr(terrainProvider)
+        result = terrainProvider.script
         exp = """new Cesium.CesiumTerrainProvider({url : "//assets.agi.com/stk-terrain/world", requestWaterMask : true})"""
         self.assertEqual(result, exp)
 
         terrainProvider = cesiumpy.CesiumTerrainProvider(url=url, requestWaterMask=True, requestVertexNormals=True)
-        result = repr(terrainProvider)
+        result = terrainProvider.script
         exp = """new Cesium.CesiumTerrainProvider({url : "//assets.agi.com/stk-terrain/world", requestVertexNormals : true, requestWaterMask : true})"""
         self.assertEqual(result, exp)
 
     def test_EllipsoidTerrainProvider(self):
         terrainProvider = cesiumpy.EllipsoidTerrainProvider()
-        result = repr(terrainProvider)
+        result = terrainProvider.script
         exp = """new Cesium.EllipsoidTerrainProvider()"""
         self.assertEqual(result, exp)
 
@@ -53,7 +53,7 @@ class TestTerrainProvider(unittest.TestCase):
         credit = 'Terrain data courtesy VT MAK'
 
         terrainProvider = cesiumpy.VRTheWorldTerrainProvider(url=url, credit=credit)
-        result = repr(terrainProvider)
+        result = terrainProvider.script
         exp = """new Cesium.VRTheWorldTerrainProvider({url : "//www.vr-theworld.com/vr-theworld/tiles1.0.0/73/", credit : "Terrain data courtesy VT MAK"})"""
         self.assertEqual(result, exp)
 
@@ -63,7 +63,6 @@ class TestImageProvider(unittest.TestCase):
 
     def test_provider_klass(self):
         url = 'x'
-
 
         self.assertEqual(cesiumpy.ImageryProvider(url=url)._klass,
                          "Cesium.ImageryProvider")
@@ -98,13 +97,13 @@ class TestImageProvider(unittest.TestCase):
     def test_ArcGisMapServerImageryProvider(self):
         url = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer'
         imageryProvider = cesiumpy.ArcGisMapServerImageryProvider(url=url)
-        result = repr(imageryProvider)
+        result = imageryProvider.script
         exp = """new Cesium.ArcGisMapServerImageryProvider({url : "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"})"""
         self.assertEqual(result, exp)
 
         url = '//server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer'
         imageryProvider = cesiumpy.ArcGisMapServerImageryProvider(url=url)
-        result = repr(imageryProvider)
+        result = imageryProvider.script
         exp = """new Cesium.ArcGisMapServerImageryProvider({url : "//server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"})"""
         self.assertEqual(result, exp)
 
@@ -112,7 +111,7 @@ class TestImageProvider(unittest.TestCase):
         url = '//cesiumjs.org/tilesets/imagery/blackmarble'
         credit = 'Black Marble imagery courtesy NASA Earth Observatory'
         imageryProvider = cesiumpy.TileMapServiceImageryProvider(url=url, maximumLevel=8, credit=credit)
-        result = repr(imageryProvider)
+        result = imageryProvider.script
         exp = """new Cesium.TileMapServiceImageryProvider({url : "//cesiumjs.org/tilesets/imagery/blackmarble", maximumLevel : 8, credit : "Black Marble imagery courtesy NASA Earth Observatory"})"""
         self.assertEqual(result, exp)
 
@@ -126,7 +125,7 @@ class TestImageProvider(unittest.TestCase):
 
         url = '../images/cesium_maptiler/Cesium_Logo_Color'
         imageryProvider = cesiumpy.TileMapServiceImageryProvider(url=url)
-        result = repr(imageryProvider)
+        result = imageryProvider.script
         exp = """new Cesium.TileMapServiceImageryProvider({url : "../images/cesium_maptiler/Cesium_Logo_Color"})"""
         self.assertEqual(result, exp)
 
@@ -134,14 +133,14 @@ class TestImageProvider(unittest.TestCase):
         url = '../images/Cesium_Logo_overlay.png'
         rectangle = cesiumpy.cartesian.Rectangle.fromDegrees(-75.0, 28.0, -67.0, 29.75)
         imageryProvider = cesiumpy.SingleTileImageryProvider(url=url, rectangle=rectangle)
-        result = repr(imageryProvider)
+        result = imageryProvider.script
         exp = """new Cesium.SingleTileImageryProvider({url : "../images/Cesium_Logo_overlay.png", rectangle : Cesium.Rectangle.fromDegrees(-75.0, 28.0, -67.0, 29.75)})"""
         self.assertEqual(result, exp)
 
         url = '../images/Cesium_Logo_overlay.png'
         rectangle = cesiumpy.cartesian.Rectangle.fromDegrees(-115.0, 38.0, -107, 39.75)
         imageryProvider = cesiumpy.SingleTileImageryProvider(url=url, rectangle=rectangle)
-        result = repr(imageryProvider)
+        result = imageryProvider.script
         exp = """new Cesium.SingleTileImageryProvider({url : "../images/Cesium_Logo_overlay.png", rectangle : Cesium.Rectangle.fromDegrees(-115.0, 38.0, -107, 39.75)})"""
         self.assertEqual(result, exp)
 
@@ -156,25 +155,25 @@ class TestImageProvider(unittest.TestCase):
 
     def test_OpenStreetMapImageryProvider(self):
         imageryProvider = cesiumpy.OpenStreetMapImageryProvider()
-        result = repr(imageryProvider)
+        result = imageryProvider.script
         exp = """new Cesium.OpenStreetMapImageryProvider()"""
         self.assertEqual(result, exp)
 
         url = '//otile1-s.mqcdn.com/tiles/1.0.0/osm/'
         imageryProvider = cesiumpy.OpenStreetMapImageryProvider(url=url)
-        result = repr(imageryProvider)
+        result = imageryProvider.script
         exp = """new Cesium.OpenStreetMapImageryProvider({url : "//otile1-s.mqcdn.com/tiles/1.0.0/osm/"})"""
         self.assertEqual(result, exp)
 
         url = '//stamen-tiles.a.ssl.fastly.net/watercolor/'
         credit = 'Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under CC BY SA.'
         imageryProvider = cesiumpy.OpenStreetMapImageryProvider(url=url, credit=credit)
-        result = repr(imageryProvider)
+        result = imageryProvider.script
         exp = """new Cesium.OpenStreetMapImageryProvider({url : "//stamen-tiles.a.ssl.fastly.net/watercolor/", credit : "Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under CC BY SA."})"""
         self.assertEqual(result, exp)
 
         imageryProvider = cesiumpy.OpenStreetMapImageryProvider(url=url, fileExtension='jpg', credit=credit)
-        result = repr(imageryProvider)
+        result = imageryProvider.script
         exp = """new Cesium.OpenStreetMapImageryProvider({url : "//stamen-tiles.a.ssl.fastly.net/watercolor/", fileExtension : "jpg", credit : "Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under CC BY SA."})"""
         self.assertEqual(result, exp)
 
@@ -212,21 +211,21 @@ class TestImageProvider(unittest.TestCase):
                                                                     style='default', format='image/jpeg',
                                                                     tileMatrixSetID='default028mm', maximumLevel=19,
                                                                     credit='U. S. Geological Survey')
-        result = repr(imageryProvider)
+        result = imageryProvider.script
         exp = """new Cesium.WebMapTileServiceImageryProvider({url : "http://basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/WMTS", layer : "USGSShadedReliefOnly", style : "default", format : "image/jpeg", maximumLevel : 19, credit : "U. S. Geological Survey"})"""
         self.assertEqual(result, exp)
 
     def test_GridImageryProvider(self):
         # Not Implemented
         # imageryProvider = cesiumpy.GridImageryProvider()
-        # result = repr(imageryProvider)
+        # result = imageryProvider.script
         # exp = """new Cesium.TileCoordinatesImageryProvider()"""
         # self.assertEqual(result, exp)
         pass
 
     def test_TileCoordinatesImageryProvider(self):
         imageryProvider = cesiumpy.TileCoordinatesImageryProvider()
-        result = repr(imageryProvider)
+        result = imageryProvider.script
         exp = """new Cesium.TileCoordinatesImageryProvider()"""
         self.assertEqual(result, exp)
 

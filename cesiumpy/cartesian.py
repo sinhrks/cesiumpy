@@ -4,79 +4,86 @@
 from __future__ import unicode_literals
 
 import six
+
+from cesiumpy.base import _CesiumObject
 import cesiumpy.common as com
+import cesiumpy.geocode as geocode
 
 
-class CesiumCartesian(object):
+class _Cartesian(_CesiumObject):
 
     def __init__(self):
         raise NotImplementedError
 
+    @property
+    def script(self):
+        if self._is_array or self._is_degrees:
+            rep = """Cesium.{self}"""
+            return rep.format(self=self)
+        else:
+            rep = """new Cesium.{self}"""
+            return rep.format(self=self)
 
-def _maybe_cartesian(x):
+
+def _maybe_cartesian(x, key, degrees=False):
     """ Convert list or tuple to corresponding Cartesian """
-    if isinstance(x, CesiumCartesian):
+    if isinstance(x, _Cartesian):
+        return x
+
+    x = com._maybe_shapely_point(x)
+    x = com.validate_listlike(x, key=key)
+
+    if len(x) == 2:
+        return Cartesian2(*x, degrees=degrees)
+    elif len(x) == 3:
+        return Cartesian3(*x, degrees=degrees)
+    elif len(x) == 4:
+        return Cartesian4(*x, degrees=degrees)
+    else:
+        msg = '{key} length must be 2-4 to be converted to Cartesian: {x}'
+        raise ValueError(msg.format(key=key, x=x))
+
+
+def _maybe_cartesian3(x, key, degrees=False):
+    """ Convert list or tuple to Cartesian3 """
+    if isinstance(x, _Cartesian):
         return x
 
     x = com._maybe_shapely_point(x)
 
-    if isinstance(x, (tuple, list)):
-        if len(x) == 2:
-            return Cartesian2(*x)
-        elif len(x) == 3:
-            return Cartesian3(*x)
-        elif len(x) == 4:
-            return Cartesian4(*x)
-        else:
-            msg = 'length must be 2-4 to be converted to Cartesian: {0}'
-            raise ValueError(msg.format(x))
+    # currently, only Cartesian3 tries to geocode passed loc
+    x = geocode._maybe_geocode(x, height=0)
+
+    x = com.validate_listlike(x, key=key)
+
+    if len(x) == 3:
+        return Cartesian3(*x, degrees=degrees)
     else:
-        raise ValueError('unable to convert input to Cartesian: {0}'.format(x))
+        msg = '{key} length must be 3 to be converted to Cartesian3: {x}'
+        raise ValueError(msg.format(key=key, x=x))
 
 
-def _maybe_cartesian_degrees(x):
-    """ Convert list or tuple to corresponding Cartesian as degrees """
-    if isinstance(x, CesiumCartesian):
-        return x
-
-    x = com._maybe_shapely_point(x)
-
-    if isinstance(x, (tuple, list)):
-        if len(x) == 2:
-            return Cartesian2(*x, degrees=True)
-        elif len(x) == 3:
-            return Cartesian3(*x, degrees=True)
-        elif len(x) == 4:
-            return Cartesian4(*x, degrees=True)
-        else:
-            msg = 'length must be 2-4 to be converted to Cartesian: {0}'
-            raise ValueError(msg.format(x))
-    else:
-        raise ValueError('unable to convert input to Cartesian: {0}'.format(x))
-
-
-def _maybe_cartesian2_list(x):
+def _maybe_cartesian2_list(x, key):
     """
-    Convert list or tuple to list of Cartesian2 instances. Used by PolylineVolume"""
-    if isinstance(x, tuple):
-        x = list(x)
-
-    if isinstance(x, list):
+    Convert list or tuple to list of Cartesian2 instances. Used by PolylineVolume
+    """
+    if com.is_listlike(x):
         if all(isinstance(e, Cartesian2) for e in x):
             return x
+        elif all(isinstance(e, _Cartesian) for e in x):
+            # for better error message
+            msg = '{key} must be a listlike of Cartesian2: {x}'
+            raise ValueError(msg.format(key=key, x=x))
 
-        if len(x) % 2 == 0:
-            x = [Cartesian2(i, j) for (i, j) in zip(x[::2], x[1::2])]
-        else:
-            msg = 'length must be even number to be converted to Cartesian: {0}'
-            raise ValueError(msg.format(x))
-        return x
-    else:
-        raise ValueError('unable to convert input to list of Cartesian2: {0}'.format(x))
+        if com.is_listlike_2elem(x):
+            x = com._flatten_list_of_listlike(x)
+
+    x = com.validate_listlike_even(x, key=key)
+    x = [Cartesian2(i, j) for (i, j) in zip(x[::2], x[1::2])]
+    return x
 
 
-
-class Cartesian2(CesiumCartesian):
+class Cartesian2(_Cartesian):
 
     def __init__(self, x, y, degrees=False):
 
@@ -84,9 +91,10 @@ class Cartesian2(CesiumCartesian):
         self.y = com.validate_numeric(y, key='y')
 
         self._is_degrees = com.validate_bool(degrees, key='degrees')
+        self._is_array = False
 
         if degrees:
-            com.validate_longtitude(x, key='x')
+            com.validate_longitude(x, key='x')
             com.validate_latitude(y, key='y')
 
     @classmethod
@@ -98,14 +106,14 @@ class Cartesian2(CesiumCartesian):
 
     def __repr__(self):
         if self._is_degrees:
-            rep = """Cesium.Cartesian2.fromDegrees({x}, {y})"""
+            rep = """Cartesian2.fromDegrees({x}, {y})"""
             return rep.format(x=self.x, y=self.y)
         else:
-            rep = """new Cesium.Cartesian2({x}, {y})"""
+            rep = """Cartesian2({x}, {y})"""
             return rep.format(x=self.x, y=self.y)
 
 
-class Cartesian3(CesiumCartesian):
+class Cartesian3(_Cartesian):
 
     def __init__(self, x, y, z, degrees=False):
         self.x = com.validate_numeric(x, key='x')
@@ -116,7 +124,7 @@ class Cartesian3(CesiumCartesian):
         self._is_array = False
 
         if degrees:
-            com.validate_longtitude(x, key='x')
+            com.validate_longitude(x, key='x')
             com.validate_latitude(y, key='y')
 
     @classmethod
@@ -129,22 +137,14 @@ class Cartesian3(CesiumCartesian):
         # convert shaply.Polygon to coordinateslist
         x = com._maybe_shapely_polygon(x)
         x = com._maybe_shapely_line(x)
+        x = geocode._maybe_geocode(x, height=0)
 
-        if not isinstance(x, list):
-            msg = 'input must be a list: {0}'
-            raise ValueError(msg.format(type(x)))
+        if com.is_listlike_2elem(x):
+            x = com._flatten_list_of_listlike(x)
+        elif com.is_listlike_3elem(x):
+            raise NotImplementedError
 
-        if len(x) % 2 != 0:
-            msg = 'input length must be even number: {0}'
-            raise ValueError(msg.format(x))
-
-        try:
-            all(com.validate_longtitude(e, key='input') for e in x[::2])
-            all(com.validate_latitude(e, key='input') for e in x[1::2])
-            # validation will raise ValueError immediately
-        except ValueError:
-            raise ValueError('input must be a list consists from longtitude and latitude')
-
+        x = com.validate_listlike_lonlat(x, 'x')
         c = Cartesian3(0, 0, 0)
         c.x = x
         c._is_array = True
@@ -156,17 +156,17 @@ class Cartesian3(CesiumCartesian):
 
     def __repr__(self):
         if self._is_array:
-            rep = """Cesium.Cartesian3.fromDegreesArray({x})"""
+            rep = """Cartesian3.fromDegreesArray({x})"""
             return rep.format(x=self.x)
         elif self._is_degrees:
-            rep = """Cesium.Cartesian3.fromDegrees({x}, {y}, {z})"""
+            rep = """Cartesian3.fromDegrees({x}, {y}, {z})"""
             return rep.format(x=self.x, y=self.y, z=self.z)
         else:
-            rep = """new Cesium.Cartesian3({x}, {y}, {z})"""
+            rep = """Cartesian3({x}, {y}, {z})"""
             return rep.format(x=self.x, y=self.y, z=self.z)
 
 
-class Cartesian4(CesiumCartesian):
+class Cartesian4(_Cartesian):
 
     def __init__(self, x, y, z, w, degrees=False):
 
@@ -176,10 +176,12 @@ class Cartesian4(CesiumCartesian):
         self.w = com.validate_numeric(w, key='w')
 
         self._is_degrees = com.validate_bool(degrees, key='degrees')
+        self._is_array = False
 
         if degrees:
-            com.validate_longtitude(x, key='x')
+            com.validate_longitude(x, key='x')
             com.validate_latitude(y, key='y')
+
 
     @classmethod
     def fromDegrees(cls, x, y, z, w):
@@ -187,26 +189,27 @@ class Cartesian4(CesiumCartesian):
 
     def __repr__(self):
         if self._is_degrees:
-            rep = """Cesium.Cartesian4.fromDegrees({x}, {y}, {z}, {w})"""
+            rep = """Cartesian4.fromDegrees({x}, {y}, {z}, {w})"""
             return rep.format(x=self.x, y=self.y, z=self.z, w=self.w)
         else:
-            rep = """new Cesium.Cartesian4({x}, {y}, {z}, {w})"""
+            rep = """Cartesian4({x}, {y}, {z}, {w})"""
             return rep.format(x=self.x, y=self.y, z=self.z, w=self.w)
 
 
-def _maybe_rectangle(x):
+def _maybe_rectangle(x, key):
     if isinstance(x, Rectangle):
         return x
-    elif isinstance(x, (tuple, list)):
-        if len(x) == 4:
-            return Rectangle.fromDegrees(*x)
-        else:
-            raise ValueError('length must be 4: {0}'.format(x))
+
+    x = com.validate_listlike(x, key=key)
+    if com.is_listlike_2elem(x):
+        x = com._flatten_list_of_listlike(x)
+    if len(x) == 4:
+        return Rectangle.fromDegrees(*x)
     else:
-        raise ValueError('unable to convert input to Rectangle: {0}'.format(x))
+        raise ValueError('{key} length must be 4: {x}'.format(key=key, x=x))
 
 
-class Rectangle(CesiumCartesian):
+class Rectangle(_Cartesian):
 
     def __init__(self, west, south, east, north, degrees=False):
 
@@ -216,21 +219,38 @@ class Rectangle(CesiumCartesian):
         self.north = com.validate_numeric(north, key='north')
 
         self._is_degrees = com.validate_bool(degrees, key='degrees')
+        self._is_array = False
 
         if degrees:
-            self.west = com.validate_longtitude(west, key='west')
+            self.west = com.validate_longitude(west, key='west')
             self.south = com.validate_latitude(south, key='south')
-            self.east = com.validate_longtitude(east, key='east')
+            self.east = com.validate_longitude(east, key='east')
             self.north = com.validate_latitude(north, key='north')
 
     @classmethod
     def fromDegrees(cls, west, south, east, north):
         return Rectangle(west, south, east, north, degrees=True)
 
+    @property
+    def _inner_repr(self):
+        rep = "west={west}, south={south}, east={east}, north={north}"
+        return rep.format(west=self.west, south=self.south, east=self.east, north=self.north)
+
     def __repr__(self):
+        # show more detailed repr, as arg order is not easy to remember
+        if self._is_degrees:
+            return "Rectangle.fromDegrees({rep})".format(rep=self._inner_repr)
+        else:
+            return "Rectangle({rep})".format(rep=self._inner_repr)
+
+    @property
+    def script(self):
+        # we can't use repr as it is like other Cartesian
         if self._is_degrees:
             rep = """Cesium.Rectangle.fromDegrees({west}, {south}, {east}, {north})"""
             return rep.format(west=self.west, south=self.south, east=self.east, north=self.north)
         else:
-            rep = """Cesium.Rectangle({west}, {south}, {east}, {north})"""
+            rep = """new Cesium.Rectangle({west}, {south}, {east}, {north})"""
             return rep.format(west=self.west, south=self.south, east=self.east, north=self.north)
+
+

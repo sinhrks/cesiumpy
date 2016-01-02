@@ -9,6 +9,18 @@ import cesiumpy
 import cesiumpy.common as com
 
 
+
+def validate_color_or_none(x, key):
+    """ validate whether x is str, unicode or None"""
+    if x is None:
+        return x
+    x = _maybe_color(x)
+    if not isinstance(x, Color):
+        msg = '{key} must be a Color instance: {x}'
+        raise ValueError(msg.format(key=key, x=x))
+    return x
+
+
 def _maybe_color(x):
     """ Convert str to NamedColor constant """
 
