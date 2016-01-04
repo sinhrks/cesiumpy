@@ -8,6 +8,8 @@ import json
 import os
 import six
 
+from enum import Enum
+
 import cesiumpy.common as com
 
 
@@ -39,17 +41,11 @@ class _CesiumObject(object):
         return ''.join(results)
 
 
-class _CesiumConstant(object):
-
-    def __init__(self, constant):
-        self._constant = constant
-
-    def __repr__(self):
-        return self._constant
+class _CesiumEnum(Enum):
 
     @property
     def script(self):
-        return self._constant
+        return self.value
 
 
 class _CesiumBase(_CesiumObject):

@@ -80,6 +80,39 @@ class TestEntity(unittest.TestCase):
         e = e.copy()
         self.assertEqual(e.script, exp)
 
+    def test_billboard_origins(self):
+        p = cesiumpy.Pin()
+
+        e = cesiumpy.Billboard(position=[-130, 40, 0], image=p,
+                               horizontalOrigin=cesiumpy.HorizontalOrigin.LEFT,
+                               verticalOrigin=cesiumpy.VerticalOrigin.BOTTOM)
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-130, 40, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48), horizontalOrigin : Cesium.HorizontalOrigin.LEFT, verticalOrigin : Cesium.VerticalOrigin.BOTTOM}}"""
+        self.assertEqual(e.script, exp)
+
+        e = cesiumpy.Billboard(position=[-130, 40, 0], image=p,
+                               horizontalOrigin=cesiumpy.HorizontalOrigin.CENTER,
+                               verticalOrigin=cesiumpy.VerticalOrigin.CENTER)
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-130, 40, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48), horizontalOrigin : Cesium.HorizontalOrigin.CENTER, verticalOrigin : Cesium.VerticalOrigin.CENTER}}"""
+        self.assertEqual(e.script, exp)
+
+        e = cesiumpy.Billboard(position=[-130, 40, 0], image=p,
+                               horizontalOrigin=cesiumpy.HorizontalOrigin.RIGHT,
+                               verticalOrigin=cesiumpy.VerticalOrigin.TOP)
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-130, 40, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48), horizontalOrigin : Cesium.HorizontalOrigin.RIGHT, verticalOrigin : Cesium.VerticalOrigin.TOP}}"""
+        self.assertEqual(e.script, exp)
+
+        msg = "horizontalOrigin must be HorizontalOrigin: 1"
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            b = cesiumpy.Billboard(position=[-130, 40, 0], image=p,
+                       horizontalOrigin=1,
+                       verticalOrigin=cesiumpy.VerticalOrigin.TOP)
+
+        msg = "verticalOrigin must be VerticalOrigin: xxx"
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            b = cesiumpy.Billboard(position=[-130, 40, 0], image=p,
+                       horizontalOrigin=cesiumpy.HorizontalOrigin.RIGHT,
+                       verticalOrigin='xxx')
+
     def test_ellipse(self):
         e = cesiumpy.Ellipse(position=[-110, 40, 0], semiMinorAxis=25.0, semiMajorAxis=40.0)
         exp = "{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), ellipse : {semiMinorAxis : 25.0, semiMajorAxis : 40.0}}"
@@ -208,6 +241,27 @@ class TestEntity(unittest.TestCase):
         with nose.tools.assert_raises_regexp(ValueError, msg):
             cesiumpy.Corridor(positions=((-120, 30), (35, ), (-60, 30)),
                               width=2e5, material='red')
+
+    def test_corridor_cornertypes(self):
+        e = cesiumpy.Corridor(positions=[-130, 40, -120, 30, -110, 40], width=100000,
+                              cornerType=cesiumpy.CornerType.BEVELED)
+        exp = """{corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-130, 40, -120, 30, -110, 40]), cornerType : Cesium.CornerType.BEVELED, width : 100000}}"""
+        self.assertEqual(e.script, exp)
+
+        e = cesiumpy.Corridor(positions=[-130, 40, -120, 30, -110, 40], width=100000,
+                              cornerType=cesiumpy.CornerType.MITERED)
+        exp = """{corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-130, 40, -120, 30, -110, 40]), cornerType : Cesium.CornerType.MITERED, width : 100000}}"""
+        self.assertEqual(e.script, exp)
+
+        e = cesiumpy.Corridor(positions=[-130, 40, -120, 30, -110, 40], width=100000,
+                              cornerType=cesiumpy.CornerType.ROUNDED)
+        exp = """{corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-130, 40, -120, 30, -110, 40]), cornerType : Cesium.CornerType.ROUNDED, width : 100000}}"""
+        self.assertEqual(e.script, exp)
+
+        msg = "cornerType must be CornerType: ROUNDED"
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            cesiumpy.Corridor(positions=[-130, 40, -120, 30, -110, 40], width=100000,
+                              cornerType='ROUNDED')
 
     def test_wall(self):
         e = cesiumpy.Wall(positions=[-60, 40, -65, 40, -65, 45, -60, 45],
