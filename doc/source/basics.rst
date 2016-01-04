@@ -95,51 +95,75 @@ The below example draws all entities on the map.
 
   >>> v = cesiumpy.Viewer(**options)
 
-  >>> box = cesiumpy.Box(position=[-120, 40, 0], dimensions=(40e4, 30e4, 50e4),
-  ...                    material=cesiumpy.color.RED)
+  >>> label = cesiumpy.Label(position=[-90, 50, 0], text='entities')
+  >>> v.entities.add(label)
+
+  >>> point = cesiumpy.Point(position=[-120, 40, 0], color=cesiumpy.color.BLUE)
+  >>> v.entities.add(point)
+
+  >>> box = cesiumpy.Box(position=[-110, 40, 0], dimensions=(40e4, 30e4, 50e4), material=cesiumpy.color.RED)
   >>> v.entities.add(box)
 
-  >>> ellipse = cesiumpy.Ellipse(position=[-110, 40, 0], semiMinorAxis=25e4,
+  >>> ellipse = cesiumpy.Ellipse(position=[-100, 40, 0], semiMinorAxis=25e4,
   ...                            semiMajorAxis=40e4, material=cesiumpy.color.BLUE)
   >>> v.entities.add(ellipse)
 
-  >>> cylinder = cesiumpy.Cylinder(position=[-100, 40, 50e4], length=100e4,
+  >>> cylinder = cesiumpy.Cylinder(position=[-90, 40, 50e4], length=100e4,
   ...                              topRadius=10e4, bottomRadius=10e4,
   ...                              material=cesiumpy.color.AQUA)
   >>> v.entities.add(cylinder)
 
-  >>> polygon = cesiumpy.Polygon(hierarchy=[-90, 40, -95, 40, -95, 45, -90, 40],
+  >>> polygon = cesiumpy.Polygon(hierarchy=[-80, 40, -85, 40, -82.5, 45],
   ...                            material=cesiumpy.color.ORANGE)
   >>> v.entities.add(polygon)
 
-  >>> rectangle = cesiumpy.Rectangle(coordinates=(-85, 40, -80, 45),
+  >>> rectangle = cesiumpy.Rectangle(coordinates=(-75, 40, -70, 45),
   ...                                material=cesiumpy.color.GREEN)
   >>> v.entities.add(rectangle)
 
-  >>> ellipsoid = cesiumpy.Ellipsoid(position=(-70, 40, 0), radii=(20e4, 20e4, 30e4),
+  >>> ellipsoid = cesiumpy.Ellipsoid(position=(-60, 40, 0), radii=(20e4, 20e4, 30e4),
   ...                                material=cesiumpy.color.GREEN)
   >>> v.entities.add(ellipsoid)
 
-  >>> wall = cesiumpy.Wall(positions=[-60, 40, -65, 40, -65, 45, -60, 45],
-  ...                      maximumHeights=[10e4] * 4, minimumHeights=[0] * 4,
+  >>> wall = cesiumpy.Wall(positions=[-50, 35, -55, 35, -55, 40, -50, 40, -50, 35],
+  ...                      maximumHeights=10e4, minimumHeights=0,
   ...                      material=cesiumpy.color.RED)
   >>> v.entities.add(wall)
 
-  >>> corridor = cesiumpy.Corridor(positions=[-120, 30, -90, 35, -60, 30], width=2e5,
+  >>> corridor = cesiumpy.Corridor(positions=[-120, 30, -90, 35, -50, 30], width=2e5,
   ...                              material=cesiumpy.color.RED)
   >>> v.entities.add(corridor)
 
-  >>> polyline = cesiumpy.Polyline(positions=[-120, 25, -90, 30, -60, 25],
-  ...                              width=0.5, material=cesiumpy.color.BLUE)
+  >>> polyline = cesiumpy.Polyline(positions=[-120, 25, -90, 30, -50, 25], width=0.5, material=cesiumpy.color.BLUE)
   >>> v.entities.add(polyline)
 
-  >>> polylinevolume = cesiumpy.PolylineVolume(positions=[-120, 20, -90, 25, -60, 20],
+  >>> polylinevolume = cesiumpy.PolylineVolume(positions=[-120, 20, -90, 25, -50, 20],
   ...                                          shape=[-5e4, -5e4, 5e4, -5e4, 5e4, 5e4, -5e4, 5e4],
   ...                                          material=cesiumpy.color.GREEN)
   >>> v.entities.add(polylinevolume)
   >>> v
 
 .. image:: ./_static/viewer02.png
+
+The below example draws various ``Pin`` on the map.
+
+.. code-block:: python
+
+  >>> v = cesiumpy.Viewer(**options)
+  >>> pin1 = cesiumpy.Pin()
+  >>> bill1 = cesiumpy.Billboard(position=[-120, 40, 0], image=pin1)
+  >>> v.entities.add(bill1)
+
+  >>> pin2 = cesiumpy.Pin(cesiumpy.color.RED)
+  >>> bill2 = cesiumpy.Billboard(position=[-100, 40, 0], image=pin2)
+  >>> v.entities.add(bill2)
+
+  >>> pin3 = cesiumpy.Pin.fromText('!', color=cesiumpy.color.GREEN)
+  >>> bill3 = cesiumpy.Billboard(position=[-80, 40, 0], image=pin3)
+  >>> v.entities.add(bill3)
+  >>> v
+
+.. image:: ./_static/viewer03.png
 
 Camera
 ------
@@ -275,13 +299,12 @@ You can create ``GeoJsonDataSource`` instannce then add to ``Viewer.DataSources`
 Geocoding
 ---------
 
-`Cesium.js <http://cesiumjs.org/>`_ handles coordinates via ``Cartesian3`` class,
-which specifies coordinates using numerics.
+`Cesium.js <http://cesiumjs.org/>`_ handles coordinates using numerics.
 
-For convenience, ``cesiumpy`` automatically converts ``str`` input to ``Cartesian3``
+For convenience, ``cesiumpy`` automatically converts ``str`` input to coordinates
 via geocoding. The geocoding function is internally provided by ``geopy``'s ``Nominatim`` geocoder.
 
-You can use ``str`` specifying location where you can use ``Cartesian3`` as below.
+You can use ``str`` specifying location where you can use coordinates as below.
 
 .. code-block:: python
 

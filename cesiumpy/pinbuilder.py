@@ -11,7 +11,7 @@ import cesiumpy.common as com
 
 
 
-class PinBuilder(_CesiumObject):
+class Pin(_CesiumObject):
 
     def __init__(self, color=None, size=48, text=None):
 
@@ -27,16 +27,24 @@ class PinBuilder(_CesiumObject):
 
     @classmethod
     def fromColor(self, color, size=48):
-        return PinBuilder(color=color, size=size)
+        return Pin(color=color, size=size)
 
     @classmethod
     def fromText(self, text, color=None, size=48):
         text = com.validate_str(text, key='text')
-        return PinBuilder(color=color, size=size, text=text)
+        return Pin(color=color, size=size, text=text)
+
+    def __repr__(self):
+        if self.text is None:
+            rep = """Pin({color}, {size})"""
+            return rep.format(color=self.color, size=self.size)
+        else:
+            rep = """Pin("{text}", {color}, {size})"""
+            return rep.format(text=self.text, color=self.color, size=self.size)
 
     @property
     def script(self):
-        # ToDo: make global variable?
+        # ToDo: make "pinBuilder" as global variable?
         if self.text is None:
             rep = """new Cesium.PinBuilder().fromColor({color}, {size})"""
             return rep.format(color=self.color, size=self.size)

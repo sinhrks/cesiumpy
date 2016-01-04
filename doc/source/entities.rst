@@ -30,9 +30,13 @@ Basically you don't have to use the ``Cartesian`` classes because ``cesiumpy`` a
 Point
 -----
 
-Refer to the following document to see the details of each options.
+.. image:: ./_static/entities_point.png
 
-- https://cesiumjs.org/Cesium/Build/Documentation/PointGraphics.html?
+You can create the ``Point`` entity as below. ``position`` keyword can accepts 3 elements of ``list`` or ``tuple`` consists from longitude, latitude and height. ``position`` will be converted to ``Cartesian3`` automatically.
+
+You can specify the color and size of the point via ``color`` and ``pixelSize`` keywords. Refer to the following document to see the details of each options.
+
+- https://cesiumjs.org/Cesium/Build/Documentation/PointGraphics.html
 
 .. code-block:: python
 
@@ -43,7 +47,14 @@ Refer to the following document to see the details of each options.
   >>> p.script
   u'{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), point : {color : Cesium.Color.WHITE, pixelSize : 10}}'
 
-You can specify the color using constants defined in ``cesiumpy.color``, or ``str`` specifying the color name.
+  >>> p = cesiumpy.Point(position=[-110, 40, 0], color=cesiumpy.color.BLUE, pixelSize=20)
+  >>> p
+  Point(-110, 40, 0)
+
+  >>> p.script
+  u'{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), point : {color : Cesium.Color.BLUE, pixelSize : 20}}'
+
+The color constants are defined in ``cesiumpy.color``, also you can specify it by name (``str``).
 
 .. code-block:: python
 
@@ -58,9 +69,11 @@ You can specify the color using constants defined in ``cesiumpy.color``, or ``st
 Label
 -----
 
-Refer to the following document to see the details of each options.
+.. image:: ./_static/entities_label.png
 
-- https://cesiumjs.org/Cesium/Build/Documentation/LabelGraphics.html?
+``Label`` represents text displayed on the map. Refer to the following document to see the details of each options.
+
+- https://cesiumjs.org/Cesium/Build/Documentation/LabelGraphics.html
 
 .. code-block:: python
 
@@ -71,8 +84,18 @@ Refer to the following document to see the details of each options.
   >>> l.script
   u'{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), label : {text : "xxx"}}'
 
+  >>> l = cesiumpy.Label(position=[-110, 40, 0], text='xxx', fillColor='red')
+  >>> l.script
+  u'{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), label : {text : "xxx", fillColor : Cesium.Color.RED}}'
+
 Box
 ---
+
+.. image:: ./_static/entities_box.png
+
+You can create the ``Box`` entity specifying its ``position`` and ``dimensions`` (size of each dimensions). Refer to the following document to see the details of each options.
+
+- https://cesiumjs.org/Cesium/Build/Documentation/BoxGraphics.html
 
 .. code-block:: python
 
@@ -83,14 +106,18 @@ Box
   >>> b.script
   u'{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), box : {dimensions : new Cesium.Cartesian3(400000.0, 300000.0, 500000.0)}}'
 
+  >>> b = cesiumpy.Box(position=[-110, 40, 0], dimensions=(10, 20, 30), material='blue')
+  >>> b.script
+  u'{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), box : {dimensions : new Cesium.Cartesian3(10, 20, 30), material : Cesium.Color.BLUE}}'
 
 Ellipse
 -------
 
+.. image:: ./_static/entities_ellipse.png
 
-Refer to the following document to see the details of each options.
+Ellipse can be created by specifying its ``position``, ``semiMinorAxis`` and ``semiMajorAxis``. Refer to the following document to see the details of each options.
 
-- https://cesiumjs.org/Cesium/Build/Documentation/EllipseGraphics.html?
+- https://cesiumjs.org/Cesium/Build/Documentation/EllipseGraphics.html
 
 .. code-block:: python
 
@@ -102,30 +129,45 @@ Refer to the following document to see the details of each options.
   >>> e.script
   u'{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), ellipse : {semiMinorAxis : 250000.0, semiMajorAxis : 400000.0}}'
 
+  >>> e = cesiumpy.Ellipse(position=[-110, 40, 0], semiMinorAxis=100,
+  ...                      semiMajorAxis=200, material='green')
+  >>> e.script
+  u'{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), ellipse : {semiMinorAxis : 100, semiMajorAxis : 200, material : Cesium.Color.GREEN}}'
+
 
 Cylinder
 --------
 
-Refer to the following document to see the details of each options.
+.. image:: ./_static/entities_cylinder.png
 
-- https://cesiumjs.org/Cesium/Build/Documentation/CylinderGraphics.html?
+``Cylinder`` can be created by its ``position`` and ``length``. Note that its ``position`` must be specified with the center of the ``Cylinder``. If you want to put the cylinder on the ground, ``height`` should be 100 if cylinder's ``length`` is 200. Refer to the following document to see the details of each options.
+
+- https://cesiumjs.org/Cesium/Build/Documentation/CylinderGraphics.html
 
 .. code-block:: python
 
-  >>> c = cesiumpy.Cylinder(position=[-110, 40, 100], length=100e4,
-  ...                       topRadius=10e4, bottomRadius=10e4)
+  >>> c = cesiumpy.Cylinder(position=[-110, 40, 100], length=200,
+  ...                       topRadius=100, bottomRadius=100)
   >>> c
   Cylinder(-110, 40, 100)
 
   >>> c.script
-  u'{position : Cesium.Cartesian3.fromDegrees(-110, 40, 100), cylinder : {length : 1000000.0, topRadius : 100000.0, bottomRadius : 100000.0}}'
+  u'{position : Cesium.Cartesian3.fromDegrees(-110, 40, 100), cylinder : {length : 200, topRadius : 100, bottomRadius : 100}}'
+
+  >>> c = cesiumpy.Cylinder(position=[-110, 40, 250], length=500,
+  ...                       topRadius=100, bottomRadius=100,
+  ...                       material=cesiumpy.color.ORANGE)
+  >>> c.script
+  u'{position : Cesium.Cartesian3.fromDegrees(-110, 40, 250), cylinder : {length : 500, topRadius : 100, bottomRadius : 100, material : Cesium.Color.ORANGE}}'
 
 Polygon
 -------
 
-Refer to the following document to see the details of each options.
+.. image:: ./_static/entities_polygon.png
 
-- https://cesiumjs.org/Cesium/Build/Documentation/PolygonGraphics.html?
+``Polygon`` can be created by ``positions`` kw which specifies ``list`` of positions (``longitude``, ``latitude`` ...). The last position will be automatically connected to the first position.  Refer to the following document to see the details of each options.
+
+- https://cesiumjs.org/Cesium/Build/Documentation/PolygonGraphics.html
 
 .. code-block:: python
 
@@ -140,9 +182,11 @@ Refer to the following document to see the details of each options.
 Rectangle
 ---------
 
-Refer to the following document to see the details of each options.
+.. image:: ./_static/entities_rectangle.png
 
-- https://cesiumjs.org/Cesium/Build/Documentation/RectangleGraphics.html?
+Rectangle can be created 4 elements of ``list`` or ``tuple``, which represents south west longitude, south latitude, east longitude and north latitude. Refer to the following document to see the details of each options.
+
+- https://cesiumjs.org/Cesium/Build/Documentation/RectangleGraphics.html
 
 .. code-block:: python
 
@@ -157,9 +201,11 @@ Refer to the following document to see the details of each options.
 Ellipsoid
 ---------
 
+.. image:: ./_static/entities_ellipsoid.png
+
 Refer to the following document to see the details of each options.
 
-- https://cesiumjs.org/Cesium/Build/Documentation/EllipsoidGraphics.html?
+- https://cesiumjs.org/Cesium/Build/Documentation/EllipsoidGraphics.html
 
 .. code-block:: python
 
@@ -174,9 +220,11 @@ Refer to the following document to see the details of each options.
 Wall
 ----
 
+.. image:: ./_static/entities_wall.png
+
 Refer to the following document to see the details of each options.
 
-- https://cesiumjs.org/Cesium/Build/Documentation/WallGraphics.html?
+- https://cesiumjs.org/Cesium/Build/Documentation/WallGraphics.html
 
 .. code-block:: python
 
@@ -192,9 +240,11 @@ Refer to the following document to see the details of each options.
 Corridor
 --------
 
+.. image:: ./_static/entities_corridor.png
+
 Refer to the following document to see the details of each options.
 
-- https://cesiumjs.org/Cesium/Build/Documentation/CorridorGraphics.html?
+- https://cesiumjs.org/Cesium/Build/Documentation/CorridorGraphics.html
 
 .. code-block:: python
 
@@ -208,9 +258,11 @@ Refer to the following document to see the details of each options.
 Polyline
 --------
 
+.. image:: ./_static/entities_polyline.png
+
 Refer to the following document to see the details of each options.
 
-- https://cesiumjs.org/Cesium/Build/Documentation/PolylineGraphics.html?
+- https://cesiumjs.org/Cesium/Build/Documentation/PolylineGraphics.html
 
 .. code-block:: python
 
@@ -225,9 +277,11 @@ Refer to the following document to see the details of each options.
 PolylineVolume
 --------------
 
+.. image:: ./_static/entities_polylinevolume.png
+
 Refer to the following document to see the details of each options.
 
-- https://cesiumjs.org/Cesium/Build/Documentation/PolylineVolumeGraphics.html?
+- https://cesiumjs.org/Cesium/Build/Documentation/PolylineVolumeGraphics.html
 
 .. code-block:: python
 
@@ -242,16 +296,28 @@ Refer to the following document to see the details of each options.
 Billboard
 ---------
 
-Refer to the following document to see the details of each options.
+.. image:: ./_static/entities_billboard.png
 
-- https://cesiumjs.org/Cesium/Build/Documentation/BillboardGraphics.html?
+``Billboard`` can dispaly a image on the map. Currently it supports to draw pins. You can pass ``Pin`` instance to the ``Billboard`` via ``image`` keyword.Refer to the following document to see the details of each options.
+
+- https://cesiumjs.org/Cesium/Build/Documentation/BillboardGraphics.html
 
 .. code-block:: python
 
-  >>> p = cesiumpy.PinBuilder()
+  >>> p = cesiumpy.Pin()
   >>> b = cesiumpy.Billboard(position=(-110, 40, 0), image=p)
   >>> b
   Billboard(-110, 40, 0)
 
   >>> b.script
   u'{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48)}}'
+
+You can change how ``Pin`` looks as below. Also, ``Pin`` can have label text to be displayed.
+
+.. code-block:: python
+
+  >>> cesiumpy.Pin(color='green', size=24)
+  Pin(Cesium.Color.GREEN, 24)
+
+  >>> cesiumpy.Pin.fromText('!', color='red')
+  Pin("!", Cesium.Color.RED, 48)

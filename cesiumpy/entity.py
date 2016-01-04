@@ -66,6 +66,16 @@ class _CesiumEntity(_CesiumObject):
 
         self.name = name
 
+    def copy(self):
+        kwds = {}
+        for key in self._props + self._common_props + ['name', 'position']:
+            val = getattr(self, key)
+            if val is not None:
+                kwds[key] = val
+
+        print(kwds)
+        return self.__class__(**kwds)
+
     @property
     def _property_dict(self):
         props = collections.OrderedDict()
@@ -270,7 +280,7 @@ class Billboard(_CesiumEntity):
                                         pixelOffsetScaleByDistance=pixelOffsetScaleByDistance,
                                         position=position, name=name)
 
-        if isinstance(image, cesiumpy.PinBuilder):
+        if isinstance(image, cesiumpy.Pin):
             self.image = image
         else:
             self.image = com.validate_str(image, key='image')

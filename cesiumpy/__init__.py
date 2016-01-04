@@ -4,6 +4,7 @@
 from cesiumpy import color
 from cesiumpy import geocode
 import cesiumpy.cesiummath as math
+from cesiumpy import spatial
 
 from cesiumpy.camera import Camera
 from cesiumpy.cartesian import Cartesian2, Cartesian3, Cartesian4
@@ -12,7 +13,7 @@ from cesiumpy.datasource import GeoJsonDataSource
 from cesiumpy.entity import (Point, Label, Billboard, Ellipse, Ellipsoid, Corridor, Cylinder,
                              Polyline, PolylineVolume, Wall, Rectangle, Box, Polygon)
 
-from cesiumpy.pinbuilder import PinBuilder
+from cesiumpy.pinbuilder import Pin
 from cesiumpy.provider import (TerrainProvider,
                                ArcGisImageServerTerrainProvider,
                                CesiumTerrainProvider,

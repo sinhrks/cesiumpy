@@ -30,8 +30,14 @@ class TestEntity(unittest.TestCase):
         exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), point : {color : Cesium.Color.WHITE, pixelSize : 10}}"""
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
         e = cesiumpy.Point(position=(-110, 40, 0), pixelSize=100, color='blue')
         exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), point : {color : Cesium.Color.BLUE, pixelSize : 100}}"""
+        self.assertEqual(e.script, exp)
+
+        e = e.copy()
         self.assertEqual(e.script, exp)
 
     def test_label(self):
@@ -39,24 +45,39 @@ class TestEntity(unittest.TestCase):
         exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), label : {text : "label_text"}}"""
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
         e = cesiumpy.Label(position=(-110, 40, 0), text='label_text', fillColor='blue', scale=0.1)
         exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), label : {text : "label_text", fillColor : Cesium.Color.BLUE, scale : 0.1}}"""
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
     def test_billboard(self):
-        p = cesiumpy.PinBuilder()
+        p = cesiumpy.Pin()
         e = cesiumpy.Billboard(position=(-110, 40, 0), image=p)
         exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48)}}"""
         self.assertEqual(e.script, exp)
 
-        p = cesiumpy.PinBuilder().fromText('?')
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
+        p = cesiumpy.Pin().fromText('?')
         e = cesiumpy.Billboard(position=(-110, 40, 0), image=p)
         exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), billboard : {image : new Cesium.PinBuilder().fromText("?", Cesium.Color.ROYALBLUE, 48)}}"""
         self.assertEqual(e.script, exp)
 
-        p = cesiumpy.PinBuilder().fromText('!', color='red')
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
+        p = cesiumpy.Pin().fromText('!', color='red')
         e = cesiumpy.Billboard(position=(-110, 40, 0), image=p, scale=3)
         exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), billboard : {image : new Cesium.PinBuilder().fromText("!", Cesium.Color.RED, 48), scale : 3}}"""
+        self.assertEqual(e.script, exp)
+
+        e = e.copy()
         self.assertEqual(e.script, exp)
 
     def test_ellipse(self):
@@ -64,11 +85,20 @@ class TestEntity(unittest.TestCase):
         exp = "{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), ellipse : {semiMinorAxis : 25.0, semiMajorAxis : 40.0}}"
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
         e = cesiumpy.Ellipse(position=[-110, 40, 0], semiMinorAxis=25.0, semiMajorAxis=40.0, material=cesiumpy.color.RED)
         exp = "{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), ellipse : {semiMinorAxis : 25.0, semiMajorAxis : 40.0, material : Cesium.Color.RED}}"
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
         e = cesiumpy.Ellipse(position=[-110, 40, 0], semiMinorAxis=25.0, semiMajorAxis=40.0, material='red')
+        self.assertEqual(e.script, exp)
+
+        e = e.copy()
         self.assertEqual(e.script, exp)
 
     def test_ellipsoid(self):
@@ -76,8 +106,14 @@ class TestEntity(unittest.TestCase):
         exp = "{position : Cesium.Cartesian3.fromDegrees(-70, 40, 0), ellipsoid : {radii : new Cesium.Cartesian3(20, 30, 40), material : Cesium.Color.GREEN}}"
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
         e = cesiumpy.Ellipsoid(position=(-70, 40, 0), radii=(20, 30, 40), material=cesiumpy.color.RED, name='XXX')
         exp = '{name : "XXX", position : Cesium.Cartesian3.fromDegrees(-70, 40, 0), ellipsoid : {radii : new Cesium.Cartesian3(20, 30, 40), material : Cesium.Color.RED}}'
+        self.assertEqual(e.script, exp)
+
+        e = e.copy()
         self.assertEqual(e.script, exp)
 
     def test_cylinder(self):
@@ -85,13 +121,22 @@ class TestEntity(unittest.TestCase):
         exp = "{position : Cesium.Cartesian3.fromDegrees(-70, 40, 0), cylinder : {length : 10, topRadius : 100, bottomRadius : 200, material : Cesium.Color.AQUA}}"
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
         e = cesiumpy.Cylinder(position=(-70, 40, 0), length=10, topRadius=100, bottomRadius=200)
         exp = "{position : Cesium.Cartesian3.fromDegrees(-70, 40, 0), cylinder : {length : 10, topRadius : 100, bottomRadius : 200}}"
+        self.assertEqual(e.script, exp)
+
+        e = e.copy()
         self.assertEqual(e.script, exp)
 
     def test_polyline(self):
         e = cesiumpy.Polyline(positions=[-77, 35, -77.1, 35], width=5, material=cesiumpy.color.RED)
         exp = "{polyline : {positions : Cesium.Cartesian3.fromDegreesArray([-77, 35, -77.1, 35]), width : 5, material : Cesium.Color.RED}}"
+        self.assertEqual(e.script, exp)
+
+        e = e.copy()
         self.assertEqual(e.script, exp)
 
     def test_polylinevolume(self):
@@ -102,17 +147,29 @@ class TestEntity(unittest.TestCase):
         exp = "{polylineVolume : {positions : Cesium.Cartesian3.fromDegreesArray([-120, 20, -90, 25, -60, 20]), shape : [new Cesium.Cartesian2(-50000, -50000), new Cesium.Cartesian2(50000, -50000), new Cesium.Cartesian2(50000, 50000), new Cesium.Cartesian2(-50000, 50000)], material : Cesium.Color.GREEN}}"
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
         e = cesiumpy.PolylineVolume(positions=[-120, 20, -90, 25, -60, 20],
                                     shape=[1, 2, 3, 4], material=cesiumpy.color.GREEN)
         exp = "{polylineVolume : {positions : Cesium.Cartesian3.fromDegreesArray([-120, 20, -90, 25, -60, 20]), shape : [new Cesium.Cartesian2(1, 2), new Cesium.Cartesian2(3, 4)], material : Cesium.Color.GREEN}}"
         self.assertEqual(e.script, exp)
 
-        e = cesiumpy.PolylineVolume(positions=[(-120, 20), (-90, 25), (-60, 20)],
-                                    shape=((1, 2), (3, 4)), material=cesiumpy.color.GREEN)
+        e = e.copy()
         self.assertEqual(e.script, exp)
 
         e = cesiumpy.PolylineVolume(positions=[(-120, 20), (-90, 25), (-60, 20)],
                                     shape=((1, 2), (3, 4)), material=cesiumpy.color.GREEN)
+        self.assertEqual(e.script, exp)
+
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
+        e = cesiumpy.PolylineVolume(positions=[(-120, 20), (-90, 25), (-60, 20)],
+                                    shape=((1, 2), (3, 4)), material=cesiumpy.color.GREEN)
+        self.assertEqual(e.script, exp)
+
+        e = e.copy()
         self.assertEqual(e.script, exp)
 
         msg = "shape must be list-likes: 1"
@@ -137,8 +194,14 @@ class TestEntity(unittest.TestCase):
         exp = "{corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-120, 30, -90, 35, -60, 30]), width : 200000.0, material : Cesium.Color.RED}}"
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
         e = cesiumpy.Corridor(positions=((-120, 30), (-90, 35), (-60, 30)),
                               width=2e5, material='red')
+        self.assertEqual(e.script, exp)
+
+        e = e.copy()
         self.assertEqual(e.script, exp)
 
         msg = "x length must be an even number: "
@@ -153,9 +216,15 @@ class TestEntity(unittest.TestCase):
         exp = "{wall : {positions : Cesium.Cartesian3.fromDegreesArray([-60, 40, -65, 40, -65, 45, -60, 45]), maximumHeights : [100, 100, 100, 100], minimumHeights : [0, 0, 0, 0], material : Cesium.Color.RED}}"
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
         e = cesiumpy.Wall(positions=[-60, 40, -65, 40, -65, 45, -60, 45],
                           maximumHeights=[100] * 4, minimumHeights=[0] * 4,
                           material=cesiumpy.color.RED)
+        self.assertEqual(e.script, exp)
+
+        e = e.copy()
         self.assertEqual(e.script, exp)
 
         e = cesiumpy.Wall(positions=[(-60, 40), (-65, 40), (-65, 45), (-60, 45)],
@@ -163,9 +232,15 @@ class TestEntity(unittest.TestCase):
                           material='red')
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
         e = cesiumpy.Wall(positions=[(-60, 40), (-65, 40), (-65, 45), (-60, 45)],
                           maximumHeights=[100] * 4, minimumHeights=[0] * 4,
                           material='red')
+        self.assertEqual(e.script, exp)
+
+        e = e.copy()
         self.assertEqual(e.script, exp)
 
         msg = "maximumHeights must has the half length"
@@ -185,16 +260,28 @@ class TestEntity(unittest.TestCase):
         exp = "{rectangle : {coordinates : Cesium.Rectangle.fromDegrees(-80, 20, -60, 40), material : Cesium.Color.GREEN}}"
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
         e = cesiumpy.Rectangle(coordinates=(-80, 20, -60, 40),
                                material=cesiumpy.color.GREEN, outlineColor=cesiumpy.color.RED)
         exp = "{rectangle : {coordinates : Cesium.Rectangle.fromDegrees(-80, 20, -60, 40), material : Cesium.Color.GREEN, outlineColor : Cesium.Color.RED}}"
+        self.assertEqual(e.script, exp)
+
+        e = e.copy()
         self.assertEqual(e.script, exp)
 
         e = cesiumpy.Rectangle(coordinates=[(-80, 20), (-60, 40)],
                                material='green', outlineColor='red')
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
         e = cesiumpy.Rectangle(coordinates=(-80, 20, -60, 40), material='green', outlineColor='red')
+        self.assertEqual(e.script, exp)
+
+        e = e.copy()
         self.assertEqual(e.script, exp)
 
         msg = "coordinates length must be 4:"
@@ -213,6 +300,9 @@ class TestEntity(unittest.TestCase):
         exp = "{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), box : {dimensions : new Cesium.Cartesian3(400000.0, 300000.0, 500000.0), material : Cesium.Color.RED}}"
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
         msg = "dimensions length must be 3 to be converted to Cartesian3: "
         with nose.tools.assert_raises_regexp(ValueError, msg):
             cesiumpy.Box(dimensions=(40e4, 30e4),
@@ -223,8 +313,14 @@ class TestEntity(unittest.TestCase):
         exp = "{polygon : {hierarchy : Cesium.Cartesian3.fromDegreesArray([1, 1, 2, 2])}}"
         self.assertEqual(e.script, exp)
 
+        e = e.copy()
+        self.assertEqual(e.script, exp)
+
         e = cesiumpy.Polygon([1, 1, 2, 2], material=cesiumpy.color.AQUA)
         exp = "{polygon : {hierarchy : Cesium.Cartesian3.fromDegreesArray([1, 1, 2, 2]), material : Cesium.Color.AQUA}}"
+        self.assertEqual(e.script, exp)
+
+        e = e.copy()
         self.assertEqual(e.script, exp)
 
     def test_entities_repr(self):
@@ -236,7 +332,7 @@ class TestEntity(unittest.TestCase):
         exp = "Label(-110, 40, 0)"
         self.assertEqual(repr(e), exp)
 
-        p = cesiumpy.PinBuilder()
+        p = cesiumpy.Pin()
         e = cesiumpy.Billboard(position=(-110, 40, 0), image=p)
         exp = "Billboard(-110, 40, 0)"
         self.assertEqual(repr(e), exp)
