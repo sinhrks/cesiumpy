@@ -134,6 +134,9 @@ class Cartesian3(_Cartesian):
     @classmethod
     def fromDegreesArray(cls, x):
 
+        if isinstance(x, Cartesian3) and x._is_array:
+            x = x.x
+
         # convert shaply.Polygon to coordinateslist
         x = com._maybe_shapely_polygon(x)
         x = com._maybe_shapely_line(x)

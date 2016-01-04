@@ -19,6 +19,15 @@ class Camera(_CesiumObject):
         self.destination = None
         self.orientation = None
 
+    def __repr__(self):
+        if self.destination is None:
+            rep = "{klass}(destination=default)"
+            return rep.format(klass=self.__class__.__name__)
+        else:
+            rep = "{klass}(destination={destination})"
+            return rep.format(klass=self.__class__.__name__,
+                              destination=self.destination)
+
     def flyTo(self, destination, orientation=None):
         if isinstance(destination, _CesiumEntity):
             # if entity has a position (not positions), use it

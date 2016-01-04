@@ -10,7 +10,7 @@ can find ``Jupyter Notebook`` of these exampless under ``GitHub`` repository
 Use with pandas
 ---------------
 
-Following example shows retrieving ``US National Parks`` data from Wikipedia,
+Following example shows retrieving "US National Parks" data from Wikipedia,
 then plot number of visitors on the map.
 
 First, load data from Wikipedia using ``pd.read_html`` functionality. The data
@@ -65,13 +65,40 @@ Once prepared the data, iterate over rows and plot its values. The below script 
 
   >>> v
 
-.. image:: ./_static/pandas01.png
+.. image:: ./_static/example_pandas01.png
+
+If you want bubble chart like output, use ``Point`` entities.
+
+.. code-block:: python
+
+  >>> v = cesiumpy.Viewer(**options)
+  >>> for i, row in df.iterrows():
+  ...     l = row['Recreation Visitors (2014)[5]']
+  ...      p= cesiumpy.Point(position=[row['lon'], row['lat'], 0],
+  ...                        pixelSize=np.sqrt(l / 10000), color='blue')
+  >>> v.entities.add(p)
+  >>> v
+
+.. image:: ./_static/example_pandas02.png
+
+Using ``Billboard`` with ``Pin`` points the locations of National Parks.
+
+.. code-block:: python
+
+  >>> v = cesiumpy.Viewer(**options)
+  >>> pin = cesiumpy.Pin()
+  >>> for i, row in df.iterrows():
+  ...     b = cesiumpy.Billboard(position=[row['lon'], row['lat'], 0], image = pin, scale=0.4)
+  >>> v.entities.add(b)
+  >>> v
+
+.. image:: ./_static/example_pandas03.png
 
 
 Use with shapely / geopandas
 ----------------------------
 
-Following example shows how to handle ``geojson`` files using ``cesiumpy``.
+Following example shows how to handle ``geojson`` files using ``shapely``, ``geopandas`` and ``cesiumpy``.
 
 First, read ``geojson`` file of US, California using ``geopandas`` function.
 The content will be ``shapely`` instance.
@@ -108,4 +135,71 @@ The below script adds ``cesiumpy.Wall`` which has the shape of California.
   ...                              material=cesiumpy.color.RED))
   >>> v
 
-.. image:: ./_static/geopandas01.png
+.. image:: ./_static/example_geopandas01.png
+
+
+Use with scipy
+--------------
+
+``cesiumpy`` has ``spatial`` submodule which offers functionality like ``scipy.spatial``. These function
+requires ``scipy`` and ``shapely`` installed.
+
+Following example shows Voronoi diagram using ``cesiumpy``. First, prepare a list contains the geolocations of Japanese Prefectual goverments.
+
+.. code-block:: python
+
+  >>> import cesiumpy
+
+  >>> options = dict(animation=True, baseLayerPicker=False, fullscreenButton=False,
+  ...                geocoder=False, homeButton=False, infoBox=False, sceneModePicker=True,
+  ...                selectionIndicator=False, navigationHelpButton=False,
+  ...                timeline=False, navigationInstructionsInitiallyVisible=False)
+
+  >>> points = [[140.446793, 36.341813],
+  ...           [139.883565, 36.565725],
+  ...           [139.060156, 36.391208],
+  ...           [139.648933, 35.857428],
+  ...           [140.123308, 35.605058],
+  ...           [139.691704, 35.689521],
+  ...           [139.642514, 35.447753]]
+
+Then, you can create ``cesiumpy.spatial.Voronoi`` instance passing ``points``. Using ``get_polygons`` method returns the ``list`` of ``cesiumpy.Polygon`` instances. Each ``Polygon`` represents the region corresponding to the point.
+
+.. code-block:: python
+
+  >>> vor = cesiumpy.spatial.Voronoi(points)
+  >>> polygons = vor.get_polygons()
+  >>> polygons[0]
+  Polygon([140.70970652380953, 35.78698294268851, 140.06610971077615, 36.06956523268194, 140.03367654609778, 36.1229878712242, 140.27531919409412, 36.730815523809525, 140.70970652380953, 36.730815523809525, 140.70970652380953, 35.78698294268851])
+
+  >>> v = cesiumpy.Viewer(**options)
+  >>> colors = [cesiumpy.color.RED, cesiumpy.color.BLUE, cesiumpy.color.GREEN,
+  ...           cesiumpy.color.ORANGE, cesiumpy.color.PURPLE, cesiumpy.color.AQUA,
+  ...           cesiumpy.color.YELLOW]
+
+  >>> for p, pol, c in zip(points, polygons, colors):
+  ...     b = cesiumpy.Point(position=(p[0], p[1], 0), color=c)
+  ...     v.entities.add(b)
+  ...     pol.material = c.set_alpha(0.5)
+  ...     pol.outline = True
+  ...     v.entities.add(pol)
+  >>> v.camera.flyTo((139.8, 36, 3e5))
+  >>> v
+
+.. image:: ./_static/example_scipy01.png
+
+Next example shows to draw convex using ``cesiumpy``. You can use ``cesiumpy.spatial.ConvexHull`` class, then use ``get_polyline`` method to get the ``cesiumpy.Polyline`` instances. ``Polyline`` contains the coordinates of convex.
+
+.. code-block:: python
+
+  >>> conv = cesiumpy.spatial.ConvexHull(points)
+  >>> polyline = conv.get_polyline()
+  >>> polyline
+  Polyline([139.060156, 36.391208, 139.642514, 35.447753, 140.123308, 35.605058, 140.446793, 36.341813, 139.883565, 36.565725, 139.060156, 36.391208])
+
+  >>> v = cesiumpy.Viewer(**options)
+  >>> v.entities.add(polyline)
+  >>> v.camera.flyTo((139.8, 36, 3e5))
+  >>> v
+
+.. image:: ./_static/example_scipy02.png

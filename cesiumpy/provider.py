@@ -15,11 +15,19 @@ class _CesiumProvider(_CesiumObject):
 
     _props = ['url']
 
+    def __repr__(self):
+        if self.url is None:
+            return super(_CesiumProvider, self).__repr__()
+        else:
+            rep = """{klass}(url="{url}")"""
+            return rep.format(klass=self.__class__.__name__, url=self.url)
+
     @property
     def script(self):
         props = super(_CesiumProvider, self).script
         rep = """new {klass}({props})"""
         return rep.format(klass=self._klass, props=props)
+
 
 # --------------------------------------------------
 # Terrain Provider

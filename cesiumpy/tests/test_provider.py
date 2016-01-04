@@ -48,6 +48,11 @@ class TestTerrainProvider(unittest.TestCase):
         exp = """new Cesium.EllipsoidTerrainProvider()"""
         self.assertEqual(result, exp)
 
+    def test_EllipsoidTerrainProvider_repr(self):
+        terrainProvider = cesiumpy.EllipsoidTerrainProvider()
+        exp = """<cesiumpy.provider.EllipsoidTerrainProvider"""
+        self.assertTrue(repr(terrainProvider).startswith(exp))
+
     def test_VRTheWorldTerrainProvider(self):
         url = '//www.vr-theworld.com/vr-theworld/tiles1.0.0/73/'
         credit = 'Terrain data courtesy VT MAK'
@@ -176,6 +181,16 @@ class TestImageProvider(unittest.TestCase):
         result = imageryProvider.script
         exp = """new Cesium.OpenStreetMapImageryProvider({url : "//stamen-tiles.a.ssl.fastly.net/watercolor/", fileExtension : "jpg", credit : "Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under CC BY SA."})"""
         self.assertEqual(result, exp)
+
+    def test_OpenStreetMapImageryProvider_repr(self):
+        imageryProvider = cesiumpy.OpenStreetMapImageryProvider()
+        exp = """<cesiumpy.provider.OpenStreetMapImageryProvider"""
+        self.assertTrue(repr(imageryProvider).startswith(exp))
+
+        url = '//otile1-s.mqcdn.com/tiles/1.0.0/osm/'
+        imageryProvider = cesiumpy.OpenStreetMapImageryProvider(url=url)
+        exp = """OpenStreetMapImageryProvider(url="//otile1-s.mqcdn.com/tiles/1.0.0/osm/")"""
+        self.assertEqual(repr(imageryProvider), exp)
 
     def test_WebMapServiceImageryProvider(self):
         pass

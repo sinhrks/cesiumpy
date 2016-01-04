@@ -66,7 +66,7 @@ class TestGeocode(unittest.TestCase):
             exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), label : {text : "xxx"}}"""
             self.assertEqual(e.script, exp)
 
-            p = cesiumpy.PinBuilder()
+            p = cesiumpy.Pin()
             e = cesiumpy.Billboard(position='Los Angeles', image=p)
             exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48)}}"""
             self.assertEqual(e.script, exp)

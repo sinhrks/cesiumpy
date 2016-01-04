@@ -35,6 +35,13 @@ class TestCamera(unittest.TestCase):
         with nose.tools.assert_raises_regexp(ValueError, msg):
             c.flyTo((1, 200, 3))
 
+    def test_camera_repr(self):
+        c = cesiumpy.Camera()
+        self.assertEqual(repr(c), "Camera(destination=default)")
+
+        c.flyTo((-130, 40, 10000))
+        self.assertEqual(repr(c), "Camera(destination=Cartesian3.fromDegrees(-130, 40, 10000))")
+
     def test_widget(self):
         widget = cesiumpy.CesiumWidget(divid='cesiumwidget')
         widget.camera.flyTo((-117.16, 32.71, 15000.0))

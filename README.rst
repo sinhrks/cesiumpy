@@ -32,3 +32,10 @@ Documentation
 -------------
 
 - http://cesiumpy.readthedocs.org/en/latest/
+
+
+Dependencies
+------------
+
+- ``geopy``
+- (Optional) ``scipy`` and ``shapely``

@@ -8,12 +8,7 @@ import cesiumpy
 import cesiumpy.cartesian as cartesian
 
 
-def _skip_if_no_shapely():
-    try:
-        import shapely.geometry
-    except ImportError:
-        import nose
-        raise nose.SkipTest("no shapely.geometry module")
+from cesiumpy.testing import _skip_if_no_shapely
 
 
 class TestShapely(unittest.TestCase):
@@ -74,6 +69,13 @@ class TestShapely(unittest.TestCase):
         res = cartesian.Cartesian3.fromDegreesArray(p)
         # last element is being added
         exp = cartesian.Cartesian3.fromDegreesArray([0., 1., 2., 3., 1., 3., 0., 1.])
+        self.assertIsInstance(res, cartesian.Cartesian3)
+        self.assertEqual(res.script, exp.script)
+
+        p = shapely.geometry.Polygon([[1, 1], [1, 2], [2, 2], [2, 1]])
+        res = cartesian.Cartesian3.fromDegreesArray(p)
+        # last element is being added
+        exp = cartesian.Cartesian3.fromDegreesArray([1., 1., 1., 2., 2., 2., 2., 1., 1., 1.])
         self.assertIsInstance(res, cartesian.Cartesian3)
         self.assertEqual(res.script, exp.script)
 
