@@ -17,14 +17,14 @@ class _CesiumEntity(_CesiumObject):
     # name and position should not be included,
     # because these are handled separetedly in _properties_dict
     _common_props = ['width', 'height', 'extrudedHeight', 'show', 'fill',
-                     'material', 'outline', 'outlineColor', 'outlineWidth',
+                     'material', 'color', 'outline', 'outlineColor', 'outlineWidth',
                      'numberOfVerticalLines', 'rotation', 'stRotation',
                      'granularity', 'scaleByDistance', 'translucencyByDistance',
                      'scale', 'horizontalOrigin', 'verticalOrigin',
                      'eyeOffset', 'pixelOffset', 'pixelOffsetScaleByDistance']
 
     def __init__(self, width=None, height=None, extrudedHeight=None,
-                 show=None, fill=None, material=None,
+                 show=None, fill=None, material=None, color=None,
                  outline=None, outlineColor=None, outlineWidth=None,
                  numberOfVerticalLines=None, rotation=None, stRotation=None,
                  granularity=None, scaleByDistance=None, translucencyByDistance=None,
@@ -38,10 +38,14 @@ class _CesiumEntity(_CesiumObject):
         self.show = com.validate_bool_or_none(show, key='show')
         self.fill = com.validate_bool_or_none(fill, key='fill')
 
-        self.material = cesiumpy.color.validate_color_or_none(material, key='material')
+        # color, validated in setter
+        self.material = material
+        self.color = color
 
         self.outline = com.validate_bool_or_none(outline, key='outline')
-        self.outlineColor = cesiumpy.color.validate_color_or_none(outlineColor, key='outlineColor')
+
+        # color, validated in setter
+        self.outlineColor = outlineColor
 
         self.outlineWidth = com.validate_numeric_or_none(outlineWidth, key='outlineWidth')
         self.numberOfVerticalLines = com.validate_numeric_or_none(numberOfVerticalLines, key='numberOfVerticalLines')
@@ -72,8 +76,6 @@ class _CesiumEntity(_CesiumObject):
             val = getattr(self, key)
             if val is not None:
                 kwds[key] = val
-
-        print(kwds)
         return self.__class__(**kwds)
 
     @property
@@ -89,7 +91,6 @@ class _CesiumEntity(_CesiumObject):
         props[self._klass] = childs
         return props
 
-
     def __repr__(self):
         if self.position is not None:
             rep = """{klass}({x}, {y}, {z})"""
@@ -103,6 +104,30 @@ class _CesiumEntity(_CesiumObject):
         else:
             # should be defined in each classes
             raise NotImplementedError
+
+    @property
+    def material(self):
+        return self._material
+
+    @material.setter
+    def material(self, value):
+        self._material = cesiumpy.color.validate_color_or_none(value, key='material')
+
+    @property
+    def color(self):
+        return self._color
+
+    @color.setter
+    def color(self, value):
+        self._color = cesiumpy.color.validate_color_or_none(value, key='color')
+
+    @property
+    def outlineColor(self):
+        return self._outlineColor
+
+    @outlineColor.setter
+    def outlineColor(self, value):
+        self._outlineColor = cesiumpy.color.validate_color_or_none(value, key='outlineColor')
 
 
 class Point(_CesiumEntity):
@@ -133,24 +158,24 @@ class Point(_CesiumEntity):
     _klass = 'point'
     # props should contains property which is unique in the class
     # (which is not included in _common_props)
-    _props = ['color', 'pixelSize', ]
+    _props = ['pixelSize']
 
     def __init__(self, position, color=None, pixelSize=10, outlineColor=None, outlineWidth=None,
                  show=None, scaleByDistance=None, translucencyByDistance=None,
                  name=None):
 
-        super(Point, self).__init__(show=show, outlineColor=outlineColor,
+        if color is None:
+            # Add default color explicitly to avoid all values to be None
+            color = cesiumpy.color.WHITE
+
+        super(Point, self).__init__(show=show, color=color,
+                                    outlineColor=outlineColor,
                                     outlineWidth=outlineWidth,
                                     scaleByDistance=scaleByDistance,
                                     translucencyByDistance=translucencyByDistance,
                                     position=position, name=name)
 
         # ToDo: scaleByDistance and translucencyByDistance are umbiguous from cesium doc
-
-        if color is None:
-            # Add default color explicitly to avoid all values to be None
-            color = cesiumpy.color.WHITE
-        self.color = cesiumpy.color.validate_color_or_none(color, key='color')
         self.pixelSize = com.validate_numeric_or_none(pixelSize, key='pixelSize')
 
 
@@ -212,7 +237,17 @@ class Label(_CesiumEntity):
 
         self.text = com.validate_str(text, key='text')
         self.style = com.notimplemented(style)
-        self.fillColor = cesiumpy.color.validate_color_or_none(fillColor, key='fillColor')
+
+        # color, validated in setter
+        self.fillColor = fillColor
+
+    @property
+    def fillColor(self):
+        return self._fillColor
+
+    @fillColor.setter
+    def fillColor(self, value):
+        self._fillColor = cesiumpy.color.validate_color_or_none(value, key='fillColor')
 
 
 class Billboard(_CesiumEntity):
@@ -260,7 +295,7 @@ class Billboard(_CesiumEntity):
         A boolean Property specifying whether this billboard's size should be measured in meters.
     """
     _klass = 'billboard'
-    _props = ['image', 'alignedAxis', 'color', 'imageSubRegion', 'sizeInMeters']
+    _props = ['image', 'alignedAxis', 'imageSubRegion', 'sizeInMeters']
 
     def __init__(self, position, image, show=None, scale=None,
                  horizontalOrigin=None, verticalOrigin=None,
@@ -270,7 +305,7 @@ class Billboard(_CesiumEntity):
                  pixelOffsetScaleByDistance=None, imageSubRegion=None,
                  sizeInMeters=None, name=None):
 
-        super(Billboard, self).__init__(show=show, scale=scale,
+        super(Billboard, self).__init__(show=show, scale=scale, color=color,
                                         horizontalOrigin=horizontalOrigin,
                                         verticalOrigin=verticalOrigin,
                                         eyeOffset=eyeOffset, pixelOffset=pixelOffset,
@@ -286,7 +321,6 @@ class Billboard(_CesiumEntity):
             self.image = com.validate_str(image, key='image')
 
         self.alignedAxis = com.notimplemented(alignedAxis)
-        self.color = cesiumpy.color.validate_color_or_none(color, key='color')
         self.imageSubRegion = com.notimplemented(imageSubRegion)
         self.sizeInMeters = com.notimplemented(sizeInMeters)
 

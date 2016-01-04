@@ -9,6 +9,10 @@ import cesiumpy
 import cesiumpy.common as com
 
 
+# matplotlib compat
+_SINGLE_COLOR_MAP = {'B': 'BLUE', 'G': 'GREEN', 'R': 'RED',
+                     'C': 'CYAN', 'M': 'MAGENTA', 'Y': 'YELLOW',
+                     'K': 'BLACK', 'W': 'WHITE'}
 
 def validate_color_or_none(x, key):
     """ validate whether x is str, unicode or None"""
@@ -26,6 +30,7 @@ def _maybe_color(x):
 
     if isinstance(x, six.string_types):
         cname = x.upper()
+        cname = _SINGLE_COLOR_MAP.get(cname, cname)
 
         color = getattr(cesiumpy.color, cname, None)
 

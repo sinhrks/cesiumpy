@@ -59,7 +59,7 @@ class TestGeocode(unittest.TestCase):
     def test_entities_geocode(self):
         try:
             e = cesiumpy.Point(position='Los Angeles')
-            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), point : {color : Cesium.Color.WHITE, pixelSize : 10}}"""
+            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), point : {pixelSize : 10, color : Cesium.Color.WHITE}}"""
             self.assertEqual(e.script, exp)
 
             e = cesiumpy.Label(position='Los Angeles', text='xxx')

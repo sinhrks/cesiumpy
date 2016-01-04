@@ -67,6 +67,24 @@ class TestColor(unittest.TestCase):
         with nose.tools.assert_raises(AttributeError):
             aqua.name = 'XXX'
 
+    def test_single_char_color(self):
+        self.assertIs(cesiumpy.color._maybe_color('b'), cesiumpy.color.BLUE)
+        self.assertIs(cesiumpy.color._maybe_color('g'), cesiumpy.color.GREEN)
+        self.assertIs(cesiumpy.color._maybe_color('r'), cesiumpy.color.RED)
+        self.assertIs(cesiumpy.color._maybe_color('c'), cesiumpy.color.CYAN)
+        self.assertIs(cesiumpy.color._maybe_color('m'), cesiumpy.color.MAGENTA)
+        self.assertIs(cesiumpy.color._maybe_color('y'), cesiumpy.color.YELLOW)
+        self.assertIs(cesiumpy.color._maybe_color('k'), cesiumpy.color.BLACK)
+        self.assertIs(cesiumpy.color._maybe_color('w'), cesiumpy.color.WHITE)
+
+        self.assertIs(cesiumpy.color._maybe_color('B'), cesiumpy.color.BLUE)
+        self.assertIs(cesiumpy.color._maybe_color('G'), cesiumpy.color.GREEN)
+        self.assertIs(cesiumpy.color._maybe_color('R'), cesiumpy.color.RED)
+        self.assertIs(cesiumpy.color._maybe_color('C'), cesiumpy.color.CYAN)
+        self.assertIs(cesiumpy.color._maybe_color('M'), cesiumpy.color.MAGENTA)
+        self.assertIs(cesiumpy.color._maybe_color('Y'), cesiumpy.color.YELLOW)
+        self.assertIs(cesiumpy.color._maybe_color('K'), cesiumpy.color.BLACK)
+        self.assertIs(cesiumpy.color._maybe_color('W'), cesiumpy.color.WHITE)
 
 
 if __name__ == '__main__':

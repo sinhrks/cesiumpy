@@ -27,14 +27,14 @@ class TestEntity(unittest.TestCase):
 
     def test_point(self):
         e = cesiumpy.Point(position=(-110, 40, 0))
-        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), point : {color : Cesium.Color.WHITE, pixelSize : 10}}"""
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), point : {pixelSize : 10, color : Cesium.Color.WHITE}}"""
         self.assertEqual(e.script, exp)
 
         e = e.copy()
         self.assertEqual(e.script, exp)
 
         e = cesiumpy.Point(position=(-110, 40, 0), pixelSize=100, color='blue')
-        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), point : {color : Cesium.Color.BLUE, pixelSize : 100}}"""
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), point : {pixelSize : 100, color : Cesium.Color.BLUE}}"""
         self.assertEqual(e.script, exp)
 
         e = e.copy()
@@ -381,6 +381,77 @@ class TestEntity(unittest.TestCase):
         exp = "PolylineVolume([-120, 20, -90, 25, -60, 20])"
         self.assertEqual(repr(e), exp)
 
+    def test_material_property(self):
+        msg = "material must be a Color instance: 1"
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            cesiumpy.Box(position=[-120, 40, 0], dimensions=(10, 20, 30),
+                         material=1)
+
+        b = cesiumpy.Box(position=[-120, 40, 0], dimensions=(10, 20, 30),
+                         material='red')
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), box : {dimensions : new Cesium.Cartesian3(10, 20, 30), material : Cesium.Color.RED}}"""
+        self.assertEqual(b.script, exp)
+
+        msg = "material must be a Color instance: 1"
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            b.material = 1
+
+        b.material = 'blue'
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), box : {dimensions : new Cesium.Cartesian3(10, 20, 30), material : Cesium.Color.BLUE}}"""
+        self.assertEqual(b.script, exp)
+
+    def test_color_property(self):
+        msg = "color must be a Color instance: 1"
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            cesiumpy.Point(position=[-120, 40, 0], color=1)
+
+        b = cesiumpy.Point(position=[-120, 40, 0], color='red')
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), point : {pixelSize : 10, color : Cesium.Color.RED}}"""
+        self.assertEqual(b.script, exp)
+
+        msg = "color must be a Color instance: 1"
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            b.color = 1
+
+        b.color = 'blue'
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), point : {pixelSize : 10, color : Cesium.Color.BLUE}}"""
+        self.assertEqual(b.script, exp)
+
+    def test_outlineColor_property(self):
+        msg = "outlineColor must be a Color instance: 1"
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            cesiumpy.Box(position=[-120, 40, 0], dimensions=(10, 20, 30),
+                         outlineColor=1)
+
+        b = cesiumpy.Box(position=[-120, 40, 0], dimensions=(10, 20, 30),
+                         outlineColor='red')
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), box : {dimensions : new Cesium.Cartesian3(10, 20, 30), outlineColor : Cesium.Color.RED}}"""
+        self.assertEqual(b.script, exp)
+
+        msg = "outlineColor must be a Color instance: 1"
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            b.outlineColor = 1
+
+        b.outlineColor = 'blue'
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), box : {dimensions : new Cesium.Cartesian3(10, 20, 30), outlineColor : Cesium.Color.BLUE}}"""
+        self.assertEqual(b.script, exp)
+
+    def test_fillColor_property(self):
+        msg = "fillColor must be a Color instance: 1"
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            cesiumpy.Label(position=[-120, 40, 0], text="xxx", fillColor=1)
+
+        b = cesiumpy.Label(position=[-120, 40, 0], text="xxx", fillColor="red")
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), label : {text : "xxx", fillColor : Cesium.Color.RED}}"""
+        self.assertEqual(b.script, exp)
+
+        msg = "fillColor must be a Color instance: 1"
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            b.fillColor = 1
+
+        b.fillColor = 'blue'
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), label : {text : "xxx", fillColor : Cesium.Color.BLUE}}"""
+        self.assertEqual(b.script, exp)
 
 
 if __name__ == '__main__':
