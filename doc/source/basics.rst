@@ -220,7 +220,6 @@ as the same as the above tutorial.
 
 .. image:: ./_static/imagery01.png
 
-
 Also you can use other providers.
 
 .. code-block:: python
@@ -233,6 +232,16 @@ Also you can use other providers.
   >>> v
 
 .. image:: ./_static/imagery02.png
+
+Using ``OpenStreetMapImageryProvider`` can use OpenStreetMap as imagery.
+
+.. code-block:: python
+
+  >>> imageryProvider = cesiumpy.OpenStreetMapImageryProvider()
+  >>> v = cesiumpy.Viewer(imageryProvider=imageryProvider, **options)
+  >>> v
+
+.. image:: ./_static/imagery03.png
 
 TerrainProvider
 ^^^^^^^^^^^^^^^
@@ -302,7 +311,7 @@ Geocoding
 `Cesium.js <http://cesiumjs.org/>`_ handles coordinates using numerics.
 
 For convenience, ``cesiumpy`` automatically converts ``str`` input to coordinates
-via geocoding. The geocoding function is internally provided by ``geopy``'s ``Nominatim`` geocoder.
+via geocoding. The geocoding function is internally provided by ``geopy``'s ``GoogleV3`` geocoder.
 
 You can use ``str`` specifying location where you can use coordinates as below.
 
