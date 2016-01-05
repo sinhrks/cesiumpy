@@ -189,6 +189,7 @@ class Viewer(_CesiumBase):
     def _dataSources_script(self):
         return self._dataSources.script
 
+
 class RistrictedList(object):
 
     def __init__(self, allowed, varname, propertyname):

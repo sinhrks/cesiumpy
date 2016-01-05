@@ -130,70 +130,70 @@ class TestCartesian(unittest.TestCase):
         self.assertEqual(repr(c), exp)
 
     def test_maybe_cartesian(self):
-        c = cesiumpy.cartesian._maybe_cartesian((0, 10), key='x')
+        c = cesiumpy.cartesian._maybe_cartesian2((0, 10), key='x')
         exp = "new Cesium.Cartesian2(0, 10)"
         self.assertEqual(c.script, exp)
 
-        c = cesiumpy.cartesian._maybe_cartesian((0, 10, 20), key='x')
+        c = cesiumpy.cartesian._maybe_cartesian3((0, 10, 20), key='x')
         exp = "new Cesium.Cartesian3(0, 10, 20)"
         self.assertEqual(c.script, exp)
 
-        c = cesiumpy.cartesian._maybe_cartesian((0, 10, 20, 30), key='x')
+        c = cesiumpy.cartesian._maybe_cartesian4((0, 10, 20, 30), key='x')
         exp = "new Cesium.Cartesian4(0, 10, 20, 30)"
         self.assertEqual(c.script, exp)
 
-        c = cesiumpy.cartesian._maybe_cartesian([0, 10], key='x')
+        c = cesiumpy.cartesian._maybe_cartesian2([0, 10], key='x')
         exp = "new Cesium.Cartesian2(0, 10)"
         self.assertEqual(c.script, exp)
 
-        c = cesiumpy.cartesian._maybe_cartesian([0, 10, 20], key='x')
+        c = cesiumpy.cartesian._maybe_cartesian3([0, 10, 20], key='x')
         exp = "new Cesium.Cartesian3(0, 10, 20)"
         self.assertEqual(c.script, exp)
 
-        c = cesiumpy.cartesian._maybe_cartesian([0, 10, 20, 30], key='x')
+        c = cesiumpy.cartesian._maybe_cartesian4([0, 10, 20, 30], key='x')
         exp = "new Cesium.Cartesian4(0, 10, 20, 30)"
         self.assertEqual(c.script, exp)
 
         msg = "x must be list-likes: 3"
         with nose.tools.assert_raises_regexp(ValueError, msg):
-            cesiumpy.cartesian._maybe_cartesian(3, key='x')
+            cesiumpy.cartesian._maybe_cartesian2(3, key='x')
 
-        msg = "x length must be 2-4 to be converted to Cartesian"
+        msg = "x length must be 2 to be converted to Cartesian2:"
         with nose.tools.assert_raises_regexp(ValueError, msg):
-            cesiumpy.cartesian._maybe_cartesian((1, 2, 3, 5, 5), key='x')
+            cesiumpy.cartesian._maybe_cartesian2((1, 2, 3, 5, 5), key='x')
 
     def test_maybe_cartesian_from_degrees(self):
-        c = cesiumpy.cartesian._maybe_cartesian((0, 10), key='x', degrees=True)
+        c = cesiumpy.cartesian._maybe_cartesian2((0, 10), key='x', degrees=True)
         exp = "Cesium.Cartesian2.fromDegrees(0, 10)"
         self.assertEqual(c.script, exp)
 
-        c = cesiumpy.cartesian._maybe_cartesian((0, 10, 20), key='x', degrees=True)
+        c = cesiumpy.cartesian._maybe_cartesian3((0, 10, 20), key='x', degrees=True)
         exp = "Cesium.Cartesian3.fromDegrees(0, 10, 20)"
         self.assertEqual(c.script, exp)
 
-        c = cesiumpy.cartesian._maybe_cartesian((0, 10, 20, 30), key='x', degrees=True)
+        c = cesiumpy.cartesian._maybe_cartesian4((0, 10, 20, 30), key='x', degrees=True)
         exp = "Cesium.Cartesian4.fromDegrees(0, 10, 20, 30)"
         self.assertEqual(c.script, exp)
 
-        c = cesiumpy.cartesian._maybe_cartesian([0, 10], key='x', degrees=True)
+        c = cesiumpy.cartesian._maybe_cartesian2([0, 10], key='x', degrees=True)
         exp = "Cesium.Cartesian2.fromDegrees(0, 10)"
         self.assertEqual(c.script, exp)
 
-        c = cesiumpy.cartesian._maybe_cartesian([0, 10, 20], key='x', degrees=True)
+        c = cesiumpy.cartesian._maybe_cartesian3([0, 10, 20], key='x', degrees=True)
         exp = "Cesium.Cartesian3.fromDegrees(0, 10, 20)"
         self.assertEqual(c.script, exp)
 
-        c = cesiumpy.cartesian._maybe_cartesian([0, 10, 20, 30], key='x', degrees=True)
+        c = cesiumpy.cartesian._maybe_cartesian4([0, 10, 20, 30], key='x', degrees=True)
         exp = "Cesium.Cartesian4.fromDegrees(0, 10, 20, 30)"
         self.assertEqual(c.script, exp)
 
         msg = "x must be list-likes: 3"
         with nose.tools.assert_raises_regexp(ValueError, msg):
-            cesiumpy.cartesian._maybe_cartesian(3, key='x', degrees=True)
+            cesiumpy.cartesian._maybe_cartesian3(3, key='x', degrees=True)
 
-        msg = "x length must be 2-4 to be converted to Cartesian"
+        msg = "x length must be 3 to be converted to Cartesian3:"
         with nose.tools.assert_raises_regexp(ValueError, msg):
-            cesiumpy.cartesian._maybe_cartesian((1, 2, 3, 5, 5), key='x', degrees=True)
+            cesiumpy.cartesian._maybe_cartesian3((1, 2, 3, 5, 5), key='x', degrees=True)
 
 
     def test_rectangle(self):
