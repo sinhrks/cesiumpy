@@ -8,7 +8,7 @@ This package offers limited API intended for:
 
 - Interactive data visualization using ``Jupyter Notebook``
 
-This package DOES NOT intended for:
+This package IS NOT intended for:
 
 - Website development using whole functionality of `Cesium.js <http://cesiumjs.org/>`_.
 

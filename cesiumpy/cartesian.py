@@ -25,9 +25,9 @@ class _Cartesian(_CesiumObject):
             return rep.format(self=self)
 
 
-def _maybe_cartesian(x, key, degrees=False):
-    """ Convert list or tuple to corresponding Cartesian """
-    if isinstance(x, _Cartesian):
+def _maybe_cartesian2(x, key, degrees=False):
+    """ Convert list or tuple to Cartesian2 """
+    if isinstance(x, Cartesian2):
         return x
 
     x = com._maybe_shapely_point(x)
@@ -35,18 +35,14 @@ def _maybe_cartesian(x, key, degrees=False):
 
     if len(x) == 2:
         return Cartesian2(*x, degrees=degrees)
-    elif len(x) == 3:
-        return Cartesian3(*x, degrees=degrees)
-    elif len(x) == 4:
-        return Cartesian4(*x, degrees=degrees)
     else:
-        msg = '{key} length must be 2-4 to be converted to Cartesian: {x}'
+        msg = '{key} length must be 2 to be converted to Cartesian2: {x}'
         raise ValueError(msg.format(key=key, x=x))
 
 
 def _maybe_cartesian3(x, key, degrees=False):
     """ Convert list or tuple to Cartesian3 """
-    if isinstance(x, _Cartesian):
+    if isinstance(x, Cartesian3):
         return x
 
     x = com._maybe_shapely_point(x)
@@ -60,6 +56,21 @@ def _maybe_cartesian3(x, key, degrees=False):
         return Cartesian3(*x, degrees=degrees)
     else:
         msg = '{key} length must be 3 to be converted to Cartesian3: {x}'
+        raise ValueError(msg.format(key=key, x=x))
+
+
+def _maybe_cartesian4(x, key, degrees=False):
+    """ Convert list or tuple to Cartesian4 """
+    if isinstance(x, Cartesian2):
+        return x
+
+    x = com._maybe_shapely_point(x)
+    x = com.validate_listlike(x, key=key)
+
+    if len(x) == 4:
+        return Cartesian4(*x, degrees=degrees)
+    else:
+        msg = '{key} length must be 4 to be converted to Cartesian4: {x}'
         raise ValueError(msg.format(key=key, x=x))
 
 

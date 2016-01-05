@@ -55,3 +55,4 @@ class CesiumWidget(_CesiumBase):
         A scalar used to exaggerate the terrain. Note that terrain exaggeration will not modify any other primitive as they are positioned relative to the ellipsoid.
     """
     pass
+
