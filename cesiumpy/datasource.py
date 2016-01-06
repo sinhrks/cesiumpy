@@ -13,8 +13,33 @@ import cesiumpy.common as com
 
 class DataSource(_CesiumObject):
 
-    def __init__(self):
-        raise NotImplementedError
+    _props = []
+
+    def __init__(self, sourceUri):
+        self.sourceUri = com.validate_str(sourceUri, key='sourceUri')
+        self._check_uri(self.sourceUri)
+
+    def _check_uri(self, sourceUri):
+        if not os.path.exists(sourceUri):
+            msg = "Unable to read specified path, be sure to the output HTML can read the path: {0}"
+            warnings.warn(msg.format(sourceUri))
+
+    @property
+    def script(self):
+        props = com.to_jsobject(self._property_dict)
+        props = ''.join(props)
+        if props != '':
+            script = """{klass}.load("{source}", {props})"""
+            script = script.format(klass=self._klass,
+                                   source=self.sourceUri, props=''.join(props))
+        else:
+            script = """{klass}.load("{source}")"""
+            script = script.format(klass=self._klass, source=self.sourceUri)
+        return script
+
+    @classmethod
+    def load(cls, sourceUri, *args, **kwargs):
+        return cls(sourceUri, *args, **kwargs)
 
 
 class CustomDataSource(DataSource):
@@ -54,11 +79,7 @@ class GeoJsonDataSource(DataSource):
     def __init__(self, sourceUri, describe=None, markerSize=None,
                  markerSymbol=None, markerColor=None, stroke=None,
                  strokeWidth=None, fill=None):
-
-        self.sourceUri = com.validate_str(sourceUri, key='sourceUri')
-        if not os.path.exists(self.sourceUri):
-            msg = "Unable to read specified path, be sure to the output HTML can read the path: {0}"
-            warnings.warn(msg.format(self.sourceUri))
+        super(GeoJsonDataSource, self).__init__(sourceUri=sourceUri)
 
         self.describe = com.notimplemented(describe)
 
@@ -69,19 +90,17 @@ class GeoJsonDataSource(DataSource):
         self.strokeWidth = com.validate_numeric_or_none(strokeWidth, key='strokeWidth')
         self.fill = cesiumpy.color.validate_color_or_none(fill, key='fill')
 
-    @property
-    def script(self):
-        props = com.to_jsobject(self._property_dict)
-        props = ''.join(props)
-        if props != '':
-            script = """{klass}.load("{source}", {props})"""
-            script = script.format(klass=self._klass,
-                                   source=self.sourceUri, props=''.join(props))
-        else:
-            script = """{klass}.load("{source}")"""
-            script = script.format(klass=self._klass, source=self.sourceUri)
-        return script
-
 
 class KmlDataSource(DataSource):
+    """
+    KmlDataSource
+
+    Parameters
+    ----------
+
+    sourceUri: str
+        Overrides the url to use for resolving relative links and other KML network features.
+    """
+
     pass
+
