@@ -61,6 +61,9 @@ class TestEntity(unittest.TestCase):
         exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48)}}"""
         self.assertEqual(e.script, exp)
 
+        e = cesiumpy.Billboard(position=(-110, 40, 0))
+        self.assertEqual(e.script, exp)
+
         e = e.copy()
         self.assertEqual(e.script, exp)
 
