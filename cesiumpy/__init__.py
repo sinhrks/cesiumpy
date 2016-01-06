@@ -9,7 +9,7 @@ from cesiumpy import spatial
 from cesiumpy.camera import Camera
 from cesiumpy.cartesian import Cartesian2, Cartesian3, Cartesian4
 from cesiumpy.constants import verticalalign
-from cesiumpy.datasource import GeoJsonDataSource
+from cesiumpy.datasource import (GeoJsonDataSource, KmlDataSource)
 from cesiumpy.entity import (Point, Label, Billboard, Ellipse, Ellipsoid, Corridor, Cylinder,
                              Polyline, PolylineVolume, Wall, Rectangle, Box, Polygon)
 

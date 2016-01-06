@@ -16,14 +16,31 @@ class TestDataSource(unittest.TestCase):
 
         exp = 'Cesium.GeoJsonDataSource.load("xxx.geojson")'
         self.assertEqual(ds.script, exp)
+        ds = cesiumpy.GeoJsonDataSource.load('xxx.geojson')
+        self.assertEqual(ds.script, exp)
 
         ds = cesiumpy.GeoJsonDataSource('xxx.geojson', markerColor=cesiumpy.color.RED,
                                         stroke=cesiumpy.color.BLUE, fill=cesiumpy.color.GREEN)
         exp = 'Cesium.GeoJsonDataSource.load("xxx.geojson", {markerColor : Cesium.Color.RED, stroke : Cesium.Color.BLUE, fill : Cesium.Color.GREEN})'
         self.assertEqual(ds.script, exp)
+        ds = cesiumpy.GeoJsonDataSource.load('xxx.geojson', markerColor=cesiumpy.color.RED,
+                                             stroke=cesiumpy.color.BLUE, fill=cesiumpy.color.GREEN)
+        self.assertEqual(ds.script, exp)
+
 
         ds = cesiumpy.GeoJsonDataSource('xxx.geojson', markerColor='red',
                                         stroke='blue', fill='green')
+        self.assertEqual(ds.script, exp)
+        ds = cesiumpy.GeoJsonDataSource.load('xxx.geojson', markerColor='red',
+                                             stroke='blue', fill='green')
+        self.assertEqual(ds.script, exp)
+
+    def test_kmldatasource(self):
+        ds = cesiumpy.KmlDataSource('xxx.kml')
+
+        exp = 'Cesium.KmlDataSource.load("xxx.kml")'
+        self.assertEqual(ds.script, exp)
+        ds = cesiumpy.KmlDataSource.load('xxx.kml')
         self.assertEqual(ds.script, exp)
 
     def test_geojson_viewer(self):
