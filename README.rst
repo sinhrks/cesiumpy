@@ -37,5 +37,5 @@ Documentation
 Dependencies
 ------------
 
-- ``geopy``
+- ``geopy``, ``six`` and ``enum34`` (Python 3.3 or earlier)
 - (Optional) ``scipy`` and ``shapely``
