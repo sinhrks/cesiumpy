@@ -3,6 +3,8 @@
 
 import codecs
 import os
+import sys
+
 from setuptools import setup, find_packages
 
 PACKAGE = 'cesiumpy'
@@ -28,6 +30,10 @@ version = '%s'
 version_file = os.path.join(os.path.dirname(__file__), PACKAGE, 'version.py')
 write_version_py(filename=version_file)
 
+install_requires = list(read(REQUIREMENTS).splitlines())
+if sys.version_info < (3, 4, 0):
+    install_requires.append('enum34')
+
 setup(name=PACKAGE,
       version=VERSION,
       description='python wrapper for cesium.js',
@@ -37,7 +43,7 @@ setup(name=PACKAGE,
       url='http://cesiumpy.readthedocs.org/en/stable',
       license = 'Apache 2.0',
       packages=find_packages(),
-      install_requires=list(read(REQUIREMENTS).splitlines())
+      install_requires=install_requires
       )
 
 

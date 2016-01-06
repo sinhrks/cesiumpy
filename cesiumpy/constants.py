@@ -3,15 +3,24 @@
 
 from __future__ import unicode_literals
 
-from cesiumpy.base import _CesiumConstant
-from cesiumpy.entity import _CesiumEntity
+from cesiumpy.base import _CesiumEnum
 
 
-class verticalalign(_CesiumConstant):
+class VerticalOrigin(_CesiumEnum):
 
-    BOTTOM = _CesiumConstant('Cesium.VerticalOrigin.BOTTOM')
+    BOTTOM = 'Cesium.VerticalOrigin.BOTTOM'
+    CENTER = 'Cesium.VerticalOrigin.CENTER'
+    TOP = 'Cesium.VerticalOrigin.TOP'
 
-    def __init__(self):
-        raise NotImplementedError
+
+class HorizontalOrigin(_CesiumEnum):
+
+    CENTER = 'Cesium.HorizontalOrigin.CENTER'
+    LEFT = 'Cesium.HorizontalOrigin.LEFT'
+    RIGHT = 'Cesium.HorizontalOrigin.RIGHT'
 
 
+class CornerType(_CesiumEnum):
+    BEVELED = 'Cesium.CornerType.BEVELED'
+    MITERED = 'Cesium.CornerType.MITERED'
+    ROUNDED = 'Cesium.CornerType.ROUNDED'

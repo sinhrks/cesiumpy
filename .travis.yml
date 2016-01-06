@@ -26,7 +26,7 @@ install:
   - if [[ "$SHAPELY" == "true" ]]; then
       conda install numpy scipy shapely;
     fi
-  - "pip install -r requirements.txt"
+  - python setup.py install
 script:
   - nosetests --with-coverage
 after_success:

@@ -153,8 +153,8 @@ def is_listlike_3elem(x):
 def to_jsscalar(x):
     """ convert x to JavaScript representation """
 
-    from cesiumpy.base import _CesiumObject
-    if isinstance(x, _CesiumObject):
+    from cesiumpy.base import _CesiumObject, _CesiumEnum
+    if isinstance(x, (_CesiumObject, _CesiumEnum)):
         return x.script
 
     if isinstance(x, bool):

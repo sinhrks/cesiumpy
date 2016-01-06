@@ -9,6 +9,7 @@ import collections
 from cesiumpy.base import _CesiumObject
 import cesiumpy.cartesian as cartesian
 import cesiumpy.color
+import cesiumpy.constants as constants
 import cesiumpy.common as com
 
 
@@ -58,8 +59,18 @@ class _CesiumEntity(_CesiumObject):
 
         self.scale = com.validate_numeric_or_none(scale, key='scale')
 
-        self.horizontalOrigin = com.notimplemented(horizontalOrigin)
-        self.verticalOrigin = com.notimplemented(verticalOrigin)
+        if horizontalOrigin is None or isinstance(horizontalOrigin, constants.HorizontalOrigin):
+            self.horizontalOrigin = horizontalOrigin
+        else:
+            msg = 'horizontalOrigin must be HorizontalOrigin: {x}'
+            raise ValueError(msg.format(x=horizontalOrigin))
+
+        if verticalOrigin is None or isinstance(verticalOrigin, constants.VerticalOrigin):
+            self.verticalOrigin = verticalOrigin
+        else:
+            msg = 'verticalOrigin must be VerticalOrigin: {x}'
+            raise ValueError(msg.format(x=verticalOrigin))
+
         self.eyeOffset = com.notimplemented(eyeOffset)
         self.pixelOffset = com.notimplemented(pixelOffset)
         self.pixelOffsetScaleByDistance = com.notimplemented(pixelOffsetScaleByDistance)
@@ -619,7 +630,12 @@ class Corridor(_CesiumEntity):
                                        granularity=granularity, name=name)
 
         self.positions = cartesian.Cartesian3.fromDegreesArray(positions)
-        self.cornerType = com.notimplemented(cornerType)
+
+        if cornerType is None or isinstance(cornerType, constants.CornerType):
+            self.cornerType = cornerType
+        else:
+            msg = 'cornerType must be CornerType: {x}'
+            raise ValueError(msg.format(x=cornerType))
 
 
 class Wall(_CesiumEntity):
