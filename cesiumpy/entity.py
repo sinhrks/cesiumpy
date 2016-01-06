@@ -7,6 +7,7 @@ import six
 import collections
 
 from cesiumpy.base import _CesiumObject
+from cesiumpy.pinbuilder import Pin
 import cesiumpy.cartesian as cartesian
 import cesiumpy.color
 import cesiumpy.constants as constants
@@ -270,7 +271,7 @@ class Billboard(_CesiumEntity):
 
     position: Cartesian3
         A Property specifying the Cartesian3 positions.
-    image:
+    image: str or Pin, default Pin()
         A Property specifying the Image, URI, or Canvas to use for the billboard.
     show: bool, default True
         A boolean Property specifying the visibility of the billboard.
@@ -308,7 +309,7 @@ class Billboard(_CesiumEntity):
     _klass = 'billboard'
     _props = ['image', 'alignedAxis', 'imageSubRegion', 'sizeInMeters']
 
-    def __init__(self, position, image, show=None, scale=None,
+    def __init__(self, position, image=None, show=None, scale=None,
                  horizontalOrigin=None, verticalOrigin=None,
                  eyeOffset=None, pixelOffset=None, rotation=None,
                  alignedAxis=None, width=None, height=None, color=None,
@@ -325,6 +326,8 @@ class Billboard(_CesiumEntity):
                                         translucencyByDistance=translucencyByDistance,
                                         pixelOffsetScaleByDistance=pixelOffsetScaleByDistance,
                                         position=position, name=name)
+        if image is None:
+            image = Pin()
 
         if isinstance(image, cesiumpy.Pin):
             self.image = image
