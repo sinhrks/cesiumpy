@@ -47,6 +47,8 @@ class _CesiumEntity(_CesiumObject):
     horizontalOrigin = traitlets.Instance(klass=constants.HorizontalOrigin, allow_none=True)
     verticalOrigin = traitlets.Instance(klass=constants.VerticalOrigin, allow_none=True)
 
+    position = traitlets.Instance(klass=cartesian.Cartesian3, allow_none=True)
+
     def __init__(self, width=None, height=None, extrudedHeight=None,
                  show=None, fill=None, material=None, color=None,
                  outline=None, outlineColor=None, outlineWidth=None,
@@ -418,6 +420,7 @@ class Ellipsoid(_CesiumEntity):
     _klass = 'ellipsoid'
     _props = ['radii', 'subdivisions', 'stackPartitions', 'slicePartitions']
 
+    radii = traitlets.Instance(klass=cartesian.Cartesian3)
     subdivisions = traitlets.Float(allow_none=True)
     stackPartitions = traitlets.Float(allow_none=True)
     slicePartitions = traitlets.Float(allow_none=True)
@@ -520,6 +523,7 @@ class Polyline(_CesiumEntity):
     _klass = 'polyline'
     _props = ['positions', 'followSurface']
 
+    positions = traitlets.Instance(klass=cartesian.Cartesian3)
     followSurface = traitlets.Bool(allow_none=True)
 
     def __init__(self, positions, followSurface=None, width=None,
@@ -565,6 +569,10 @@ class PolylineVolume(_CesiumEntity):
     _klass = 'polylineVolume'
     _props = ['positions', 'shape', 'cornerType']
 
+    positions = traitlets.Instance(klass=cartesian.Cartesian3)
+    shape = traitlets.List(minlen=2)
+    cornerType = traitlets.Instance(klass=constants.CornerType, allow_none=True)
+
     def __init__(self, positions, shape, cornerType=None, show=None,
                  fill=None, material=None, outline=None, outlineColor=None,
                  outlineWidth=None, granularity=None, name=None):
@@ -577,7 +585,7 @@ class PolylineVolume(_CesiumEntity):
 
         self.positions = cartesian.Cartesian3.fromDegreesArray(positions)
         self.shape = cartesian._maybe_cartesian2_list(shape, key='shape')
-        self.cornerType = com.notimplemented(cornerType)
+        self.cornerType = cornerType
 
 
 class Corridor(_CesiumEntity):
@@ -616,6 +624,9 @@ class Corridor(_CesiumEntity):
     _klass = 'corridor'
     _props = ['positions', 'cornerType']
 
+    positions = traitlets.Instance(klass=cartesian.Cartesian3)
+    cornerType = traitlets.Instance(klass=constants.CornerType, allow_none=True)
+
     def __init__(self, positions, width, cornerType=None, height=None,
                  extrudedHeight=None, show=None, fill=None, material=None,
                  outline=None, outlineColor=None, outlineWidth=None,
@@ -630,12 +641,7 @@ class Corridor(_CesiumEntity):
                                        granularity=granularity, name=name)
 
         self.positions = cartesian.Cartesian3.fromDegreesArray(positions)
-
-        if cornerType is None or isinstance(cornerType, constants.CornerType):
-            self.cornerType = cornerType
-        else:
-            msg = 'cornerType must be CornerType: {x}'
-            raise ValueError(msg.format(x=cornerType))
+        self.cornerType = cornerType
 
 
 class Wall(_CesiumEntity):
@@ -669,6 +675,8 @@ class Wall(_CesiumEntity):
 
     _klass = 'wall'
     _props = ['positions', 'maximumHeights', 'minimumHeights']
+
+    positions = traitlets.Instance(klass=cartesian.Cartesian3)
 
     def __init__(self, positions, maximumHeights, minimumHeights, show=None,
                  fill=None, material=None, outline=None, outlineColor=None,
@@ -736,6 +744,7 @@ class Rectangle(_CesiumEntity):
     _klass = 'rectangle'
     _props = ['coordinates', 'closeTop', 'closeBottom']
 
+    positions = traitlets.Instance(klass=cartesian.Rectangle)
     closeTop = traitlets.Bool(allow_none=True)
     closeBottom = traitlets.Bool(allow_none=True)
 
@@ -752,7 +761,6 @@ class Rectangle(_CesiumEntity):
                                         granularity=granularity, name=name)
 
         self.coordinates = cartesian._maybe_rectangle(coordinates, key='coordinates')
-
         self.closeTop = closeTop
         self.closeBottom = closeBottom
 

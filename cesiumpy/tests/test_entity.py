@@ -262,8 +262,8 @@ class TestEntity(unittest.TestCase):
         exp = """{corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-130, 40, -120, 30, -110, 40]), cornerType : Cesium.CornerType.ROUNDED, width : 100000.0}}"""
         self.assertEqual(e.script, exp)
 
-        msg = "cornerType must be CornerType: ROUNDED"
-        with nose.tools.assert_raises_regexp(ValueError, msg):
+        msg = "The 'cornerType' trait of a Corridor instance must be a CornerType or None"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             cesiumpy.Corridor(positions=[-130, 40, -120, 30, -110, 40], width=100000,
                               cornerType='ROUNDED')
 
@@ -315,7 +315,7 @@ class TestEntity(unittest.TestCase):
 
     def test_rectangle(self):
         e = cesiumpy.Rectangle(coordinates=(-80, 20, -60, 40), material=cesiumpy.color.GREEN)
-        exp = "{rectangle : {coordinates : Cesium.Rectangle.fromDegrees(-80, 20, -60, 40), material : Cesium.Color.GREEN}}"
+        exp = "{rectangle : {coordinates : Cesium.Rectangle.fromDegrees(-80.0, 20.0, -60.0, 40.0), material : Cesium.Color.GREEN}}"
         self.assertEqual(e.script, exp)
 
         e = e.copy()
@@ -323,7 +323,7 @@ class TestEntity(unittest.TestCase):
 
         e = cesiumpy.Rectangle(coordinates=(-80, 20, -60, 40),
                                material=cesiumpy.color.GREEN, outlineColor=cesiumpy.color.RED)
-        exp = "{rectangle : {coordinates : Cesium.Rectangle.fromDegrees(-80, 20, -60, 40), material : Cesium.Color.GREEN, outlineColor : Cesium.Color.RED}}"
+        exp = "{rectangle : {coordinates : Cesium.Rectangle.fromDegrees(-80.0, 20.0, -60.0, 40.0), material : Cesium.Color.GREEN, outlineColor : Cesium.Color.RED}}"
         self.assertEqual(e.script, exp)
 
         e = e.copy()
@@ -347,8 +347,8 @@ class TestEntity(unittest.TestCase):
             cesiumpy.Rectangle(coordinates=[1, 2, 3],
                                material='green', outlineColor='red')
 
-        msg = "north must be numeric: X"
-        with nose.tools.assert_raises_regexp(ValueError, msg):
+        msg = "The 'north' trait of a Rectangle instance must be a float"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             cesiumpy.Rectangle(coordinates=(-80, 20, -60, 'X'),
                                material='green', outlineColor='red')
 
@@ -414,7 +414,7 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(repr(e), exp)
 
         e = cesiumpy.Rectangle(coordinates=(-85, 40, -80, 45))
-        exp = "Rectangle(west=-85, south=40, east=-80, north=45)"
+        exp = "Rectangle(west=-85.0, south=40.0, east=-80.0, north=45.0)"
         self.assertEqual(repr(e), exp)
 
         e = cesiumpy.Ellipsoid(position=(-70, 40, 0), radii=(20e4, 20e4, 30e4))
