@@ -198,11 +198,11 @@ class TestCartesian(unittest.TestCase):
 
     def test_rectangle(self):
         c = cesiumpy.cartesian.Rectangle(5, 10, 20, 30)
-        exp = "new Cesium.Rectangle(5, 10, 20, 30)"
+        exp = "new Cesium.Rectangle(5.0, 10.0, 20.0, 30.0)"
         self.assertEqual(c.script, exp)
 
         c = cesiumpy.cartesian.Rectangle.fromDegrees(5, 10, 20, 30)
-        exp = "Cesium.Rectangle.fromDegrees(5, 10, 20, 30)"
+        exp = "Cesium.Rectangle.fromDegrees(5.0, 10.0, 20.0, 30.0)"
         self.assertEqual(c.script, exp)
 
         msg = "west must be longitude, between -180 to 180"
@@ -223,11 +223,11 @@ class TestCartesian(unittest.TestCase):
 
     def test_rectangle_repr(self):
         c = cesiumpy.cartesian.Rectangle(5, 10, 20, 30)
-        exp = "Rectangle(west=5, south=10, east=20, north=30)"
+        exp = "Rectangle(west=5.0, south=10.0, east=20.0, north=30.0)"
         self.assertEqual(repr(c), exp)
 
         c = cesiumpy.cartesian.Rectangle.fromDegrees(5, 10, 20, 30)
-        exp = "Rectangle.fromDegrees(west=5, south=10, east=20, north=30)"
+        exp = "Rectangle.fromDegrees(west=5.0, south=10.0, east=20.0, north=30.0)"
         self.assertEqual(repr(c), exp)
 
 

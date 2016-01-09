@@ -29,6 +29,7 @@ class _Cartesian(_CesiumObject):
             return rep.format(self=self)
 
 
+
 def _maybe_cartesian2(x, key, degrees=False):
     """ Convert list or tuple to Cartesian2 """
     if isinstance(x, Cartesian2):
@@ -229,12 +230,17 @@ def _maybe_rectangle(x, key):
 
 class Rectangle(_Cartesian):
 
+    west = traitlets.Float()
+    south = traitlets.Float()
+    east = traitlets.Float()
+    north = traitlets.Float()
+
     def __init__(self, west, south, east, north, degrees=False):
 
-        self.west = com.validate_numeric(west, key='west')
-        self.south = com.validate_numeric(south, key='south')
-        self.east = com.validate_numeric(east, key='east')
-        self.north = com.validate_numeric(north, key='north')
+        self.west = west
+        self.south = south
+        self.east = east
+        self.north = north
 
         self._is_degrees = degrees
         self._is_array = False

@@ -49,8 +49,10 @@ class DataSource(_CesiumObject):
 class CustomDataSource(DataSource):
     pass
 
+
 class CzmlDataSource(DataSource):
     pass
+
 
 class GeoJsonDataSource(DataSource):
     """

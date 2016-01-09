@@ -18,9 +18,7 @@ _SINGLE_COLOR_MAP = {'B': 'BLUE', 'G': 'GREEN', 'R': 'RED',
 
 class ColorTrait(traitlets.Instance):
 
-    def __init__(self, klass=None, args=None, kw=None, **metadata):
-
-        from cesiumpy.color import Color
+    def __init__(self, args=None, kw=None, **metadata):
         super(ColorTrait, self).__init__(klass=Color, args=args, kw=kw,
                                          **metadata)
 

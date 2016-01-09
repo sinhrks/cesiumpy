@@ -4,7 +4,6 @@
 import nose
 import unittest
 
-import math
 
 import cesiumpy
 
@@ -13,11 +12,11 @@ class TestMath(unittest.TestCase):
 
     def test_constant(self):
         # check constant can be loaded from root namespace
-        pi = cesiumpy.math.PI
-        self.assertEqual(pi, math.pi)
+        pi = cesiumpy.Math.PI
+        self.assertEqual(pi.script, 'Cesium.Math.PI')
 
-        rad = cesiumpy.math.RADIANS_PER_DEGREE
-        self.assertEqual(rad, math.pi / 180.0)
+        rad = cesiumpy.Math.RADIANS_PER_DEGREE
+        self.assertEqual(rad.script, 'Cesium.Math.RADIANS_PER_DEGREE')
 
 
 if __name__ == '__main__':

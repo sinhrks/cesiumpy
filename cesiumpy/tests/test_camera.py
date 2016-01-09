@@ -24,7 +24,7 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(c.script, exp)
 
         c.flyTo((4, 5, 6, 7))
-        exp = '{destination : Cesium.Rectangle.fromDegrees(4, 5, 6, 7)}'
+        exp = '{destination : Cesium.Rectangle.fromDegrees(4.0, 5.0, 6.0, 7.0)}'
         self.assertEqual(c.script, exp)
 
         msg = "x must be longitude, between -180 to 180"
@@ -48,7 +48,7 @@ class TestCamera(unittest.TestCase):
         result = widget.to_html()
 
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/CesiumUnminified/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="cesiumwidget" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.CesiumWidget("cesiumwidget");
@@ -62,11 +62,11 @@ class TestCamera(unittest.TestCase):
         result = viewer.to_html()
 
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/CesiumUnminified/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
-  widget.camera.flyTo({destination : Cesium.Rectangle.fromDegrees(135, 30, 145, 45)});
+  widget.camera.flyTo({destination : Cesium.Rectangle.fromDegrees(135.0, 30.0, 145.0, 45.0)});
 </script>"""
         self.assertEqual(result, exp)
 
@@ -77,12 +77,12 @@ class TestCamera(unittest.TestCase):
         result = viewer.to_html()
 
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/CesiumUnminified/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
   widget.entities.add({position : Cesium.Cartesian3.fromDegrees(120, 35, 5000), cylinder : {length : 10000.0, topRadius : 10000.0, bottomRadius : 20000.0, material : Cesium.Color.RED}});
-  widget.camera.flyTo({destination : Cesium.Rectangle.fromDegrees(135, 30, 145, 45)});
+  widget.camera.flyTo({destination : Cesium.Rectangle.fromDegrees(135.0, 30.0, 145.0, 45.0)});
 </script>"""
         self.assertEqual(result, exp)
 
@@ -91,7 +91,7 @@ class TestCamera(unittest.TestCase):
         result = viewer.to_html()
 
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/CesiumUnminified/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -106,7 +106,7 @@ class TestCamera(unittest.TestCase):
         result = viewer.to_html()
 
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/CesiumUnminified/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
