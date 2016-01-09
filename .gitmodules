@@ -1,3 +1,0 @@
-[submodule "cesiumpy/cesiumlib"]
-	path = cesiumpy/cesiumlib
-	url = https://github.com/AnalyticalGraphicsInc/cesium.git
