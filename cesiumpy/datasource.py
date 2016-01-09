@@ -6,6 +6,8 @@ from __future__ import unicode_literals
 import os
 import warnings
 
+import traitlets
+
 from cesiumpy.base import _CesiumObject
 import cesiumpy.color
 import cesiumpy.common as com
@@ -15,8 +17,10 @@ class DataSource(_CesiumObject):
 
     _props = []
 
+    sourceUri = traitlets.Unicode()
+
     def __init__(self, sourceUri):
-        self.sourceUri = com.validate_str(sourceUri, key='sourceUri')
+        self.sourceUri = sourceUri
         self._check_uri(self.sourceUri)
 
     def _check_uri(self, sourceUri):
@@ -76,6 +80,13 @@ class GeoJsonDataSource(DataSource):
     _props = ['describe', 'markerSize', 'markerSymbol', 'markerColor',
               'stroke', 'strokeWidth', 'fill']
 
+    markerSize = traitlets.Float(allow_none=True)
+    markerSymbol = traitlets.Unicode(allow_none=True)
+    markerColor = cesiumpy.color.ColorTrait(allow_none=True)
+    stroke = cesiumpy.color.ColorTrait(allow_none=True)
+    strokeWidth = traitlets.Float(allow_none=True)
+    fill = cesiumpy.color.ColorTrait(allow_none=True)
+
     def __init__(self, sourceUri, describe=None, markerSize=None,
                  markerSymbol=None, markerColor=None, stroke=None,
                  strokeWidth=None, fill=None):
@@ -83,12 +94,12 @@ class GeoJsonDataSource(DataSource):
 
         self.describe = com.notimplemented(describe)
 
-        self.markerSize = com.validate_numeric_or_none(markerSize, key='markerSize')
-        self.markerSymbol = com.validate_str_or_none(markerSymbol, key='markerSymbol')
-        self.markerColor = cesiumpy.color.validate_color_or_none(markerColor, key='markerColor')
-        self.stroke = cesiumpy.color.validate_color_or_none(stroke, key='stroke')
-        self.strokeWidth = com.validate_numeric_or_none(strokeWidth, key='strokeWidth')
-        self.fill = cesiumpy.color.validate_color_or_none(fill, key='fill')
+        self.markerSize = markerSize
+        self.markerSymbol = markerSymbol
+        self.markerColor = markerColor
+        self.stroke = stroke
+        self.strokeWidth = strokeWidth
+        self.fill = fill
 
 
 class KmlDataSource(DataSource):

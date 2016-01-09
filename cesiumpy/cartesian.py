@@ -4,6 +4,7 @@
 from __future__ import unicode_literals
 
 import six
+import traitlets
 
 from cesiumpy.base import _CesiumObject
 import cesiumpy.common as com
@@ -11,6 +12,9 @@ import cesiumpy.geocode as geocode
 
 
 class _Cartesian(_CesiumObject):
+
+    _is_degrees = traitlets.Bool()
+    _is_array = traitlets.Bool()
 
     def __init__(self):
         raise NotImplementedError
@@ -61,7 +65,7 @@ def _maybe_cartesian3(x, key, degrees=False):
 
 def _maybe_cartesian4(x, key, degrees=False):
     """ Convert list or tuple to Cartesian4 """
-    if isinstance(x, Cartesian2):
+    if isinstance(x, Cartesian4):
         return x
 
     x = com._maybe_shapely_point(x)
@@ -101,7 +105,7 @@ class Cartesian2(_Cartesian):
         self.x = com.validate_numeric(x, key='x')
         self.y = com.validate_numeric(y, key='y')
 
-        self._is_degrees = com.validate_bool(degrees, key='degrees')
+        self._is_degrees = degrees
         self._is_array = False
 
         if degrees:
@@ -131,7 +135,7 @@ class Cartesian3(_Cartesian):
         self.y = com.validate_numeric(y, key='y')
         self.z = com.validate_numeric(z, key='z')
 
-        self._is_degrees = com.validate_bool(degrees, key='degrees')
+        self._is_degrees = degrees
         self._is_array = False
 
         if degrees:
@@ -189,7 +193,7 @@ class Cartesian4(_Cartesian):
         self.z = com.validate_numeric(z, key='z')
         self.w = com.validate_numeric(w, key='w')
 
-        self._is_degrees = com.validate_bool(degrees, key='degrees')
+        self._is_degrees = degrees
         self._is_array = False
 
         if degrees:
@@ -232,7 +236,7 @@ class Rectangle(_Cartesian):
         self.east = com.validate_numeric(east, key='east')
         self.north = com.validate_numeric(north, key='north')
 
-        self._is_degrees = com.validate_bool(degrees, key='degrees')
+        self._is_degrees = degrees
         self._is_array = False
 
         if degrees:

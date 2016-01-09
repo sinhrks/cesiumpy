@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 
 import collections
 import json
+import traitlets
 
 from cesiumpy.base import _CesiumBase
 import cesiumpy.common as com
@@ -107,6 +108,20 @@ class Viewer(_CesiumBase):
               'orderIndependentTranslucency', 'creditContainer',
               'terrainExaggeration']
 
+    animation = traitlets.Bool(allow_none=True)
+    baseLayerPicker = traitlets.Bool(allow_none=True)
+    fullscreenButton = traitlets.Bool(allow_none=True)
+    geocoder = traitlets.Bool(allow_none=True)
+    homeButton = traitlets.Bool(allow_none=True)
+    infoBox = traitlets.Bool(allow_none=True)
+    sceneModePicker = traitlets.Bool(allow_none=True)
+    selectionIndicator = traitlets.Bool(allow_none=True)
+    timeline = traitlets.Bool(allow_none=True)
+    navigationHelpButton = traitlets.Bool(allow_none=True)
+    navigationInstructionsInitiallyVisible = traitlets.Bool(allow_none=True)
+
+    automaticallyTrackDataSourceClocks = traitlets.Bool(allow_none=True)
+
     def __init__(self, divid=None, width='100%', height='100%',
                  animation=None, baseLayerPicker=None, fullscreenButton=None,
                  geocoder=None, homeButton=None, infoBox=None,
@@ -137,25 +152,25 @@ class Viewer(_CesiumBase):
                                      creditContainer=creditContainer,
                                      terrainExaggeration=terrainExaggeration)
 
-        self.animation = com.validate_bool_or_none(animation, key='animation')
-        self.baseLayerPicker = com.validate_bool_or_none(baseLayerPicker, key='baseLayerPicker')
-        self.fullscreenButton = com.validate_bool_or_none(fullscreenButton, key='fullscreenButton')
-        self.geocoder = com.validate_bool_or_none(geocoder, key='geocoder')
-        self.homeButton = com.validate_bool_or_none(homeButton, key='homeButton')
-        self.infoBox = com.validate_bool_or_none(infoBox, key='infoBox')
-        self.sceneModePicker = com.validate_bool_or_none(sceneModePicker, key='sceneModePicker')
-        self.selectionIndicator = com.validate_bool_or_none(selectionIndicator, key='selectionIndicator')
-        self.timeline = com.validate_bool_or_none(timeline, key='timeline')
-        self.navigationHelpButton = com.validate_bool_or_none(navigationHelpButton, key='navigationHelpButton')
-        self.navigationInstructionsInitiallyVisible = com.validate_bool_or_none(navigationInstructionsInitiallyVisible, key='navigationInstructionsInitiallyVisible')
-
+        self.animation = animation
+        self.baseLayerPicker = baseLayerPicker
+        self.fullscreenButton = fullscreenButton
+        self.geocoder = geocoder
+        self.homeButton = homeButton
+        self.infoBox = infoBox
+        self.sceneModePicker = sceneModePicker
+        self.selectionIndicator = selectionIndicator
+        self.timeline = timeline
+        self.navigationHelpButton = navigationHelpButton
+        self.navigationInstructionsInitiallyVisible = navigationInstructionsInitiallyVisible
 
         self.selectedImageryProviderViewModel = com.notimplemented(selectedImageryProviderViewModel)
         self.imageryProviderViewModels = com.notimplemented(imageryProviderViewModels)
         self.selectedTerrainProviderViewModel = com.notimplemented(selectedTerrainProviderViewModel)
         self.terrainProviderViewModels = com.notimplemented(terrainProviderViewModels)
         self.fullscreenElement = com.notimplemented(fullscreenElement)
-        self.automaticallyTrackDataSourceClocks = com.validate_bool_or_none(automaticallyTrackDataSourceClocks, key='automaticallyTrackDataSourceClocks')
+
+        self.automaticallyTrackDataSourceClocks = automaticallyTrackDataSourceClocks
 
         # ToDo: API to disable all flags to False
         # store cesium objects as entities

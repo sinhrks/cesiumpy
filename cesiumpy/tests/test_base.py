@@ -86,7 +86,7 @@ class TestViewer(unittest.TestCase):
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest", {animation : true, baseLayerPicker : false, fullscreenButton : false, geocoder : false, homeButton : false, infoBox : false, sceneModePicker : true, selectionIndicator : false, timeline : false, navigationHelpButton : false, navigationInstructionsInitiallyVisible : false});
-  widget.entities.add({name : "x", position : Cesium.Cartesian3.fromDegrees(-110, 50, 2000000), cylinder : {length : 4000000, topRadius : 100000, bottomRadius : 100000, material : Cesium.Color.AQUA}});
+  widget.entities.add({name : "x", position : Cesium.Cartesian3.fromDegrees(-110, 50, 2000000), cylinder : {length : 4000000.0, topRadius : 100000.0, bottomRadius : 100000.0, material : Cesium.Color.AQUA}});
 </script>"""
         self.assertEqual(result, exp)
 

@@ -4,6 +4,7 @@
 from __future__ import unicode_literals
 
 import six
+import traitlets
 
 import cesiumpy
 from cesiumpy.base import _CesiumObject
@@ -38,14 +39,16 @@ class TerrainProvider(_CesiumProvider):
 
     _props = ['url', 'proxy', 'ellipsoid', 'credit']
 
+    url = traitlets.Unicode()
+    credit = traitlets.Unicode(allow_none=True)
+
     def __init__(self, url=None, proxy=None, tilingScheme=None,
                  ellipsoid=None, credit=None):
-
-        self.url = com.validate_str_or_none(url, key='url')
+        self.url = url
         self.proxy = com.notimplemented(proxy)
         self.tilingScheme = com.notimplemented(tilingScheme)
         self.ellipsoid = com.notimplemented(ellipsoid)
-        self.credit = com.validate_str_or_none(credit, key='credit')
+        self.credit = credit
 
 
 class ArcGisImageServerTerrainProvider(TerrainProvider):
@@ -71,11 +74,13 @@ class ArcGisImageServerTerrainProvider(TerrainProvider):
 
     _props = ['url', 'token', 'proxy', 'tilingScheme', 'ellipsoid', 'credit']
 
+    token = traitlets.Unicode(allow_none=True)
+
     def __init__(self, url, token, proxy=None, tilingScheme=None,
                  ellipsoid=None, credit=None):
         super(ArcGisImageServerTerrainProvider, self).__init__(url=url, proxy=proxy, tilingScheme=tilingScheme,
                                                                ellipsoid=ellipsoid, credit=credit)
-        self.token = com.validate_str_or_none(token, key='token')
+        self.token = token
 
 
 class CesiumTerrainProvider(TerrainProvider):
@@ -101,12 +106,15 @@ class CesiumTerrainProvider(TerrainProvider):
 
     _props = ['url', 'proxy', 'requestVertexNormals', 'requestWaterMask', 'ellipsoid', 'credit']
 
+    requestVertexNormals = traitlets.Bool(allow_none=True)
+    requestWaterMask = traitlets.Bool(allow_none=True)
+
     def __init__(self, url, proxy=None, requestVertexNormals=None,
                  requestWaterMask=None, ellipsoid=None, credit=None):
         super(CesiumTerrainProvider, self).__init__(url=url, proxy=proxy,
                                                     ellipsoid=ellipsoid, credit=credit)
-        self.requestVertexNormals = com.validate_bool_or_none(requestVertexNormals, key='requestVertexNormals')
-        self.requestWaterMask = com.validate_bool_or_none(requestWaterMask, key='requestWaterMask')
+        self.requestVertexNormals = requestVertexNormals
+        self.requestWaterMask = requestWaterMask
 
 
 
@@ -122,6 +130,9 @@ class EllipsoidTerrainProvider(TerrainProvider):
     ellipsoid: Ellipsoid
         The ellipsoid. If the tilingScheme is specified, this parameter is ignored and the tiling scheme's ellipsoid is used instead. If neither parameter is specified, the WGS84 ellipsoid is used.
     """
+
+    url = traitlets.Unicode(allow_none=True)
+
     def __init__(self, tilingScheme=None, ellipsoid=None):
 
         super(EllipsoidTerrainProvider, self).__init__(tilingScheme=tilingScheme,
@@ -162,12 +173,23 @@ class ImageryProvider(_CesiumProvider):
               'minimumLevel', 'maximumLevel',
               'credit', 'proxy', 'subdomains']
 
+    url = traitlets.Unicode(allow_none=True)
+    fileExtension = traitlets.Unicode(allow_none=True)
+
+    tileWidth = traitlets.Float(allow_none=True)
+    tileHeight = traitlets.Float(allow_none=True)
+
+    minimumLevel = traitlets.Float(allow_none=True)
+    maximumLevel = traitlets.Float(allow_none=True)
+
+    credit = traitlets.Unicode(allow_none=True)
+
     def __init__(self, url=None, fileExtension=None, rectangle=None, tillingScheme=None,
                  ellipsoid=None, tileWidth=None, tileHeight=None, tileDiscardPolicy=None,
                  minimumLevel=None, maximumLevel=None, credit=None, proxy=None, subdomains=None):
 
-        self.url = com.validate_str_or_none(url, key='url')
-        self.fileExtension = com.validate_str_or_none(fileExtension, key='fileExtension')
+        self.url = url
+        self.fileExtension = fileExtension
 
         if rectangle is not None:
             rectangle = cartesian._maybe_rectangle(rectangle, key='rectangle')
@@ -176,17 +198,16 @@ class ImageryProvider(_CesiumProvider):
         self.tillingScheme = com.notimplemented(tillingScheme)
         self.ellipsoid = com.notimplemented(ellipsoid)
 
-        self.tileWidth = com.validate_numeric_or_none(tileWidth, key='tileWidth')
-        self.tileHeight = com.validate_numeric_or_none(tileHeight, key='tileHeight')
+        self.tileWidth = tileWidth
+        self.tileHeight = tileHeight
         self.tileDiscardPolicy = com.notimplemented(tileDiscardPolicy)
 
-        self.minimumLevel = com.validate_numeric_or_none(minimumLevel, key='minimumLevel')
-        self.maximumLevel = com.validate_numeric_or_none(maximumLevel, key='maximumLevel')
+        self.minimumLevel = minimumLevel
+        self.maximumLevel = maximumLevel
 
-        self.credit = com.validate_str_or_none(credit, key='credit')
+        self.credit = credit
 
         self.proxy = com.notimplemented(proxy)
-
         self.subdomains = com.notimplemented(subdomains)
 
 
@@ -231,6 +252,11 @@ class ArcGisMapServerImageryProvider(ImageryProvider):
               'tileWidth', 'tileHeight', 'tileDiscardPolicy', 'minimumLevel',
               'proxy']
 
+    token = traitlets.Unicode(allow_none=True)
+    usePreCachedTilesIfAvailable = traitlets.Bool(allow_none=True)
+    layers = traitlets.Unicode(allow_none=True)
+    enablePickFeatures = traitlets.Bool(allow_none=True)
+
     def __init__(self, url, token=None, usePreCachedTilesIfAvailable=None,
                  layers=None, enablePickFeatures=None, rectangle=None, tillingScheme=None,
                  ellipsoid=None, tileWidth=None, tileHeight=None, tileDiscardPolicy=None,
@@ -244,10 +270,10 @@ class ArcGisMapServerImageryProvider(ImageryProvider):
                                                              tileDiscardPolicy=tileDiscardPolicy,
                                                              minimumLevel=minimumLevel, proxy=proxy)
 
-        self.token = com.validate_str_or_none(token, key='token')
-        self.usePreCachedTilesIfAvailable = com.validate_bool_or_none(usePreCachedTilesIfAvailable, key='userPreCachedTilesIfAvailable')
-        self.layers = com.validate_str_or_none(layers, key='layers')
-        self.enablePickFeatures = com.validate_bool_or_none(enablePickFeatures, key='enablePickFeatures')
+        self.token = token
+        self.usePreCachedTilesIfAvailable = usePreCachedTilesIfAvailable
+        self.layers = layers
+        self.enablePickFeatures = enablePickFeatures
 
 
 class BingMapsImageryProvider(ImageryProvider):
@@ -278,6 +304,11 @@ class BingMapsImageryProvider(ImageryProvider):
     _props = ['url', 'key', 'tileProtocol', 'mapStyle', 'culture',
               'ellipsoid', 'tileDiscardPolicy', 'proxy']
 
+    key = traitlets.Unicode()
+    tileProtocol = traitlets.Unicode()
+    mapStyle = traitlets.Unicode(allow_none=True)
+    culture = traitlets.Unicode(allow_none=True)
+
     def __init__(self, url, key, tileProtocol, mapStyle=None, culture=None,
                  ellipsoid=None, tileDiscardPolicy=None, proxy=None):
 
@@ -285,10 +316,10 @@ class BingMapsImageryProvider(ImageryProvider):
                                                       tileDiscardPolicy=tileDiscardPolicy,
                                                       proxy=proxy)
 
-        self.key = com.validate_str(key, key='key')
-        self.tileProtocol = com.validate_str(key, key='tileProtocol')
-        self.mapStyle = com.validate_str_or_none(mapStyle, key='mapStyle')
-        self.culture = com.validate_str_or_none(culture, key='culture')
+        self.key = key
+        self.tileProtocol = key
+        self.mapStyle = mapStyle
+        self.culture = culture
 
 
 class GoogleEarthImageryProvider(ImageryProvider):
@@ -317,6 +348,9 @@ class GoogleEarthImageryProvider(ImageryProvider):
     _props = ['url', 'channel', 'path', 'ellipsoid', 'tileDiscardPolicy',
               'maximumLevel', 'proxy']
 
+    channel = traitlets.Float()
+    path = traitlets.Unicode(allow_none=True)
+
     def __init__(self, url, channel, path=None, ellipsoid=None,
                  tileDiscardPolicy=None, maximumLevel=None, proxy=None):
 
@@ -325,8 +359,8 @@ class GoogleEarthImageryProvider(ImageryProvider):
                                                          tileDiscardPolicy=tileDiscardPolicy,
                                                          maximumLevel=maximumLevel, proxy=proxy)
 
-        self.channel = com.validate_numeric(channel, key='channel')
-        self.path = com.validate_str_or_none(path, key='path')
+        self.channel = channel
+        self.path = path
 
 
 class GridImageryProvider(ImageryProvider):
@@ -368,17 +402,22 @@ class MapboxImageryProvider(ImageryProvider):
     _props = ['url', 'mapId', 'accessToken', 'format', 'rectangle', 'ellipsoid',
               'minimumLevel', 'maximumLevel', 'credit', 'proxy']
 
+    url = traitlets.Unicode()
+    mapId = traitlets.Unicode()
+    accessToken = traitlets.Unicode()
+    format = traitlets.Unicode(allow_none=True)
+
     def __init__(self, url, mapId, accessToken, format=None,
                  rectangle=None, ellipsoid=None, minimumLevel=None,
                  maximumLevel=None, credit=None, proxy=None):
 
-        super(MapboxImageryProvider, self).__init__(rectangle=rectangle, ellipsoid=ellipsoid,
+        super(MapboxImageryProvider, self).__init__(url=url, rectangle=rectangle, ellipsoid=ellipsoid,
                                                     minimumLevel=minimumLevel, maximumLevel=maximumLevel,
                                                     credit=credit, proxy=proxy)
 
-        self.mapId = com.validate_str('mapId', key='mapId')
-        self.accessToken = com.validate_str('accessToken', key='accessToken')
-        self.format = com.validate_str('format', key='format')
+        self.mapId = mapId
+        self.accessToken = accessToken
+        self.format = format
 
 
 class OpenStreetMapImageryProvider(ImageryProvider):
@@ -579,6 +618,9 @@ class WebMapServiceImageryProvider(ImageryProvider):
               'tileDiscardPolicy', 'minimumLevel', 'maximumLevel',
               'credit', 'proxy', 'subdomains']
 
+    layers = traitlets.Unicode()
+    enablePickFeatures = traitlets.Bool(allow_none=True)
+
     def __init__(self, url, layers, parameters=None, getFeatureInfoParameters=None,
                  enablePickFeatures=None, getFeatureInfoFormats=None,
                  rectangle=None, tillingScheme=None, ellipsoid=None, tileWidth=None,
@@ -596,12 +638,12 @@ class WebMapServiceImageryProvider(ImageryProvider):
                                                            credit=credit, proxy=proxy,
                                                            subdomains=subdomains)
 
-        self.layers = com.validate_str(layers, key='layers')
+        self.layers = layers
 
         self.parameters = com.notimplemented(parameters)
         self.getFeatureInfoParameters = com.notimplemented(getFeatureInfoParameters)
 
-        self.enablePickFeatures = com.validate_bool_or_none(enablePickFeatures, key='enablePickFeatures')
+        self.enablePickFeatures = enablePickFeatures
 
         self.getFeatureInfoFormats = com.notimplemented(getFeatureInfoFormats)
 
@@ -652,6 +694,11 @@ class WebMapTileServiceImageryProvider(ImageryProvider):
               'tileDiscardPolicy', 'minimumLevel', 'maximumLevel', 'credit', 'proxy',
               'subdomains']
 
+    layer = traitlets.Unicode()
+    style = traitlets.Unicode()
+    format = traitlets.Unicode(allow_none=True)
+    tileMatrixSetID = traitlets.Unicode(allow_none=True)
+
     def __init__(self, url, layer, style, format=None, tileMatrixSetID=None,
                  tileMatrixLabels=None, rectangle=None, tillingScheme=None,
                  ellipsoid=None, tileWidth=None, tileHeight=None, tileDiscardPolicy=None,
@@ -667,10 +714,10 @@ class WebMapTileServiceImageryProvider(ImageryProvider):
                                                                maximumLevel=maximumLevel,
                                                                credit=credit, proxy=proxy,
                                                                subdomains=subdomains)
-        self.layer = com.validate_str(layer, key='layer')
-        self.style = com.validate_str(style, key='style')
-        self.format = com.validate_str_or_none(format, key='format')
-        self.tileMatrixSetID = com.validate_str_or_none(tileMatrixSetID, key='tileMatrixSetID')
+        self.layer = layer
+        self.style = style
+        self.format = format
+        self.tileMatrixSetID = tileMatrixSetID
 
         self.tileMatrixLabels = com.notimplemented(tileMatrixLabels)
 

@@ -4,8 +4,10 @@
 from __future__ import unicode_literals
 
 import six
+import traitlets
 
 import cesiumpy
+from cesiumpy.base import _CesiumObject
 import cesiumpy.common as com
 
 
@@ -14,15 +16,17 @@ _SINGLE_COLOR_MAP = {'B': 'BLUE', 'G': 'GREEN', 'R': 'RED',
                      'C': 'CYAN', 'M': 'MAGENTA', 'Y': 'YELLOW',
                      'K': 'BLACK', 'W': 'WHITE'}
 
-def validate_color_or_none(x, key):
-    """ validate whether x is str, unicode or None"""
-    if x is None:
-        return x
-    x = _maybe_color(x)
-    if not isinstance(x, Color):
-        msg = '{key} must be a Color instance: {x}'
-        raise ValueError(msg.format(key=key, x=x))
-    return x
+class ColorTrait(traitlets.Instance):
+
+    def __init__(self, klass=None, args=None, kw=None, **metadata):
+
+        from cesiumpy.color import Color
+        super(ColorTrait, self).__init__(klass=Color, args=args, kw=kw,
+                                         **metadata)
+
+    def validate(self, obj, value):
+        value = _maybe_color(value)
+        return super(ColorTrait, self).validate(obj, value)
 
 
 def _maybe_color(x):
@@ -41,29 +45,23 @@ def _maybe_color(x):
 
 
 
-class Color(object):
+class Color(_CesiumObject):
+
+    _props = []
+
+    red = traitlets.Int()
+    green = traitlets.Int()
+    blue = traitlets.Int()
 
     def __init__(self, red, green, blue, alpha=None):
 
         if alpha is not None:
             com.validate_numeric(alpha, 'alpha')
 
-        self._red = com.validate_numeric(red, key='red')
-        self._green = com.validate_numeric(green, key='green')
-        self._blue = com.validate_numeric(blue, key='blue')
+        self.red = red
+        self.green = green
+        self.blue = blue
         self._alpha = alpha
-
-    @property
-    def red(self):
-        return self._red
-
-    @property
-    def green(self):
-        return self._green
-
-    @property
-    def blue(self):
-        return self._blue
 
     @property
     def alpha(self):
@@ -79,12 +77,16 @@ class Color(object):
 
     def __repr__(self):
         if self.alpha is None:
-            rep = """Cesium.Color({red}, {green}, {blue})"""
+            rep = """Color({red}, {green}, {blue})"""
             return rep.format(red=self.red, green=self.green, blue=self.blue)
         else:
-            rep = """Cesium.Color({red}, {green}, {blue}, {alpha})"""
+            rep = """Color({red}, {green}, {blue}, {alpha})"""
             return rep.format(red=self.red, green=self.green,
                               blue=self.blue, alpha=self.alpha)
+
+    @property
+    def script(self):
+        return 'Cesium.{rep}'.format(rep=repr(self))
 
     def copy(self):
         return CesiumColor(red=self.red, green=self.green,
@@ -93,8 +95,10 @@ class Color(object):
 
 class NamedColor(Color):
 
+    _name = traitlets.Unicode()
+
     def __init__(self, name, alpha=None):
-        self._name = com.validate_str(name, key='name')
+        self._name = name
         self._alpha = alpha
 
     @property
@@ -103,10 +107,10 @@ class NamedColor(Color):
 
     def __repr__(self):
         if self.alpha is None:
-            rep = """Cesium.Color.{name}"""
+            rep = """Color.{name}"""
             return rep.format(name=self.name)
         else:
-            rep = """Cesium.Color.{name}.withAlpha({alpha})"""
+            rep = """Color.{name}.withAlpha({alpha})"""
             return rep.format(name=self.name, alpha=self.alpha)
 
     def copy(self):

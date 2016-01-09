@@ -7,13 +7,14 @@ import collections
 import json
 import os
 import six
+import traitlets
 
 from enum import Enum
 
 import cesiumpy.common as com
 
 
-class _CesiumObject(object):
+class _CesiumObject(traitlets.HasTraits):
     """
     Base class for Cesium instances, which can be converted to
     JavaScript instance
@@ -62,6 +63,18 @@ class _CesiumBase(_CesiumObject):
               'terrainExaggeration']
     _varname = 'widget'
 
+    width = traitlets.Unicode()
+    height = traitlets.Unicode()
+
+    scene3DOnly = traitlets.Bool(allow_none=True)
+    orderIndependentTranslucency = traitlets.Bool(allow_none=True)
+
+    useDefaultRenderLoop = traitlets.Bool(allow_none=True)
+    targetFrameRate = traitlets.Float(allow_none=True)
+    showRenderLoopErrors = traitlets.Bool(allow_none=True)
+
+    terrainExaggeration = traitlets.Float(allow_none=True)
+
     def __init__(self, divid=None, width='100%', height='100%',
                  clock=None, imageryProvider=None, terrainProvider=None,
                  skyBox=None, skyAtmosphere=None, sceneMode=None,
@@ -75,8 +88,8 @@ class _CesiumBase(_CesiumObject):
             divid = 'container-{0}'.format(id(self))
         self.divid = divid
 
-        self.width = com.validate_str(width, key='width')
-        self.height = com.validate_str(height, key='width')
+        self.width = width
+        self.height = height
 
         self.clock = com.notimplemented(clock)
 
@@ -87,21 +100,21 @@ class _CesiumBase(_CesiumObject):
         self.skyAtmosphere = com.notimplemented(skyAtmosphere)
         self.sceneMode = com.notimplemented(sceneMode)
 
-        self.scene3DOnly = com.validate_bool_or_none(scene3DOnly, key='scene3DOnly')
-        self.orderIndependentTranslucency = com.validate_bool_or_none(orderIndependentTranslucency, key='orderIndependentTranslucency')
+        self.scene3DOnly = scene3DOnly
+        self.orderIndependentTranslucency = orderIndependentTranslucency
 
         self.mapProjection = com.notimplemented(mapProjection)
         self.globe = com.notimplemented(globe)
 
-        self.useDefaultRenderLoop = com.validate_bool_or_none(useDefaultRenderLoop, key='useDefaultRenderLoop')
-        self.targetFrameRate = com.validate_numeric_or_none(targetFrameRate, key='targetFrameRate')
-        self.showRenderLoopErrors = com.validate_bool_or_none(showRenderLoopErrors, key='showRenderLoopErrors')
+        self.useDefaultRenderLoop = useDefaultRenderLoop
+        self.targetFrameRate = targetFrameRate
+        self.showRenderLoopErrors = showRenderLoopErrors
 
         self.contextOptions = com.notimplemented(contextOptions)
 
         self.creditContainer = com.notimplemented(creditContainer)
 
-        self.terrainExaggeration = com.validate_numeric_or_none(terrainExaggeration, key='terrainExaggeration')
+        self.terrainExaggeration = terrainExaggeration
 
         from cesiumpy.camera import Camera
         self._camera = Camera()
