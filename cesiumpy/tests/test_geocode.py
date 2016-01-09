@@ -59,7 +59,7 @@ class TestGeocode(unittest.TestCase):
     def test_entities_geocode(self):
         try:
             e = cesiumpy.Point(position='Los Angeles')
-            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), point : {pixelSize : 10, color : Cesium.Color.WHITE}}"""
+            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}}"""
             self.assertEqual(e.script, exp)
 
             e = cesiumpy.Label(position='Los Angeles', text='xxx')
@@ -68,7 +68,7 @@ class TestGeocode(unittest.TestCase):
 
             p = cesiumpy.Pin()
             e = cesiumpy.Billboard(position='Los Angeles', image=p)
-            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48)}}"""
+            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48.0)}}"""
             self.assertEqual(e.script, exp)
 
             e = cesiumpy.Box(position='Los Angeles', dimensions=(40e4, 30e4, 50e4))
@@ -130,7 +130,7 @@ class TestGeocode(unittest.TestCase):
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
-  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), cylinder : {length : 30000, topRadius : 10000, bottomRadius : 10000, material : Cesium.Color.AQUA}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), cylinder : {length : 30000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.AQUA}});
   widget.camera.flyTo({destination : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 100000)});
 </script>"""
             self.assertEqual(result, exp)

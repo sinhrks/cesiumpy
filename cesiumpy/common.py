@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import collections
 import itertools
 import six
+import traitlets
 
 
 # --------------------------------------------------
@@ -16,34 +17,6 @@ def notimplemented(x):
     if x is not None:
         raise NotImplementedError
     return x
-
-
-def validate_str(x, key):
-    """ validate whether x is str or unicode """
-    if not isinstance(x, six.string_types):
-        raise ValueError('{key} must be str: {x}'.format(key=key, x=x))
-    return x
-
-
-def validate_str_or_none(x, key):
-    """ validate whether x is str, unicode or None"""
-    if x is None:
-        return x
-    return validate_str(x, key=key)
-
-
-def validate_bool(x, key):
-    """ validate whether x is bool """
-    if not isinstance(x, bool):
-        raise ValueError('{key} must be bool: {x}'.format(key=key, x=x))
-    return x
-
-
-def validate_bool_or_none(x, key):
-    """ validate whether x is bool or None"""
-    if x is None:
-        return x
-    return validate_bool(x, key=key)
 
 
 def validate_numeric(x, key):

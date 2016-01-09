@@ -3,8 +3,9 @@
 
 from __future__ import unicode_literals
 
-import six
 import collections
+import six
+import traitlets
 
 from cesiumpy.base import _CesiumObject
 from cesiumpy.pinbuilder import Pin
@@ -25,6 +26,27 @@ class _CesiumEntity(_CesiumObject):
                      'scale', 'horizontalOrigin', 'verticalOrigin',
                      'eyeOffset', 'pixelOffset', 'pixelOffsetScaleByDistance']
 
+    width = traitlets.Float(allow_none=True)
+    height = traitlets.Float(allow_none=True)
+    extrudedHeight = traitlets.Float(allow_none=True)
+    show = traitlets.Bool(allow_none=True)
+    fill = traitlets.Bool(allow_none=True)
+
+    material = cesiumpy.color.ColorTrait(allow_none=True)
+    color = cesiumpy.color.ColorTrait(allow_none=True)
+    outline = traitlets.Bool(allow_none=True)
+    outlineColor = cesiumpy.color.ColorTrait(allow_none=True)
+
+    outlineWidth = traitlets.Float(allow_none=True)
+    numberOfVerticalLines = traitlets.Float(allow_none=True)
+    rotation = traitlets.Float(allow_none=True)
+    stRotation = traitlets.Float(allow_none=True)
+
+    scale = traitlets.Float(allow_none=True)
+
+    horizontalOrigin = traitlets.Instance(klass=constants.HorizontalOrigin, allow_none=True)
+    verticalOrigin = traitlets.Instance(klass=constants.VerticalOrigin, allow_none=True)
+
     def __init__(self, width=None, height=None, extrudedHeight=None,
                  show=None, fill=None, material=None, color=None,
                  outline=None, outlineColor=None, outlineWidth=None,
@@ -34,43 +56,34 @@ class _CesiumEntity(_CesiumObject):
                  eyeOffset=None, pixelOffset=None, pixelOffsetScaleByDistance=None,
                  position=None, name=None):
 
-        self.width = com.validate_numeric_or_none(width, key='width')
-        self.height = com.validate_numeric_or_none(height, key='height')
-        self.extrudedHeight = com.validate_numeric_or_none(extrudedHeight, key='extrudedHeight')
-        self.show = com.validate_bool_or_none(show, key='show')
-        self.fill = com.validate_bool_or_none(fill, key='fill')
+        self.width = width
+        self.height = height
+        self.extrudedHeight = extrudedHeight
+        self.show = show
+        self.fill = fill
 
         # color, validated in setter
         self.material = material
         self.color = color
 
-        self.outline = com.validate_bool_or_none(outline, key='outline')
+        self.outline = outline
 
         # color, validated in setter
         self.outlineColor = outlineColor
 
-        self.outlineWidth = com.validate_numeric_or_none(outlineWidth, key='outlineWidth')
-        self.numberOfVerticalLines = com.validate_numeric_or_none(numberOfVerticalLines, key='numberOfVerticalLines')
-        self.rotation = com.validate_numeric_or_none(rotation, key='rotation')
-        self.stRotation = com.validate_numeric_or_none(stRotation, key='stRotation')
+        self.outlineWidth = outlineWidth
+        self.numberOfVerticalLines = numberOfVerticalLines
+        self.rotation = rotation
+        self.stRotation = stRotation
 
         self.granularity = com.notimplemented(granularity)
         self.scaleByDistance = com.notimplemented(scaleByDistance)
         self.translucencyByDistance = com.notimplemented(translucencyByDistance)
 
-        self.scale = com.validate_numeric_or_none(scale, key='scale')
+        self.scale = scale
 
-        if horizontalOrigin is None or isinstance(horizontalOrigin, constants.HorizontalOrigin):
-            self.horizontalOrigin = horizontalOrigin
-        else:
-            msg = 'horizontalOrigin must be HorizontalOrigin: {x}'
-            raise ValueError(msg.format(x=horizontalOrigin))
-
-        if verticalOrigin is None or isinstance(verticalOrigin, constants.VerticalOrigin):
-            self.verticalOrigin = verticalOrigin
-        else:
-            msg = 'verticalOrigin must be VerticalOrigin: {x}'
-            raise ValueError(msg.format(x=verticalOrigin))
+        self.horizontalOrigin = horizontalOrigin
+        self.verticalOrigin = verticalOrigin
 
         self.eyeOffset = com.notimplemented(eyeOffset)
         self.pixelOffset = com.notimplemented(pixelOffset)
@@ -117,30 +130,6 @@ class _CesiumEntity(_CesiumObject):
             # should be defined in each classes
             raise NotImplementedError
 
-    @property
-    def material(self):
-        return self._material
-
-    @material.setter
-    def material(self, value):
-        self._material = cesiumpy.color.validate_color_or_none(value, key='material')
-
-    @property
-    def color(self):
-        return self._color
-
-    @color.setter
-    def color(self, value):
-        self._color = cesiumpy.color.validate_color_or_none(value, key='color')
-
-    @property
-    def outlineColor(self):
-        return self._outlineColor
-
-    @outlineColor.setter
-    def outlineColor(self, value):
-        self._outlineColor = cesiumpy.color.validate_color_or_none(value, key='outlineColor')
-
 
 class Point(_CesiumEntity):
     """
@@ -172,6 +161,8 @@ class Point(_CesiumEntity):
     # (which is not included in _common_props)
     _props = ['pixelSize']
 
+    pixelSize = traitlets.Float(allow_none=True)
+
     def __init__(self, position, color=None, pixelSize=10, outlineColor=None, outlineWidth=None,
                  show=None, scaleByDistance=None, translucencyByDistance=None,
                  name=None):
@@ -187,8 +178,7 @@ class Point(_CesiumEntity):
                                     translucencyByDistance=translucencyByDistance,
                                     position=position, name=name)
 
-        # ToDo: scaleByDistance and translucencyByDistance are umbiguous from cesium doc
-        self.pixelSize = com.validate_numeric_or_none(pixelSize, key='pixelSize')
+        self.pixelSize = pixelSize
 
 
 class Label(_CesiumEntity):
@@ -232,6 +222,9 @@ class Label(_CesiumEntity):
     _klass = 'label'
     _props = ['text', 'style', 'fillColor']
 
+    text = traitlets.Unicode()
+    fillColor = cesiumpy.color.ColorTrait(allow_none=True)
+
     def __init__(self, position, text, style=None, fillColor=None,
                  outlineColor=None, outlineWidth=None, show=None,
                  scale=None, horizontalOrigin=None, verticalOrigin=None,
@@ -247,19 +240,9 @@ class Label(_CesiumEntity):
                                     pixelOffsetScaleByDistance=pixelOffsetScaleByDistance,
                                     position=position, name=name)
 
-        self.text = com.validate_str(text, key='text')
+        self.text = text
         self.style = com.notimplemented(style)
-
-        # color, validated in setter
         self.fillColor = fillColor
-
-    @property
-    def fillColor(self):
-        return self._fillColor
-
-    @fillColor.setter
-    def fillColor(self, value):
-        self._fillColor = cesiumpy.color.validate_color_or_none(value, key='fillColor')
 
 
 class Billboard(_CesiumEntity):
@@ -381,6 +364,9 @@ class Ellipse(_CesiumEntity):
     _klass = 'ellipse'
     _props = ['semiMinorAxis', 'semiMajorAxis']
 
+    semiMinorAxis = traitlets.Float()
+    semiMajorAxis = traitlets.Float()
+
     def __init__(self, position, semiMinorAxis, semiMajorAxis, height=None,
                  extrudedHeight=None, show=None, fill=None, material=None,
                  outline=None, outlineColor=None, outlineWidth=None,
@@ -394,8 +380,9 @@ class Ellipse(_CesiumEntity):
                                       numberOfVerticalLines=numberOfVerticalLines,
                                       rotation=rotation, stRotation=stRotation,
                                       position=position, name=name)
-        self.semiMinorAxis = com.validate_numeric(semiMinorAxis, key='semiMinorAxis')
-        self.semiMajorAxis = com.validate_numeric(semiMajorAxis, key='semiMajorAxis')
+
+        self.semiMinorAxis = semiMinorAxis
+        self.semiMajorAxis = semiMajorAxis
 
 
 class Ellipsoid(_CesiumEntity):
@@ -431,6 +418,10 @@ class Ellipsoid(_CesiumEntity):
     _klass = 'ellipsoid'
     _props = ['radii', 'subdivisions', 'stackPartitions', 'slicePartitions']
 
+    subdivisions = traitlets.Float(allow_none=True)
+    stackPartitions = traitlets.Float(allow_none=True)
+    slicePartitions = traitlets.Float(allow_none=True)
+
     def __init__(self, position, radii, show=None, fill=None, material=None,
                  outline=None, outlineColor=None, outlineWidth=None,
                  subdivisions=None, stackPartitions=None, slicePartitions=None,
@@ -442,9 +433,9 @@ class Ellipsoid(_CesiumEntity):
         radii = cartesian._maybe_cartesian3(radii, key='radii')
         self.radii = radii
 
-        self.subdivisions = com.validate_numeric_or_none(subdivisions, key='subdivisions')
-        self.stackPartitions = com.validate_numeric_or_none(stackPartitions, key='stackPartitions')
-        self.slicePartitions = com.validate_numeric_or_none(slicePartitions, key='slicePartitions')
+        self.subdivisions = subdivisions
+        self.stackPartitions = stackPartitions
+        self.slicePartitions = slicePartitions
 
 
 class Cylinder(_CesiumEntity):
@@ -483,6 +474,11 @@ class Cylinder(_CesiumEntity):
     _klass = 'cylinder'
     _props = ['length', 'topRadius', 'bottomRadius', 'slices']
 
+    length = traitlets.Float()
+    topRadius = traitlets.Float()
+    bottomRadius = traitlets.Float()
+    slices = traitlets.Float(allow_none=True)
+
     def __init__(self, position, length, topRadius, bottomRadius,
                  show=None, fill=None, material=None,
                  outline=None, outlineColor=None, outlineWidth=None,
@@ -494,10 +490,10 @@ class Cylinder(_CesiumEntity):
                                        outlineWidth=outlineWidth,
                                        numberOfVerticalLines=numberOfVerticalLines,
                                        position=position, name=name)
-        self.length = com.validate_numeric(length, key='length')
-        self.topRadius = com.validate_numeric(topRadius, key='topRadius')
-        self.bottomRadius = com.validate_numeric(bottomRadius, key='bottomRadius')
-        self.slices = com.validate_numeric_or_none(slices, key='slices')
+        self.length = length
+        self.topRadius = topRadius
+        self.bottomRadius = bottomRadius
+        self.slices = slices
 
 
 class Polyline(_CesiumEntity):
@@ -524,6 +520,8 @@ class Polyline(_CesiumEntity):
     _klass = 'polyline'
     _props = ['positions', 'followSurface']
 
+    followSurface = traitlets.Bool(allow_none=True)
+
     def __init__(self, positions, followSurface=None, width=None,
                  show=None, material=None, granularity=None, name=None):
         # polyline uses "posisions", not "position"
@@ -532,7 +530,7 @@ class Polyline(_CesiumEntity):
                                        granularity=granularity, name=name)
 
         self.positions = cartesian.Cartesian3.fromDegreesArray(positions)
-        self.followSurface = com.validate_bool_or_none(followSurface, key='followSurface')
+        self.followSurface = followSurface
 
 
 class PolylineVolume(_CesiumEntity):
@@ -578,7 +576,6 @@ class PolylineVolume(_CesiumEntity):
                                              name=name)
 
         self.positions = cartesian.Cartesian3.fromDegreesArray(positions)
-
         self.shape = cartesian._maybe_cartesian2_list(shape, key='shape')
         self.cornerType = com.notimplemented(cornerType)
 
@@ -739,6 +736,9 @@ class Rectangle(_CesiumEntity):
     _klass = 'rectangle'
     _props = ['coordinates', 'closeTop', 'closeBottom']
 
+    closeTop = traitlets.Bool(allow_none=True)
+    closeBottom = traitlets.Bool(allow_none=True)
+
     def __init__(self, coordinates, height=None, extrudedHeight=None,
                  closeTop=None, closeBottom=None, show=None,
                  fill=None, material=None, outline=None, outlineColor=None,
@@ -753,8 +753,8 @@ class Rectangle(_CesiumEntity):
 
         self.coordinates = cartesian._maybe_rectangle(coordinates, key='coordinates')
 
-        self.closeTop = com.validate_bool_or_none(closeTop, key='closeTop')
-        self.closeBottom = com.validate_bool_or_none(closeBottom, key='closeBottom')
+        self.closeTop = closeTop
+        self.closeBottom = closeBottom
 
     def __repr__(self):
         rep = """{klass}({rep})""".format(klass=self.__class__.__name__,
@@ -839,6 +839,8 @@ class Polygon(_CesiumEntity):
     _klass = 'polygon'
     _props = ['hierarchy', 'perPositionHeight']
 
+    perPositionHeight = traitlets.Bool(allow_none=True)
+
     def __init__(self, hierarchy, height=None, extrudedHeight=None, show=None,
                  fill=None, material=None, outline=None, outlineColor=None,
                  outlineWidth=None, stRotation=None, granularity=None,
@@ -851,8 +853,7 @@ class Polygon(_CesiumEntity):
                                       granularity=granularity, name=name)
 
         self.hierarchy = cartesian.Cartesian3.fromDegreesArray(hierarchy)
-
-        self.perPositionHeight = com.validate_bool_or_none(perPositionHeight, key='perPositionHeight')
+        self.perPositionHeight = perPositionHeight
 
     @property
     def positions(self):

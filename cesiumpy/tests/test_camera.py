@@ -81,7 +81,7 @@ class TestCamera(unittest.TestCase):
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
-  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(120, 35, 5000), cylinder : {length : 10000, topRadius : 10000, bottomRadius : 20000, material : Cesium.Color.RED}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(120, 35, 5000), cylinder : {length : 10000.0, topRadius : 10000.0, bottomRadius : 20000.0, material : Cesium.Color.RED}});
   widget.camera.flyTo({destination : Cesium.Rectangle.fromDegrees(135, 30, 145, 45)});
 </script>"""
         self.assertEqual(result, exp)
@@ -95,7 +95,7 @@ class TestCamera(unittest.TestCase):
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
-  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(120, 35, 5000), cylinder : {length : 10000, topRadius : 10000, bottomRadius : 20000, material : Cesium.Color.RED}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(120, 35, 5000), cylinder : {length : 10000.0, topRadius : 10000.0, bottomRadius : 20000.0, material : Cesium.Color.RED}});
   widget.camera.flyTo({destination : Cesium.Cartesian3.fromDegrees(120, 35, 5000)});
 </script>"""
         self.assertEqual(result, exp)

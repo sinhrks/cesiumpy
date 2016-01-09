@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import unittest
 import nose
+import unittest
+import traitlets
 
 import cesiumpy
 
@@ -27,14 +28,14 @@ class TestEntity(unittest.TestCase):
 
     def test_point(self):
         e = cesiumpy.Point(position=(-110, 40, 0))
-        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), point : {pixelSize : 10, color : Cesium.Color.WHITE}}"""
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}}"""
         self.assertEqual(e.script, exp)
 
         e = e.copy()
         self.assertEqual(e.script, exp)
 
         e = cesiumpy.Point(position=(-110, 40, 0), pixelSize=100, color='blue')
-        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), point : {pixelSize : 100, color : Cesium.Color.BLUE}}"""
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), point : {pixelSize : 100.0, color : Cesium.Color.BLUE}}"""
         self.assertEqual(e.script, exp)
 
         e = e.copy()
@@ -58,7 +59,7 @@ class TestEntity(unittest.TestCase):
     def test_billboard(self):
         p = cesiumpy.Pin()
         e = cesiumpy.Billboard(position=(-110, 40, 0), image=p)
-        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48)}}"""
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48.0)}}"""
         self.assertEqual(e.script, exp)
 
         e = cesiumpy.Billboard(position=(-110, 40, 0))
@@ -69,7 +70,7 @@ class TestEntity(unittest.TestCase):
 
         p = cesiumpy.Pin().fromText('?')
         e = cesiumpy.Billboard(position=(-110, 40, 0), image=p)
-        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), billboard : {image : new Cesium.PinBuilder().fromText("?", Cesium.Color.ROYALBLUE, 48)}}"""
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), billboard : {image : new Cesium.PinBuilder().fromText("?", Cesium.Color.ROYALBLUE, 48.0)}}"""
         self.assertEqual(e.script, exp)
 
         e = e.copy()
@@ -77,7 +78,7 @@ class TestEntity(unittest.TestCase):
 
         p = cesiumpy.Pin().fromText('!', color='red')
         e = cesiumpy.Billboard(position=(-110, 40, 0), image=p, scale=3)
-        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), billboard : {image : new Cesium.PinBuilder().fromText("!", Cesium.Color.RED, 48), scale : 3}}"""
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), billboard : {image : new Cesium.PinBuilder().fromText("!", Cesium.Color.RED, 48.0), scale : 3.0}}"""
         self.assertEqual(e.script, exp)
 
         e = e.copy()
@@ -89,32 +90,32 @@ class TestEntity(unittest.TestCase):
         e = cesiumpy.Billboard(position=[-130, 40, 0], image=p,
                                horizontalOrigin=cesiumpy.HorizontalOrigin.LEFT,
                                verticalOrigin=cesiumpy.VerticalOrigin.BOTTOM)
-        exp = """{position : Cesium.Cartesian3.fromDegrees(-130, 40, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48), horizontalOrigin : Cesium.HorizontalOrigin.LEFT, verticalOrigin : Cesium.VerticalOrigin.BOTTOM}}"""
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-130, 40, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48.0), horizontalOrigin : Cesium.HorizontalOrigin.LEFT, verticalOrigin : Cesium.VerticalOrigin.BOTTOM}}"""
         self.assertEqual(e.script, exp)
 
         e = cesiumpy.Billboard(position=[-130, 40, 0], image=p,
                                horizontalOrigin=cesiumpy.HorizontalOrigin.CENTER,
                                verticalOrigin=cesiumpy.VerticalOrigin.CENTER)
-        exp = """{position : Cesium.Cartesian3.fromDegrees(-130, 40, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48), horizontalOrigin : Cesium.HorizontalOrigin.CENTER, verticalOrigin : Cesium.VerticalOrigin.CENTER}}"""
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-130, 40, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48.0), horizontalOrigin : Cesium.HorizontalOrigin.CENTER, verticalOrigin : Cesium.VerticalOrigin.CENTER}}"""
         self.assertEqual(e.script, exp)
 
         e = cesiumpy.Billboard(position=[-130, 40, 0], image=p,
                                horizontalOrigin=cesiumpy.HorizontalOrigin.RIGHT,
                                verticalOrigin=cesiumpy.VerticalOrigin.TOP)
-        exp = """{position : Cesium.Cartesian3.fromDegrees(-130, 40, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48), horizontalOrigin : Cesium.HorizontalOrigin.RIGHT, verticalOrigin : Cesium.VerticalOrigin.TOP}}"""
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-130, 40, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48.0), horizontalOrigin : Cesium.HorizontalOrigin.RIGHT, verticalOrigin : Cesium.VerticalOrigin.TOP}}"""
         self.assertEqual(e.script, exp)
 
-        msg = "horizontalOrigin must be HorizontalOrigin: 1"
-        with nose.tools.assert_raises_regexp(ValueError, msg):
+        msg = "The 'horizontalOrigin' trait of a Billboard instance must be a HorizontalOrigin or None"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             b = cesiumpy.Billboard(position=[-130, 40, 0], image=p,
-                       horizontalOrigin=1,
-                       verticalOrigin=cesiumpy.VerticalOrigin.TOP)
+                                   horizontalOrigin=1,
+                                   verticalOrigin=cesiumpy.VerticalOrigin.TOP)
 
-        msg = "verticalOrigin must be VerticalOrigin: xxx"
-        with nose.tools.assert_raises_regexp(ValueError, msg):
+        msg = "The 'verticalOrigin' trait of a Billboard instance must be a VerticalOrigin or None"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             b = cesiumpy.Billboard(position=[-130, 40, 0], image=p,
-                       horizontalOrigin=cesiumpy.HorizontalOrigin.RIGHT,
-                       verticalOrigin='xxx')
+                                   horizontalOrigin=cesiumpy.HorizontalOrigin.RIGHT,
+                                   verticalOrigin='xxx')
 
     def test_ellipse(self):
         e = cesiumpy.Ellipse(position=[-110, 40, 0], semiMinorAxis=25.0, semiMajorAxis=40.0)
@@ -154,14 +155,14 @@ class TestEntity(unittest.TestCase):
 
     def test_cylinder(self):
         e = cesiumpy.Cylinder(position=(-70, 40, 0), length=10, topRadius=100, bottomRadius=200, material=cesiumpy.color.AQUA)
-        exp = "{position : Cesium.Cartesian3.fromDegrees(-70, 40, 0), cylinder : {length : 10, topRadius : 100, bottomRadius : 200, material : Cesium.Color.AQUA}}"
+        exp = "{position : Cesium.Cartesian3.fromDegrees(-70, 40, 0), cylinder : {length : 10.0, topRadius : 100.0, bottomRadius : 200.0, material : Cesium.Color.AQUA}}"
         self.assertEqual(e.script, exp)
 
         e = e.copy()
         self.assertEqual(e.script, exp)
 
         e = cesiumpy.Cylinder(position=(-70, 40, 0), length=10, topRadius=100, bottomRadius=200)
-        exp = "{position : Cesium.Cartesian3.fromDegrees(-70, 40, 0), cylinder : {length : 10, topRadius : 100, bottomRadius : 200}}"
+        exp = "{position : Cesium.Cartesian3.fromDegrees(-70, 40, 0), cylinder : {length : 10.0, topRadius : 100.0, bottomRadius : 200.0}}"
         self.assertEqual(e.script, exp)
 
         e = e.copy()
@@ -169,7 +170,7 @@ class TestEntity(unittest.TestCase):
 
     def test_polyline(self):
         e = cesiumpy.Polyline(positions=[-77, 35, -77.1, 35], width=5, material=cesiumpy.color.RED)
-        exp = "{polyline : {positions : Cesium.Cartesian3.fromDegreesArray([-77, 35, -77.1, 35]), width : 5, material : Cesium.Color.RED}}"
+        exp = "{polyline : {positions : Cesium.Cartesian3.fromDegreesArray([-77, 35, -77.1, 35]), width : 5.0, material : Cesium.Color.RED}}"
         self.assertEqual(e.script, exp)
 
         e = e.copy()
@@ -248,17 +249,17 @@ class TestEntity(unittest.TestCase):
     def test_corridor_cornertypes(self):
         e = cesiumpy.Corridor(positions=[-130, 40, -120, 30, -110, 40], width=100000,
                               cornerType=cesiumpy.CornerType.BEVELED)
-        exp = """{corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-130, 40, -120, 30, -110, 40]), cornerType : Cesium.CornerType.BEVELED, width : 100000}}"""
+        exp = """{corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-130, 40, -120, 30, -110, 40]), cornerType : Cesium.CornerType.BEVELED, width : 100000.0}}"""
         self.assertEqual(e.script, exp)
 
         e = cesiumpy.Corridor(positions=[-130, 40, -120, 30, -110, 40], width=100000,
                               cornerType=cesiumpy.CornerType.MITERED)
-        exp = """{corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-130, 40, -120, 30, -110, 40]), cornerType : Cesium.CornerType.MITERED, width : 100000}}"""
+        exp = """{corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-130, 40, -120, 30, -110, 40]), cornerType : Cesium.CornerType.MITERED, width : 100000.0}}"""
         self.assertEqual(e.script, exp)
 
         e = cesiumpy.Corridor(positions=[-130, 40, -120, 30, -110, 40], width=100000,
                               cornerType=cesiumpy.CornerType.ROUNDED)
-        exp = """{corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-130, 40, -120, 30, -110, 40]), cornerType : Cesium.CornerType.ROUNDED, width : 100000}}"""
+        exp = """{corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-130, 40, -120, 30, -110, 40]), cornerType : Cesium.CornerType.ROUNDED, width : 100000.0}}"""
         self.assertEqual(e.script, exp)
 
         msg = "cornerType must be CornerType: ROUNDED"
@@ -439,8 +440,8 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(repr(e), exp)
 
     def test_material_property(self):
-        msg = "material must be a Color instance: 1"
-        with nose.tools.assert_raises_regexp(ValueError, msg):
+        msg = "The 'material' trait of a Box instance must be a Color or None"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             cesiumpy.Box(position=[-120, 40, 0], dimensions=(10, 20, 30),
                          material=1)
 
@@ -449,8 +450,8 @@ class TestEntity(unittest.TestCase):
         exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), box : {dimensions : new Cesium.Cartesian3(10, 20, 30), material : Cesium.Color.RED}}"""
         self.assertEqual(b.script, exp)
 
-        msg = "material must be a Color instance: 1"
-        with nose.tools.assert_raises_regexp(ValueError, msg):
+        msg = "The 'material' trait of a Box instance must be a Color or None"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             b.material = 1
 
         b.material = 'blue'
@@ -458,25 +459,25 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(b.script, exp)
 
     def test_color_property(self):
-        msg = "color must be a Color instance: 1"
-        with nose.tools.assert_raises_regexp(ValueError, msg):
+        msg = "The 'color' trait of a Point instance must be a Color or None"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             cesiumpy.Point(position=[-120, 40, 0], color=1)
 
         b = cesiumpy.Point(position=[-120, 40, 0], color='red')
-        exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), point : {pixelSize : 10, color : Cesium.Color.RED}}"""
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), point : {pixelSize : 10.0, color : Cesium.Color.RED}}"""
         self.assertEqual(b.script, exp)
 
-        msg = "color must be a Color instance: 1"
-        with nose.tools.assert_raises_regexp(ValueError, msg):
+        msg = "The 'color' trait of a Point instance must be a Color or None"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             b.color = 1
 
         b.color = 'blue'
-        exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), point : {pixelSize : 10, color : Cesium.Color.BLUE}}"""
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), point : {pixelSize : 10.0, color : Cesium.Color.BLUE}}"""
         self.assertEqual(b.script, exp)
 
     def test_outlineColor_property(self):
-        msg = "outlineColor must be a Color instance: 1"
-        with nose.tools.assert_raises_regexp(ValueError, msg):
+        msg = "The 'outlineColor' trait of a Box instance must be a Color or None"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             cesiumpy.Box(position=[-120, 40, 0], dimensions=(10, 20, 30),
                          outlineColor=1)
 
@@ -485,8 +486,8 @@ class TestEntity(unittest.TestCase):
         exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), box : {dimensions : new Cesium.Cartesian3(10, 20, 30), outlineColor : Cesium.Color.RED}}"""
         self.assertEqual(b.script, exp)
 
-        msg = "outlineColor must be a Color instance: 1"
-        with nose.tools.assert_raises_regexp(ValueError, msg):
+        msg = "The 'outlineColor' trait of a Box instance must be a Color or None"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             b.outlineColor = 1
 
         b.outlineColor = 'blue'
@@ -494,16 +495,16 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(b.script, exp)
 
     def test_fillColor_property(self):
-        msg = "fillColor must be a Color instance: 1"
-        with nose.tools.assert_raises_regexp(ValueError, msg):
+        msg = "The 'fillColor' trait of a Label instance must be a Color or None"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             cesiumpy.Label(position=[-120, 40, 0], text="xxx", fillColor=1)
 
         b = cesiumpy.Label(position=[-120, 40, 0], text="xxx", fillColor="red")
         exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), label : {text : "xxx", fillColor : Cesium.Color.RED}}"""
         self.assertEqual(b.script, exp)
 
-        msg = "fillColor must be a Color instance: 1"
-        with nose.tools.assert_raises_regexp(ValueError, msg):
+        msg = "The 'fillColor' trait of a Label instance must be a Color or None"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             b.fillColor = 1
 
         b.fillColor = 'blue'

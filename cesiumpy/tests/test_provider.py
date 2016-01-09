@@ -3,6 +3,7 @@
 
 import unittest
 import nose
+import traitlets
 
 import cesiumpy
 
@@ -41,6 +42,18 @@ class TestTerrainProvider(unittest.TestCase):
         result = terrainProvider.script
         exp = """new Cesium.CesiumTerrainProvider({url : "//assets.agi.com/stk-terrain/world", requestVertexNormals : true, requestWaterMask : true})"""
         self.assertEqual(result, exp)
+
+        msg = "The 'url' trait of a CesiumTerrainProvider instance must be a unicode string"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
+            cesiumpy.CesiumTerrainProvider(url=1)
+
+        msg = "The 'requestWaterMask' trait of a CesiumTerrainProvider instance must be a boolean"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
+            cesiumpy.CesiumTerrainProvider(url=url, requestWaterMask=1)
+
+        msg = "The 'requestVertexNormals' trait of a CesiumTerrainProvider instance must be a boolean"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
+            cesiumpy.CesiumTerrainProvider(url=url, requestVertexNormals=1)
 
     def test_EllipsoidTerrainProvider(self):
         terrainProvider = cesiumpy.EllipsoidTerrainProvider()
@@ -117,7 +130,7 @@ class TestImageProvider(unittest.TestCase):
         credit = 'Black Marble imagery courtesy NASA Earth Observatory'
         imageryProvider = cesiumpy.TileMapServiceImageryProvider(url=url, maximumLevel=8, credit=credit)
         result = imageryProvider.script
-        exp = """new Cesium.TileMapServiceImageryProvider({url : "//cesiumjs.org/tilesets/imagery/blackmarble", maximumLevel : 8, credit : "Black Marble imagery courtesy NASA Earth Observatory"})"""
+        exp = """new Cesium.TileMapServiceImageryProvider({url : "//cesiumjs.org/tilesets/imagery/blackmarble", maximumLevel : 8.0, credit : "Black Marble imagery courtesy NASA Earth Observatory"})"""
         self.assertEqual(result, exp)
 
         # ToDo:
@@ -227,7 +240,7 @@ class TestImageProvider(unittest.TestCase):
                                                                     tileMatrixSetID='default028mm', maximumLevel=19,
                                                                     credit='U. S. Geological Survey')
         result = imageryProvider.script
-        exp = """new Cesium.WebMapTileServiceImageryProvider({url : "http://basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/WMTS", layer : "USGSShadedReliefOnly", style : "default", format : "image/jpeg", maximumLevel : 19, credit : "U. S. Geological Survey"})"""
+        exp = """new Cesium.WebMapTileServiceImageryProvider({url : "http://basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/WMTS", layer : "USGSShadedReliefOnly", style : "default", format : "image/jpeg", maximumLevel : 19.0, credit : "U. S. Geological Survey"})"""
         self.assertEqual(result, exp)
 
     def test_GridImageryProvider(self):
