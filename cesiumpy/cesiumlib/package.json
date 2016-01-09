@@ -1,0 +1,136 @@
+{
+  "_args": [
+    [
+      "cesium",
+      "/Users/sin/Documents/Git/cesiumpy/cesiumpy"
+    ]
+  ],
+  "_from": "cesium@*",
+  "_id": "cesium@1.17.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/cesium",
+  "_nodeVersion": "0.12.2",
+  "_npmUser": {
+    "email": "pjcozzi@gmail.com",
+    "name": "pjcozzi"
+  },
+  "_npmVersion": "2.7.4",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "cesium",
+    "raw": "cesium",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "*",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cesium/-/cesium-1.17.0.tgz",
+  "_shasum": "73021c84346b29b4e0e3fdcd23a20726ad8fa5ac",
+  "_shrinkwrap": null,
+  "_spec": "cesium",
+  "_where": "/Users/sin/Documents/Git/cesiumpy/cesiumpy",
+  "author": {
+    "name": "Analytical Graphics, Inc.",
+    "url": "http://www.agi.com"
+  },
+  "bugs": {
+    "email": "cesium-dev@googlegroups.com",
+    "url": "https://github.com/AnalyticalGraphicsInc/cesium/issues"
+  },
+  "contributors": {
+    "name": "Cesium community",
+    "url": "https://github.com/AnalyticalGraphicsInc/cesium/blob/master/CONTRIBUTORS.md"
+  },
+  "dependencies": {
+    "requirejs": "2.1.22"
+  },
+  "description": "Cesium is a JavaScript library for creating 3D globes and 2D maps in a web browser without a plugin.",
+  "devDependencies": {
+    "almond": "0.3.1",
+    "async": "1.5.0",
+    "bluebird": "3.0.5",
+    "compression": "1.6.0",
+    "event-stream": "3.3.2",
+    "express": "4.13.3",
+    "globby": "4.0.0",
+    "gulp": "3.9.0",
+    "gulp-insert": "0.5.0",
+    "gulp-jshint": "2.0.0",
+    "gulp-rename": "1.2.2",
+    "gulp-replace": "0.5.4",
+    "gulp-zip": "3.0.2",
+    "jsdoc": "3.4.0",
+    "jshint": "2.8.0",
+    "jshint-stylish": "2.1.0",
+    "mkdirp": "0.5.1",
+    "request": "2.67.0",
+    "rimraf": "2.4.4",
+    "strip-comments": "0.3.2",
+    "yargs": "3.30.0"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "73021c84346b29b4e0e3fdcd23a20726ad8fa5ac",
+    "tarball": "http://registry.npmjs.org/cesium/-/cesium-1.17.0.tgz"
+  },
+  "gitHead": "e93e9293191075c8bd41ba8bd9c496869f6c09b9",
+  "homepage": "http://cesiumjs.org",
+  "keywords": [
+    "3D",
+    "geospatial",
+    "globe",
+    "map",
+    "webgl"
+  ],
+  "license": "Apache-2.0",
+  "maintainers": [
+    {
+      "name": "analyticalgraphicsinc",
+      "email": "todd@agi.com"
+    },
+    {
+      "name": "lilleyse",
+      "email": "lilleyse@gmail.com"
+    },
+    {
+      "name": "mramato",
+      "email": "matt.amato@gmail.com"
+    },
+    {
+      "name": "pjcozzi",
+      "email": "pjcozzi@gmail.com"
+    }
+  ],
+  "name": "cesium",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnalyticalGraphicsInc/cesium.git"
+  },
+  "scripts": {
+    "build": "gulp build",
+    "build-watch": "gulp build-watch",
+    "buildApps": "gulp buildApps",
+    "clean": "gulp clean",
+    "cloc": "gulp cloc",
+    "combine": "gulp combine",
+    "combineRelease": "gulp combineRelease",
+    "generateDocumentation": "gulp generateDocumentation",
+    "generateStubs": "gulp generateStubs",
+    "instrumentForCoverage": "gulp instrumentForCoverage",
+    "jsHint": "gulp jsHint",
+    "jsHint-watch": "gulp jsHint-watch",
+    "makeZipFile": "gulp makeZipFile",
+    "minify": "gulp minify",
+    "minifyRelease": "gulp minifyRelease",
+    "release": "gulp release",
+    "sortRequires": "gulp sortRequires",
+    "start": "node server.js"
+  },
+  "version": "1.17.0"
+}

@@ -120,9 +120,16 @@ class _CesiumBase(_CesiumObject):
         self._camera = Camera()
 
     @property
+    def _libpath(self):
+        package_path = os.path.split(__file__)[0]
+        libpath = os.path.join(package_path, 'cesiumlib', 'Build')
+        return libpath
+
+    @property
     def _load_scripts(self):
-        js = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>"""
-        css = """<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/CesiumUnminified/Widgets/widgets.css" type="text/css">"""
+        path = self._libpath
+        js = """<script src="{path}/Cesium/Cesium.js"></script>""".format(path=path)
+        css = """<link rel="stylesheet" href="{path}/Cesium/Widgets/widgets.css" type="text/css">""".format(path=path)
 
         return [js, css]
 
