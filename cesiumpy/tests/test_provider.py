@@ -26,6 +26,20 @@ class TestTerrainProvider(unittest.TestCase):
         self.assertEqual(cesiumpy.VRTheWorldTerrainProvider(url=url)._klass,
                          "Cesium.VRTheWorldTerrainProvider")
 
+    def test_viewer(self):
+        url = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer'
+        imageryProvider = cesiumpy.ArcGisMapServerImageryProvider(url=url)
+        v = cesiumpy.Viewer(divid='viewertest', imageryProvider=imageryProvider)
+        result = v.to_html()
+
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest", {baseLayerPicker : false, imageryProvider : new Cesium.ArcGisMapServerImageryProvider({url : "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"})});
+</script>"""
+        self.assertEqual(result, exp)
+
     def test_CesiumTerrainProvider(self):
         url = '//assets.agi.com/stk-terrain/world'
         terrainProvider = cesiumpy.CesiumTerrainProvider(url=url)
@@ -111,6 +125,20 @@ class TestImageProvider(unittest.TestCase):
                          "Cesium.WebMapServiceImageryProvider")
         self.assertEqual(cesiumpy.WebMapTileServiceImageryProvider(url=url, layer='xx', style='xx')._klass,
                          "Cesium.WebMapTileServiceImageryProvider")
+
+    def test_viewer(self):
+        url = '//assets.agi.com/stk-terrain/world'
+        terrainProvider = cesiumpy.CesiumTerrainProvider(url=url, requestWaterMask=True)
+        v = cesiumpy.Viewer(divid='viewertest', terrainProvider=terrainProvider)
+        result = v.to_html()
+
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest", {baseLayerPicker : false, terrainProvider : new Cesium.CesiumTerrainProvider({url : "//assets.agi.com/stk-terrain/world", requestWaterMask : true})});
+</script>"""
+        self.assertEqual(result, exp)
 
     def test_ArcGisMapServerImageryProvider(self):
         url = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer'
