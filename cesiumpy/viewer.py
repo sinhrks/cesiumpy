@@ -153,6 +153,12 @@ class Viewer(_CesiumBase):
                                      terrainExaggeration=terrainExaggeration)
 
         self.animation = animation
+
+        if self.imageryProvider is not None or self.terrainProvider is not None:
+            # disable baseLayerPicker explicitly when any provider is specified
+            if baseLayerPicker is None:
+                baseLayerPicker = False
+
         self.baseLayerPicker = baseLayerPicker
         self.fullscreenButton = fullscreenButton
         self.geocoder = geocoder
