@@ -32,7 +32,7 @@ class _CesiumEntity(_CesiumObject):
     show = traitlets.Bool(allow_none=True)
     fill = traitlets.Bool(allow_none=True)
 
-    material = cesiumpy.color.ColorTrait(allow_none=True)
+    material = cesiumpy.color.MaterialTrait(allow_none=True)
     color = cesiumpy.color.ColorTrait(allow_none=True)
     outline = traitlets.Bool(allow_none=True)
     outlineColor = cesiumpy.color.ColorTrait(allow_none=True)

@@ -138,6 +138,13 @@ class TestEntity(unittest.TestCase):
         e = e.copy()
         self.assertEqual(e.script, exp)
 
+    def test_ellipse_image_material(self):
+        e = cesiumpy.Ellipse(position=[-110, 40, 0], semiMinorAxis=25.0,
+                             semiMajorAxis=40.0, material='xxx.png')
+        self.assertEqual(repr(e), 'Ellipse(-110, 40, 0)')
+        exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), ellipse : {semiMinorAxis : 25.0, semiMajorAxis : 40.0, material : new Cesium.ImageMaterialProperty({image : "xxx.png"})}}"""
+        self.assertEqual(e.script, exp)
+
     def test_ellipsoid(self):
         e = cesiumpy.Ellipsoid(position=(-70, 40, 0), radii=(20, 30, 40), material=cesiumpy.color.GREEN)
         exp = "{position : Cesium.Cartesian3.fromDegrees(-70, 40, 0), ellipsoid : {radii : new Cesium.Cartesian3(20, 30, 40), material : Cesium.Color.GREEN}}"
@@ -440,7 +447,7 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(repr(e), exp)
 
     def test_material_property(self):
-        msg = "The 'material' trait of a Box instance must be a Color or None"
+        msg = "The 'material' trait of a Box instance must be a Material or None"
         with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             cesiumpy.Box(position=[-120, 40, 0], dimensions=(10, 20, 30),
                          material=1)
@@ -450,7 +457,7 @@ class TestEntity(unittest.TestCase):
         exp = """{position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), box : {dimensions : new Cesium.Cartesian3(10, 20, 30), material : Cesium.Color.RED}}"""
         self.assertEqual(b.script, exp)
 
-        msg = "The 'material' trait of a Box instance must be a Color or None"
+        msg = "The 'material' trait of a Box instance must be a Material or None"
         with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             b.material = 1
 
