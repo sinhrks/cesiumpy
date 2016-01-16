@@ -3,9 +3,6 @@
 
 from __future__ import unicode_literals
 
-import os
-import warnings
-
 import traitlets
 
 from cesiumpy.base import _CesiumObject
@@ -21,12 +18,7 @@ class DataSource(_CesiumObject):
 
     def __init__(self, sourceUri):
         self.sourceUri = sourceUri
-        self._check_uri(self.sourceUri)
-
-    def _check_uri(self, sourceUri):
-        if not os.path.exists(sourceUri):
-            msg = "Unable to read specified path, be sure to the output HTML can read the path: {0}"
-            warnings.warn(msg.format(sourceUri))
+        com._check_uri(self.sourceUri)
 
     @property
     def script(self):
@@ -52,6 +44,9 @@ class CustomDataSource(DataSource):
 
 class CzmlDataSource(DataSource):
     pass
+
+    def __init__(self, sourceUri):
+        super(CzmlDataSource, self).__init__(sourceUri=sourceUri)
 
 
 class GeoJsonDataSource(DataSource):

@@ -5,9 +5,19 @@ from __future__ import unicode_literals
 
 import collections
 import itertools
+import os
 import six
+import warnings
 import traitlets
 
+# --------------------------------------------------
+# Misc
+# --------------------------------------------------
+
+def _check_uri(sourceUri):
+    if not os.path.exists(sourceUri):
+        msg = "Unable to read specified path, be sure to the output HTML can read the path: {0}"
+        warnings.warn(msg.format(sourceUri))
 
 # --------------------------------------------------
 # Validators

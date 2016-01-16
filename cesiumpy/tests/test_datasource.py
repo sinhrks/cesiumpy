@@ -11,6 +11,13 @@ import cesiumpy
 
 class TestDataSource(unittest.TestCase):
 
+    def test_czmldatasource(self):
+        ds = cesiumpy.CzmlDataSource('xxx.czml')
+        exp = 'Cesium.CzmlDataSource.load("xxx.czml")'
+        self.assertEqual(ds.script, exp)
+        ds = cesiumpy.CzmlDataSource.load('xxx.czml')
+        self.assertEqual(ds.script, exp)
+
     def test_geojsondatasource(self):
         ds = cesiumpy.GeoJsonDataSource('xxx.geojson')
 
@@ -42,6 +49,20 @@ class TestDataSource(unittest.TestCase):
         self.assertEqual(ds.script, exp)
         ds = cesiumpy.KmlDataSource.load('xxx.kml')
         self.assertEqual(ds.script, exp)
+
+    def test_czml_viewer(self):
+        v = cesiumpy.Viewer(divid='viewertest')
+        d = cesiumpy.CzmlDataSource('data/simple.czml')
+        v.dataSources.add(d)
+        result = v.to_html()
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest");
+  widget.dataSources.add(Cesium.CzmlDataSource.load("data/simple.czml"));
+</script>"""
+        self.assertEqual(result, exp)
 
     def test_geojson_viewer(self):
         ds = cesiumpy.GeoJsonDataSource('./test.geojson', markerSymbol='?')

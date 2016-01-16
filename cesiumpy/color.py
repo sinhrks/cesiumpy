@@ -16,6 +16,21 @@ _SINGLE_COLOR_MAP = {'B': 'BLUE', 'G': 'GREEN', 'R': 'RED',
                      'C': 'CYAN', 'M': 'MAGENTA', 'Y': 'YELLOW',
                      'K': 'BLACK', 'W': 'WHITE'}
 
+
+class MaterialTrait(traitlets.Instance):
+
+    def __init__(self, args=None, kw=None, **metadata):
+        super(MaterialTrait, self).__init__(klass=Material, args=args, kw=kw,
+                                         **metadata)
+
+    def validate(self, obj, value):
+        value = _maybe_color(value)
+        if isinstance(value, six.string_types):
+            # regard value as image file path
+            value = ImageMaterialProperty(value)
+        return super(MaterialTrait, self).validate(obj, value)
+
+
 class ColorTrait(traitlets.Instance):
 
     def __init__(self, args=None, kw=None, **metadata):
@@ -42,19 +57,54 @@ def _maybe_color(x):
     return x
 
 
+class Material(_CesiumObject):
+    pass
 
-class Color(_CesiumObject):
+
+class ImageMaterialProperty(Material):
+    """
+    ImageMaterialProperty
+
+    Parameters
+    ----------
+
+    image: str
+        A Property specifying the Image, URL, Canvas, or Video.
+    repeat: Cartesian2, default new Cartesian2(1.0, 1.0)
+        A Cartesian2 Property specifying the number of times
+    """
+
+    _props = ['image', 'repeat']
+
+    image = traitlets.Unicode()
+
+    def __init__(self, image, repeat=None):
+        self.image = image
+        com._check_uri(self.image)
+
+        self.repeat = com.notimplemented(repeat)
+
+    def __repr__(self):
+        rep = """ImageMaterialProperty({image})"""
+        return rep.format(image=self.image)
+
+    @property
+    def script(self):
+        props = super(ImageMaterialProperty, self).script
+        return 'new Cesium.{klass}({props})'.format(klass=self.__class__.__name__,
+                                                    props=props)
+
+
+class Color(Material):
 
     _props = []
 
     red = traitlets.Int()
     green = traitlets.Int()
     blue = traitlets.Int()
+    _alpha = traitlets.Float(min=0., max=1., allow_none=True)
 
     def __init__(self, red, green, blue, alpha=None):
-
-        if alpha is not None:
-            com.validate_numeric(alpha, 'alpha')
 
         self.red = red
         self.green = green
@@ -65,10 +115,10 @@ class Color(_CesiumObject):
     def alpha(self):
         return self._alpha
 
-    def set_alpha(self, alpha):
-        if alpha is not None:
-            com.validate_numeric(alpha, key='alpha')
+    def withAlpha(self, alpha):
+        return self.set_alpha(alpha)
 
+    def set_alpha(self, alpha):
         c = self.copy()
         c._alpha = alpha
         return c

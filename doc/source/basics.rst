@@ -282,6 +282,7 @@ can draw external data as entities.
 
 ``cesiumpy`` currently supports following ``DataSource``.
 
+- ``CzmlJsonDataSource``
 - ``GeoJsonDataSource``
 - ``KmlDataSource``
 

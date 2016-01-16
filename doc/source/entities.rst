@@ -316,8 +316,36 @@ You can change how ``Pin`` looks as below. Also, ``Pin`` can have label text to 
 
 .. code-block:: python
 
-  >>> cesiumpy.Pin(color='green', size=24)
-  Pin(Cesium.Color.GREEN, 24)
+  >>> v = cesiumpy.Viewer(**options)
+  >>> pin1 = cesiumpy.Pin()
+  >>> bill1 = cesiumpy.Billboard(position=[-120, 40, 0], image=pin1)
+  >>> v.entities.add(bill1)
 
-  >>> cesiumpy.Pin.fromText('!', color='red')
-  Pin("!", Cesium.Color.RED, 48)
+  >>> pin2 = cesiumpy.Pin(cesiumpy.color.RED)
+  >>> bill2 = cesiumpy.Billboard(position=[-100, 40, 0], image=pin2)
+  >>> v.entities.add(bill2)
+
+  >>> pin3 = cesiumpy.Pin.fromText('!', color=cesiumpy.color.GREEN)
+  >>> bill3 = cesiumpy.Billboard(position=[-80, 40, 0], image=pin3)
+  >>> v.entities.add(bill3)
+  >>> v
+
+.. image:: ./_static/viewer03.png
+
+
+Material
+--------
+
+You can use image file path via ``material`` keyword. The entity will be filled with the
+specified image.
+
+
+.. code-block:: python
+
+  v = cesiumpy.Viewer()
+  e = cesiumpy.Ellipse(position=(-120.0, 40.0, 0), semiMinorAxis=40e4,
+                       semiMajorAxis=40e4, material='data/cesium_logo.png')
+  v.entities.add(e)
+  v
+
+.. image:: ./_static/entities_imagematerial.png

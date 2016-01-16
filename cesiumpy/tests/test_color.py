@@ -4,7 +4,18 @@
 import nose
 import unittest
 
+import traitlets
+
 import cesiumpy
+
+
+class TestImageMaterial(unittest.TestCase):
+
+    def test_imagematerial(self):
+        m = cesiumpy.color.ImageMaterialProperty('xxx.png')
+        self.assertEqual(repr(m), 'ImageMaterialProperty(xxx.png)')
+        self.assertEqual(m.script, """new Cesium.ImageMaterialProperty({image : "xxx.png"})""")
+
 
 
 class TestColor(unittest.TestCase):
@@ -101,6 +112,28 @@ class TestColor(unittest.TestCase):
         self.assertIs(cesiumpy.color._maybe_color('K'), cesiumpy.color.BLACK)
         self.assertIs(cesiumpy.color._maybe_color('W'), cesiumpy.color.WHITE)
 
+    def test_alpha(self):
+        aqua = cesiumpy.color.AQUA
+
+        res = aqua.set_alpha(0.3)
+        exp = "Cesium.Color.AQUA.withAlpha(0.3)"
+        self.assertEqual(res.script, exp)
+
+        res = aqua.withAlpha(0.3)
+        exp = "Cesium.Color.AQUA.withAlpha(0.3)"
+        self.assertEqual(res.script, exp)
+
+        res = aqua.withAlpha(1.0)
+        exp = "Cesium.Color.AQUA.withAlpha(1.0)"
+        self.assertEqual(res.script, exp)
+
+        res = aqua.withAlpha(0.0)
+        exp = "Cesium.Color.AQUA.withAlpha(0.0)"
+        self.assertEqual(res.script, exp)
+
+        msg = "The value of the '_alpha' trait of a NamedColor instance should be between"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
+            aqua.withAlpha(1.1)
 
 if __name__ == '__main__':
     import nose
