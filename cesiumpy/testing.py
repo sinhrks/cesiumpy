@@ -18,3 +18,13 @@ def _skip_if_no_shapely():
     except ImportError:
         import nose
         raise nose.SkipTest("no shapely.geometry module")
+
+
+def _skip_if_no_matplotlib():
+    try:
+        import matplotlib
+        matplotlib.use('Agg')
+        import matplotlib.pyplot
+    except ImportError:
+        import nose
+        raise nose.SkipTest("no matplotlib.pyplot module")
