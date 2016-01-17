@@ -15,7 +15,7 @@ import cesiumpy.common as com
 class Pin(_CesiumObject):
 
     # default color, all attrs are mandatory
-    color = cesiumpy.color.ColorTrait()
+    color = cesiumpy.entities.color.ColorTrait()
     size = traitlets.Float()
     text = traitlets.Unicode(allow_none=True)
 
@@ -23,7 +23,7 @@ class Pin(_CesiumObject):
 
         if color is None:
             # default color, all attrs are mandatory
-            color = cesiumpy.color.ROYALBLUE
+            color = cesiumpy.entities.color.ROYALBLUE
 
         self.color = color
         self.size = size

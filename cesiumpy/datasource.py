@@ -4,10 +4,11 @@
 from __future__ import unicode_literals
 
 import traitlets
+import warnings
 
 from cesiumpy.base import _CesiumObject
-import cesiumpy.color
 import cesiumpy.common as com
+import cesiumpy.entities.color
 
 
 class DataSource(_CesiumObject):

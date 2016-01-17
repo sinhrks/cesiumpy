@@ -7,10 +7,10 @@ import collections
 import six
 import traitlets
 
+import cesiumpy
 from cesiumpy.base import _CesiumObject
-from cesiumpy.pinbuilder import Pin
+from cesiumpy.entities.pinbuilder import Pin
 import cesiumpy.cartesian as cartesian
-import cesiumpy.color
 import cesiumpy.constants as constants
 import cesiumpy.common as com
 
@@ -32,7 +32,7 @@ class _CesiumEntity(_CesiumObject):
     show = traitlets.Bool(allow_none=True)
     fill = traitlets.Bool(allow_none=True)
 
-    material = cesiumpy.color.MaterialTrait(allow_none=True)
+    material = cesiumpy.entities.material.MaterialTrait(allow_none=True)
     color = cesiumpy.color.ColorTrait(allow_none=True)
     outline = traitlets.Bool(allow_none=True)
     outlineColor = cesiumpy.color.ColorTrait(allow_none=True)
