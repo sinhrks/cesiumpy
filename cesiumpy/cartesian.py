@@ -8,7 +8,8 @@ import traitlets
 
 from cesiumpy.base import _CesiumObject
 import cesiumpy.common as com
-import cesiumpy.geocode as geocode
+import cesiumpy.extension.geocode as geocode
+import cesiumpy.extension.shapefile as shapefile
 
 
 class _Cartesian(_CesiumObject):
@@ -35,7 +36,7 @@ def _maybe_cartesian2(x, key, degrees=False):
     if isinstance(x, Cartesian2):
         return x
 
-    x = com._maybe_shapely_point(x)
+    x = shapefile._maybe_shapely_point(x)
     x = com.validate_listlike(x, key=key)
 
     if len(x) == 2:
@@ -50,7 +51,7 @@ def _maybe_cartesian3(x, key, degrees=False):
     if isinstance(x, Cartesian3):
         return x
 
-    x = com._maybe_shapely_point(x)
+    x = shapefile._maybe_shapely_point(x)
 
     # currently, only Cartesian3 tries to geocode passed loc
     x = geocode._maybe_geocode(x, height=0)
@@ -69,7 +70,7 @@ def _maybe_cartesian4(x, key, degrees=False):
     if isinstance(x, Cartesian4):
         return x
 
-    x = com._maybe_shapely_point(x)
+    x = shapefile._maybe_shapely_point(x)
     x = com.validate_listlike(x, key=key)
 
     if len(x) == 4:
@@ -154,8 +155,8 @@ class Cartesian3(_Cartesian):
             x = x.x
 
         # convert shaply.Polygon to coordinateslist
-        x = com._maybe_shapely_polygon(x)
-        x = com._maybe_shapely_line(x)
+        x = shapefile._maybe_shapely_polygon(x)
+        x = shapefile._maybe_shapely_line(x)
         x = geocode._maybe_geocode(x, height=0)
 
         if com.is_listlike_2elem(x):

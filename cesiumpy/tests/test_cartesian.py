@@ -97,7 +97,12 @@ class TestCartesian(unittest.TestCase):
             cesiumpy.Cartesian3.fromDegreesArray([(10, 20), (200, 20)])
 
         with nose.tools.assert_raises_regexp(ValueError, msg):
-            cesiumpy.Cartesian3.fromDegreesArray([('X', 20), (20, 20)])
+            import geopy
+            try:
+                # string causes geocode search
+                cesiumpy.Cartesian3.fromDegreesArray([('X', 20), (20, 20)])
+            except geopy.exc.GeocoderQuotaExceeded:
+                raise nose.SkipTest("exceeded geocoder quota")
 
         msg = "x must be a list consists from longitude and latitude"
         with nose.tools.assert_raises_regexp(ValueError, msg):

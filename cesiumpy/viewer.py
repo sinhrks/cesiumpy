@@ -180,7 +180,7 @@ class Viewer(_CesiumBase):
 
         # ToDo: API to disable all flags to False
         # store cesium objects as entities
-        from cesiumpy.entity import _CesiumEntity
+        from cesiumpy.entities.entity import _CesiumEntity
         self._entities = RistrictedList(allowed=_CesiumEntity,
                                         varname=self._varname,
                                         propertyname='entities')

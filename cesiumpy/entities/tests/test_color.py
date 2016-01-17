@@ -9,15 +9,6 @@ import traitlets
 import cesiumpy
 
 
-class TestImageMaterial(unittest.TestCase):
-
-    def test_imagematerial(self):
-        m = cesiumpy.color.ImageMaterialProperty('xxx.png')
-        self.assertEqual(repr(m), 'ImageMaterialProperty(xxx.png)')
-        self.assertEqual(m.script, """new Cesium.ImageMaterialProperty({image : "xxx.png"})""")
-
-
-
 class TestColor(unittest.TestCase):
 
     def test_maybe_color(self):

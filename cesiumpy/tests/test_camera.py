@@ -101,18 +101,22 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(result, exp)
 
     def test_geocode_defaultheight(self):
-        viewer = cesiumpy.Viewer(divid='viewertest')
-        viewer.camera.flyTo(u'Los Angeles')
-        result = viewer.to_html()
+        import geopy
+        try:
+            viewer = cesiumpy.Viewer(divid='viewertest')
+            viewer.camera.flyTo(u'Los Angeles')
+            result = viewer.to_html()
 
-        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+            exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
 <link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
   widget.camera.flyTo({destination : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 100000)});
 </script>"""
-        self.assertEqual(result, exp)
+            self.assertEqual(result, exp)
+        except geopy.exc.GeocoderQuotaExceeded:
+            raise nose.SkipTest("exceeded geocoder quota")
 
 
 if __name__ == '__main__':

@@ -111,7 +111,6 @@ class _CesiumBase(_CesiumObject):
         self.showRenderLoopErrors = showRenderLoopErrors
 
         self.contextOptions = com.notimplemented(contextOptions)
-
         self.creditContainer = com.notimplemented(creditContainer)
 
         self.terrainExaggeration = terrainExaggeration
