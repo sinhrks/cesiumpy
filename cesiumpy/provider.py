@@ -478,6 +478,10 @@ class SingleTileImageryProvider(ImageryProvider):
 
     def __init__(self, url, rectangle=None, ellipsoid=None, credit=None, proxy=None):
 
+        from cesiumpy.entities.material import TemporaryImage
+        if isinstance(url, TemporaryImage):
+            url = url.script
+
         super(SingleTileImageryProvider, self).__init__(url=url, rectangle=rectangle,
                                                         ellipsoid=ellipsoid,
                                                         credit=credit, proxy=proxy)
