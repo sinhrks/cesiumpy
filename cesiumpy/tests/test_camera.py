@@ -12,7 +12,9 @@ import cesiumpy
 class TestCamera(unittest.TestCase):
 
     def test_camera_basics(self):
-        c = cesiumpy.Camera()
+        widget = cesiumpy.CesiumWidget(divid='cesiumwidget')
+
+        c = cesiumpy.Camera(widget)
         self.assertEqual(c.script, '')
 
         c.flyTo((1, 2, 3))
@@ -36,7 +38,9 @@ class TestCamera(unittest.TestCase):
             c.flyTo((1, 200, 3))
 
     def test_camera_repr(self):
-        c = cesiumpy.Camera()
+        widget = cesiumpy.CesiumWidget(divid='cesiumwidget')
+
+        c = cesiumpy.Camera(widget)
         self.assertEqual(repr(c), "Camera(destination=default)")
 
         c.flyTo((-130, 40, 10000))

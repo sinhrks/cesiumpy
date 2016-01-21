@@ -116,7 +116,11 @@ class _CesiumBase(_CesiumObject):
         self.terrainExaggeration = terrainExaggeration
 
         from cesiumpy.camera import Camera
-        self._camera = Camera()
+        self._camera = Camera(self)
+
+        self._scripts = RistrictedList(self, allowed=six.string_types,
+                                       varname=self._varname,
+                                       propertyname='script')
 
     @property
     def _load_scripts(self):
@@ -164,8 +168,16 @@ class _CesiumBase(_CesiumObject):
             script = """var {varname} = new {klass}("{divid}");"""
             script = script.format(varname=self._varname, klass=self._klass,
                                    divid=self.divid)
-        return ([script] + self._entities_script +
-                self._dataSources_script + [self._camera_script])
+        return ([script] +
+                self._entities_script +
+                self._dataSources_script +
+                [self._camera_script] +
+                self.scripts._items
+                )
+
+    @property
+    def entities(self):
+        return []
 
     @property
     def _entities_script(self):
@@ -176,6 +188,11 @@ class _CesiumBase(_CesiumObject):
     def _dataSources_script(self):
         # temp, should return list
         return []
+
+    @property
+    def camera(self):
+        return self._camera
+
     @property
     def _camera_script(self):
         camera = self.camera.script
@@ -184,12 +201,16 @@ class _CesiumBase(_CesiumObject):
             script = script.format(varname=self._varname,
                                    camera=camera)
             return script
+        elif len(self.entities) > 0:
+            # zoom to added entities
+            script = "{varname}.zoomTo({varname}.entities)"
+            return script.format(varname=self._varname)
         else:
             return ''
 
     @property
-    def camera(self):
-        return self._camera
+    def scripts(self):
+        return self._scripts
 
     def _wrap_js(self, script):
         if not isinstance(script, list):
@@ -206,3 +227,56 @@ class _CesiumBase(_CesiumObject):
 
         indent = ' ' * indent
         return [indent + s for s in script]
+
+
+class RistrictedList(object):
+
+    def __init__(self, widget, allowed, varname, propertyname):
+        self.widget = widget
+
+        self._items = []
+        self._allowed = allowed
+        self._varname = varname
+        self._propertyname = propertyname
+
+    def add(self, item):
+        if com.is_listlike(item):
+            for i in item:
+                self.add(i)
+        elif isinstance(item, self._allowed):
+            self._items.append(item)
+        else:
+            msg = 'item must be {allowed} instance: {item}'
+
+            if isinstance(self._allowed, tuple):
+                allowed = ', '.join([a.__name__ for a in self._allowed])
+            else:
+                allowed = self._allowed
+
+            raise ValueError(msg.format(allowed=allowed, item=item))
+
+    def clear(self):
+        self._items = []
+
+    def __len__(self):
+        return len(self._items)
+
+    def __getitem__(self, item):
+        return self._items[item]
+
+    @property
+    def script(self):
+        """
+        return list of scripts built from entities
+        each script may be a list of comamnds also
+        """
+        results = []
+        for item in self._items:
+            script = """{varname}.{propertyname}.add({item});"""
+            script = script.format(varname=self._varname,
+                                   propertyname=self._propertyname,
+                                   item=item.script)
+            results.append(script)
+        return results
+
+

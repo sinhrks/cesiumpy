@@ -87,6 +87,7 @@ class TestViewer(unittest.TestCase):
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest", {animation : true, baseLayerPicker : false, fullscreenButton : false, geocoder : false, homeButton : false, infoBox : false, sceneModePicker : true, selectionIndicator : false, timeline : false, navigationHelpButton : false, navigationInstructionsInitiallyVisible : false});
   widget.entities.add({name : "x", position : Cesium.Cartesian3.fromDegrees(-110, 50, 2000000), cylinder : {length : 4000000.0, topRadius : 100000.0, bottomRadius : 100000.0, material : Cesium.Color.AQUA}});
+  widget.zoomTo(widget.entities)
 </script>"""
         self.assertEqual(result, exp)
 
@@ -112,6 +113,7 @@ class TestViewer(unittest.TestCase):
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest", {animation : true, baseLayerPicker : false, fullscreenButton : false, geocoder : false, homeButton : false, infoBox : false, sceneModePicker : true, selectionIndicator : false, timeline : false, navigationHelpButton : false, navigationInstructionsInitiallyVisible : false});
   widget.entities.add({name : "x", polygon : {hierarchy : Cesium.Cartesian3.fromDegreesArray([-109.080842, 45.002073, -105.91517, 45.002073, -104.058488, 44.996596, -104.053011, 43.002989, -104.053011, 41.003906, -105.728954, 40.998429, -107.919731, 41.003906, -109.04798, 40.998429, -111.047063, 40.998429, -111.047063, 42.000709, -111.047063, 44.476286, -111.05254, 45.002073]), material : Cesium.Color.RED}});
+  widget.zoomTo(widget.entities)
 </script>"""
         self.assertEqual(result, exp)
 
@@ -179,6 +181,7 @@ class TestViewer(unittest.TestCase):
   widget.entities.add({corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-120, 30, -90, 35, -60, 30]), width : 200000.0, material : Cesium.Color.RED}});
   widget.entities.add({polyline : {positions : Cesium.Cartesian3.fromDegreesArray([-120, 25, -90, 30, -60, 25]), width : 0.5, material : Cesium.Color.BLUE}});
   widget.entities.add({polylineVolume : {positions : Cesium.Cartesian3.fromDegreesArray([-120, 20, -90, 25, -60, 20]), shape : [new Cesium.Cartesian2(-50000, -50000), new Cesium.Cartesian2(50000, -50000), new Cesium.Cartesian2(50000, 50000), new Cesium.Cartesian2(-50000, 50000)], material : Cesium.Color.GREEN}});
+  widget.zoomTo(widget.entities)
 </script>"""
         self.assertEqual(result, exp)
 
@@ -203,6 +206,38 @@ class TestViewer(unittest.TestCase):
         viewer.entities.clear()
         result = viewer.to_html()
         self.assertEqual(result, exp_clear)
+
+    def test_add_scripts(self):
+
+        viewer = cesiumpy.Viewer(divid="viewertest")
+        viewer = cesiumpy.Viewer(divid="viewertest")
+        viewer.scripts.add('console.log("xxx");')
+        result = viewer.to_html()
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest");
+  console.log("xxx");
+</script>"""
+        self.assertEqual(result, exp)
+
+        viewer = cesiumpy.Viewer(divid="viewertest")
+        viewer.scripts.add(['console.log("xxx");', 'console.log("yyy");'])
+        result = viewer.to_html()
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest");
+  console.log("xxx");
+  console.log("yyy");
+</script>"""
+        self.assertEqual(result, exp)
+
+        msg = "item must be"
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            viewer.scripts.add(1)
 
 
 if __name__ == '__main__':
