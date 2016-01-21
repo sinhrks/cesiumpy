@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import unittest
 import nose
+import unittest
+
+import re
 import traitlets
 
 import cesiumpy
-
+import cesiumpy.testing as tm
 
 
 class TestTerrainProvider(unittest.TestCase):
@@ -189,6 +191,19 @@ class TestImageProvider(unittest.TestCase):
         result = imageryProvider.script
         exp = """new Cesium.SingleTileImageryProvider({url : "../images/Cesium_Logo_overlay.png", rectangle : Cesium.Rectangle.fromDegrees(-115.0, 38.0, -107.0, 39.75)})"""
         self.assertEqual(result, exp)
+
+    def test_SingleTimeImageryProvider_tempfile(self):
+        tm._skip_if_no_matplotlib()
+
+        import numpy as np
+        import matplotlib.pyplot as plt
+
+        img = np.random.randint(0, 255, (100, 100, 3))
+        ax = plt.imshow(img)
+        img = cesiumpy.entities.material.TemporaryImage(ax.figure)
+        m = cesiumpy.SingleTileImageryProvider(img, rectangle=(-120.0, 40.0, -100, 60))
+        self.assertTrue(re.match("""new Cesium\\.SingleTileImageryProvider\\(\\{url : "\w+\\.png", rectangle : Cesium\\.Rectangle\\.fromDegrees\\(-120\\.0, 40\\.0, -100\\.0, 60\\.0\\)\\}\\)""", m.script))
+        plt.close()
 
     def test_BingMapsImageryProvider(self):
         """

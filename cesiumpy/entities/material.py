@@ -46,10 +46,11 @@ class ImageMaterialProperty(Material):
     """
 
     _props = ['image', 'repeat']
-
     image = traitlets.Unicode()
 
     def __init__(self, image, repeat=None):
+        if isinstance(image, TemporaryImage):
+            image = image.script
         self.image = image
         com._check_uri(self.image)
 
@@ -66,41 +67,53 @@ class ImageMaterialProperty(Material):
                                                     props=props)
 
 
-class TemporaryImageMaterialProperty(ImageMaterialProperty):
+class TemporaryImage(_CesiumObject):
     """
-    ImageMaterialProperty which can handle temporary image.
-    Temporary image is output on the current working directory, and will be
-    deleted when the instance is deleted.
+    Receive an image and output a temp file
 
     Parameters
     ----------
 
-    figure: matplotlib.figure
-        A matplotlib figure saved as temporary image
-    repeat: Cartesian2, default new Cartesian2(1.0, 1.0)
-        A Cartesian2 Property specifying the number of times
+    figure: matplotib Figure or Axes
+        Instance to be drawn as an image.
+        When trim is True, figure should only contain a single Axes.
+    trim: bool, default True
+        Whether to trim margins of
     """
 
-    def __init__(self, figure, repeat=None):
-        # using absolute path of tempfile doesn't work,
-        # thus can't use NamedTemporaryFile
+    path = traitlets.Unicode()
+    trim = traitlets.Bool()
+
+    def __init__(self, figure, trim=True):
         _, tmp = tempfile.mkstemp(dir='.', suffix='.png')
         # store full path
-        self.tempfile = tmp
-        figure.savefig(self.tempfile, format="png", transparent=True)
+        self.path = tmp
+        self.trim = trim
 
-        image = os.path.basename(tmp)
-        super(TemporaryImageMaterialProperty, self).__init__(image, repeat=repeat)
+        import matplotlib
+        if not isinstance(figure, matplotlib.figure.Figure):
+            # retrieve figure from Axes and AxesImage
+            figure = getattr(figure, 'figure', figure)
 
-        self.image = image
-        com._check_uri(self.image)
+        if isinstance(figure, matplotlib.figure.Figure):
+            if trim and len(figure.axes) > 1:
+                raise ValueError('Unable to trim a Figure contains multiple Axes')
+            if trim:
+                # result contains axis labels without this
+                figure.axes[0].set_axis_off()
+                figure.savefig(self.path, format="png", transparent=True,
+                               bbox_inches='tight', pad_inches=0)
+            else:
+                figure.savefig(self.path, format="png", transparent=True)
+        else:
+            raise ValueError(figure)
+
 
     @property
     def script(self):
-        props = super(ImageMaterialProperty, self).script
-        return 'new Cesium.ImageMaterialProperty({props})'.format(props=props)
+        return '{0}'.format(os.path.basename(self.path))
 
     def __del__(self):
-        if os.path.exists(self.tempfile):
-            os.remove(self.tempfile)
+        if os.path.exists(self.path):
+            os.remove(self.path)
 
