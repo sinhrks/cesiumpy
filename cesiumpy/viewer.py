@@ -7,7 +7,7 @@ import collections
 import json
 import traitlets
 
-from cesiumpy.base import _CesiumBase
+from cesiumpy.base import _CesiumBase, RistrictedList
 import cesiumpy.common as com
 
 
@@ -181,11 +181,11 @@ class Viewer(_CesiumBase):
         # ToDo: API to disable all flags to False
         # store cesium objects as entities
         from cesiumpy.entities.entity import _CesiumEntity
-        self._entities = RistrictedList(allowed=_CesiumEntity,
+        self._entities = RistrictedList(self, allowed=_CesiumEntity,
                                         varname=self._varname,
                                         propertyname='entities')
         from cesiumpy.datasource import DataSource
-        self._dataSources = RistrictedList(allowed=DataSource,
+        self._dataSources = RistrictedList(self, allowed=DataSource,
                                            varname=self._varname,
                                            propertyname='dataSources')
 
@@ -209,48 +209,4 @@ class Viewer(_CesiumBase):
     @property
     def _dataSources_script(self):
         return self._dataSources.script
-
-
-class RistrictedList(object):
-
-    def __init__(self, allowed, varname, propertyname):
-        self._items = []
-        self._allowed = allowed
-        self._varname = varname
-        self._propertyname = propertyname
-
-    def add(self, item):
-        if com.is_listlike(item):
-            for i in item:
-                self.add(i)
-        elif isinstance(item, self._allowed):
-            self._items.append(item)
-        else:
-            # ToDo: msg format when allowed is a tuple of class
-            msg = 'item must be a {allowed} instance: {item}'
-            raise ValueError(msg.format(allowed=self._allowed, item=item))
-
-    def clear(self):
-        self._items = []
-
-    def __len__(self):
-        return len(self._items)
-
-    def __getitem__(self, item):
-        return self._items[item]
-
-    @property
-    def script(self):
-        """
-        return list of scripts built from entities
-        each script may be a list of comamnds also
-        """
-        results = []
-        for item in self._items:
-            script = """{varname}.{propertyname}.add({item});"""
-            script = script.format(varname=self._varname,
-                                   propertyname=self._propertyname,
-                                   item=item.script)
-            results.append(script)
-        return results
 

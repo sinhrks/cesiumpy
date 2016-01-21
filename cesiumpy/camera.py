@@ -12,7 +12,8 @@ class Camera(_CesiumObject):
 
     _props = ['destination', 'orientation']
 
-    def __init__(self):
+    def __init__(self, widget):
+        self.widget = widget
         self.destination = None
         self.orientation = None
 
