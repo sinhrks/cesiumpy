@@ -60,6 +60,10 @@ def _maybe_cartesian3(x, key, degrees=False):
 
     if len(x) == 3:
         return Cartesian3(*x, degrees=degrees)
+    elif len(x) == 2 and degrees:
+        # if degrees is True, z can filled by 0
+        # otherwise raise (non-degrees Cartesian is used in Box)
+        return Cartesian3(x=x[0], y=x[1], z=0, degrees=degrees)
     else:
         msg = '{key} length must be 3 to be converted to Cartesian3: {x}'
         raise ValueError(msg.format(key=key, x=x))

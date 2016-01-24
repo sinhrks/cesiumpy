@@ -13,6 +13,7 @@ Contents:
 
    basics
    entities
+   plotting
    examples
 
 

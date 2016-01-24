@@ -172,6 +172,8 @@ class Point(_CesiumEntity):
         if color is None:
             # Add default color explicitly to avoid all values to be None
             color = cesiumpy.color.WHITE
+        if pixelSize is None:
+            pixelSize = 10
 
         super(Point, self).__init__(show=show, color=color,
                                     outlineColor=outlineColor,
