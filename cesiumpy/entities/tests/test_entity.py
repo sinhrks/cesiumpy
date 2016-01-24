@@ -34,11 +34,19 @@ class TestEntity(unittest.TestCase):
         e = e.copy()
         self.assertEqual(e.script, exp)
 
+        # create Cartesian3 from 2 elements tuple
+        e = cesiumpy.Point(position=(-110, 40))
+        self.assertEqual(e.script, exp)
+
         e = cesiumpy.Point(position=(-110, 40, 0), pixelSize=100, color='blue')
         exp = """{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), point : {pixelSize : 100.0, color : Cesium.Color.BLUE}}"""
         self.assertEqual(e.script, exp)
 
         e = e.copy()
+        self.assertEqual(e.script, exp)
+
+        # create Cartesian3 from 2 elements tuple
+        e = cesiumpy.Point(position=(-110, 40), pixelSize=100, color='blue')
         self.assertEqual(e.script, exp)
 
     def test_label(self):

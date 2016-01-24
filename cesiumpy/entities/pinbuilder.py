@@ -24,6 +24,8 @@ class Pin(_CesiumObject):
         if color is None:
             # default color, all attrs are mandatory
             color = cesiumpy.entities.color.ROYALBLUE
+        if size is None:
+            size = 48
 
         self.color = color
         self.size = size

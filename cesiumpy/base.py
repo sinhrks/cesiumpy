@@ -203,7 +203,7 @@ class _CesiumBase(_CesiumObject):
             return script
         elif len(self.entities) > 0:
             # zoom to added entities
-            script = "{varname}.zoomTo({varname}.entities)"
+            script = "{varname}.zoomTo({varname}.entities);"
             return script.format(varname=self._varname)
         else:
             return ''
