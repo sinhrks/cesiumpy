@@ -40,13 +40,14 @@ Bar
 ---
 
 ``Viewer.plot.bar`` draws 3d bar using ``Cylinder`` entity accepting following keywords.
-Both ``x`` and ``y`` must be provided at least.
+``x``, ``y`` and ``z`` must be provided at least.
 
 - ``x``: Longitude
 - ``y``: Latitude
 - ``z``: Height
 - ``size``: Radius
 - ``color``: Color
+- ``bottom``: Bottom heights
 
 .. code-block:: python
 
@@ -63,6 +64,19 @@ Both ``x`` and ``y`` must be provided at least.
   ...            color=cesiumpy.color.AQUA, size=1e5)
 
 .. image:: ./_static/plotting_bar02.png
+
+Specifying ``bottom`` keyword allows to draw stacked bar plot.
+
+.. code-block:: python
+
+  >>> v = cesiumpy.Viewer('viewertest')
+  >>> v.plot.bar([130, 140, 150], [30, 40, 50], [1e6, 2e6, 3e6],
+  ...            size=1e5, color=cesiumpy.color.RED)
+  >>> v.plot.bar([130, 140, 150], [30, 40, 50], [3e6, 2e6, 1e6],
+  ...            size=1e5, color=cesiumpy.color.BLUE,
+  ...            bottom=[1e6, 2e6, 3e6])
+
+.. image:: ./_static/plotting_bar03.png
 
 Label
 -----

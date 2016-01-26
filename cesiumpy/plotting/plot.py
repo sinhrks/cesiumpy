@@ -30,7 +30,7 @@ class PlottingAccessor(object):
     def __call__(self):
         raise NotImplementedError
 
-    def bar(self, x, y, z, size=10e3, color=None):
+    def bar(self, x, y, z, size=10e3, color=None, bottom=0.):
         """
         Plot cesiumpy.Cylinder like bar plot
 
@@ -47,6 +47,8 @@ class PlottingAccessor(object):
             Radius of cylinder
         color: list or Color
             Cylinder color
+        bottom: list or float, default 0
+            Bottom heights
         """
         x = com.validate_listlike(x, key='x')
 
@@ -61,9 +63,12 @@ class PlottingAccessor(object):
 
         size = self._fill_by(size, len(x), key='size', default=10e3)
         color = self._fill_by(color, len(x), key='color')
+        bottom = self._fill_by(bottom, len(x), key='bottom', default=0.)
 
-        for i, (_x, _y, _z, _size, _color) in enumerate(zip(x, y, z, size, color)):
-            p = cesiumpy.Cylinder(position=(_x, _y, _z / 2.), length=_z,
+        it = zip(x, y, z, size, color, bottom)
+        for i, (_x, _y, _z, _size, _color, _bottom) in enumerate(it):
+            p = cesiumpy.Cylinder(position=(_x, _y, _bottom + _z / 2.),
+                                  length=_z,
                                   topRadius=_size, bottomRadius=_size,
                                   material=_color)
             self.widget.entities.add(p)
