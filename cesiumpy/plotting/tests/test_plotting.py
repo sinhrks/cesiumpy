@@ -199,6 +199,25 @@ class TestBar(unittest.TestCase):
 </script>"""
         self.assertEqual(v.to_html(), exp)
 
+    def test_bar_bottom(self):
+      v = cesiumpy.Viewer('viewertest')
+      v.plot.bar([130, 140, 150], [30, 40, 50], [10e5, 20e5, 30e5], color=cesiumpy.color.RED)
+      v.plot.bar([130, 140, 150], [30, 40, 50], [30e5, 20e5, 10e5], color=cesiumpy.color.BLUE, bottom=[10e5, 20e5, 30e5])
+      exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest");
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(130, 30, 500000.0), cylinder : {length : 1000000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.RED}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(140, 40, 1000000.0), cylinder : {length : 2000000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.RED}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(150, 50, 1500000.0), cylinder : {length : 3000000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.RED}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(130, 30, 2500000.0), cylinder : {length : 3000000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.BLUE}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(140, 40, 3000000.0), cylinder : {length : 2000000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.BLUE}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(150, 50, 3500000.0), cylinder : {length : 1000000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.BLUE}});
+  widget.zoomTo(widget.entities);
+</script>"""
+      self.assertEqual(v.to_html(), exp)
+
 
 class TestLabel(unittest.TestCase):
 
