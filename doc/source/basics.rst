@@ -57,12 +57,7 @@ Even though ``Viewer`` also has various type of user control menus, below exampl
 
 .. code-block:: python
 
-  >>> options = dict(animation=True, baseLayerPicker=False, fullscreenButton=False,
-  ...                geocoder=False, homeButton=False, infoBox=False, sceneModePicker=True,
-  ...                selectionIndicator=False, navigationHelpButton=False,
-  ...                timeline=False, navigationInstructionsInitiallyVisible=False)
-
-  >>> v = cesiumpy.Viewer(**options)
+  >>> v = cesiumpy.Viewer()
   >>> b = cesiumpy.Box(dimensions=(40e4, 30e4, 50e4), material=cesiumpy.color.RED, position=[-120, 40, 0])
   >>> v.entities.add(b)
   >>> v
@@ -93,7 +88,7 @@ The below example draws all entities on the map.
 
 .. code-block:: python
 
-  >>> v = cesiumpy.Viewer(**options)
+  >>> v = cesiumpy.Viewer()
 
   >>> label = cesiumpy.Label(position=[-90, 50, 0], text='entities')
   >>> v.entities.add(label)
@@ -149,7 +144,7 @@ The below example draws various ``Pin`` on the map.
 
 .. code-block:: python
 
-  >>> v = cesiumpy.Viewer(**options)
+  >>> v = cesiumpy.Viewer()
   >>> pin1 = cesiumpy.Pin()
   >>> bill1 = cesiumpy.Billboard(position=[-120, 40, 0], image=pin1)
   >>> v.entities.add(bill1)
@@ -176,7 +171,7 @@ If input length is 3, it will be regarded as the point specified by (``longitude
 
 .. code-block:: python
 
-  >>> v = cesiumpy.Viewer(**options)
+  >>> v = cesiumpy.Viewer()
   >>> v.camera.flyTo((-117.16, 32.71, 15000))
   >>> v
 
@@ -186,7 +181,7 @@ If input length is 3, it will be regarded as the point specified by (``longitude
 
 .. code-block:: python
 
-  >>> v = cesiumpy.Viewer(**options)
+  >>> v = cesiumpy.Viewer()
   >>> v.camera.flyTo((135, 30, 145, 45))
   >>> v
 
@@ -215,7 +210,7 @@ as the same as the above tutorial.
   >>> url = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer'
   >>> imageryProvider = cesiumpy.ArcGisMapServerImageryProvider(url=url)
 
-  >>> v = cesiumpy.Viewer(imageryProvider=imageryProvider, **options)
+  >>> v = cesiumpy.Viewer(imageryProvider=imageryProvider)
   >>> v
 
 .. image:: ./_static/imagery01.png
@@ -228,7 +223,7 @@ Also you can use other providers.
   >>> credit = 'Black Marble imagery courtesy NASA Earth Observatory'
   >>> imageryProvider = cesiumpy.TileMapServiceImageryProvider(url=url, maximumLevel=8, credit=credit)
 
-  >>> v = cesiumpy.Viewer(imageryProvider=imageryProvider, **options)
+  >>> v = cesiumpy.Viewer(imageryProvider=imageryProvider)
   >>> v
 
 .. image:: ./_static/imagery02.png
@@ -238,7 +233,7 @@ Using ``OpenStreetMapImageryProvider`` can use OpenStreetMap as imagery.
 .. code-block:: python
 
   >>> imageryProvider = cesiumpy.OpenStreetMapImageryProvider()
-  >>> v = cesiumpy.Viewer(imageryProvider=imageryProvider, **options)
+  >>> v = cesiumpy.Viewer(imageryProvider=imageryProvider)
   >>> v
 
 .. image:: ./_static/imagery03.png
@@ -257,7 +252,7 @@ as the same as the above tutorial.
 
   >>> url = '//assets.agi.com/stk-terrain/world'
   >>> terrainProvider = cesiumpy.CesiumTerrainProvider(url=url)
-  >>> v = cesiumpy.Viewer(terrainProvider=terrainProvider, **options)
+  >>> v = cesiumpy.Viewer(terrainProvider=terrainProvider)
   >>> v
 
 .. image:: ./_static/terrain01.png
@@ -268,7 +263,7 @@ Passing ``requestWaterMask=True`` enables water effects.
 .. code-block:: python
 
   >>> terrainProvider = cesiumpy.CesiumTerrainProvider(url=url, requestWaterMask=True)
-  >>> v = cesiumpy.Viewer(terrainProvider=terrainProvider, **options)
+  >>> v = cesiumpy.Viewer(terrainProvider=terrainProvider)
   >>> v
 
 .. image:: ./_static/terrain02.png
@@ -301,7 +296,7 @@ You can create ``GeoJsonDataSource`` instannce then add to ``Viewer.DataSources`
 .. code-block:: python
 
   >>> ds = cesiumpy.GeoJsonDataSource('./example.geojson', markerSymbol='!')
-  >>> v = cesiumpy.Viewer(**options)
+  >>> v = cesiumpy.Viewer()
   >>> v.dataSources.add(ds)
   >>> v
 
@@ -347,7 +342,7 @@ You can use ``str`` specifying location where you can use coordinates as below.
 
 .. code-block:: python
 
-  >>> viewer = cesiumpy.Viewer(**options)
+  >>> viewer = cesiumpy.Viewer()
   >>> cyl = cesiumpy.Cylinder(position='Los Angeles', length=30000, topRadius=10000,
   ...                         bottomRadius=10000, material='AQUA')
   >>> v.entities.add(cyl)
