@@ -86,7 +86,7 @@ class TestViewer(unittest.TestCase):
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest", {animation : true, baseLayerPicker : false, fullscreenButton : false, geocoder : false, homeButton : false, infoBox : false, sceneModePicker : true, selectionIndicator : false, timeline : false, navigationHelpButton : false, navigationInstructionsInitiallyVisible : false});
-  widget.entities.add({name : "x", position : Cesium.Cartesian3.fromDegrees(-110, 50, 2000000), cylinder : {length : 4000000.0, topRadius : 100000.0, bottomRadius : 100000.0, material : Cesium.Color.AQUA}});
+  widget.entities.add({name : "x", position : Cesium.Cartesian3.fromDegrees(-110.0, 50.0, 2000000.0), cylinder : {length : 4000000.0, topRadius : 100000.0, bottomRadius : 100000.0, material : Cesium.Color.AQUA}});
   widget.zoomTo(widget.entities);
 </script>"""
         self.assertEqual(result, exp)
@@ -170,16 +170,16 @@ class TestViewer(unittest.TestCase):
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest", {animation : true, baseLayerPicker : false, fullscreenButton : false, geocoder : false, homeButton : false, infoBox : false, sceneModePicker : true, selectionIndicator : false, timeline : false, navigationHelpButton : false, navigationInstructionsInitiallyVisible : false});
-  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), box : {dimensions : new Cesium.Cartesian3(400000.0, 300000.0, 500000.0), material : Cesium.Color.RED}});
-  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), ellipse : {semiMinorAxis : 250000.0, semiMajorAxis : 400000.0, material : Cesium.Color.BLUE}});
-  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-100, 40, 500000.0), cylinder : {length : 1000000.0, topRadius : 100000.0, bottomRadius : 100000.0, material : Cesium.Color.AQUA}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-120.0, 40.0, 0.0), box : {dimensions : new Cesium.Cartesian3(400000.0, 300000.0, 500000.0), material : Cesium.Color.RED}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-110.0, 40.0, 0.0), ellipse : {semiMinorAxis : 250000.0, semiMajorAxis : 400000.0, material : Cesium.Color.BLUE}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-100.0, 40.0, 500000.0), cylinder : {length : 1000000.0, topRadius : 100000.0, bottomRadius : 100000.0, material : Cesium.Color.AQUA}});
   widget.entities.add({polygon : {hierarchy : Cesium.Cartesian3.fromDegreesArray([-90, 40, -95, 40, -95, 45, -90, 40]), material : Cesium.Color.ORANGE}});
   widget.entities.add({rectangle : {coordinates : Cesium.Rectangle.fromDegrees(-85.0, 40.0, -80.0, 45.0), material : Cesium.Color.GREEN}});
-  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-70, 40, 0), ellipsoid : {radii : new Cesium.Cartesian3(200000.0, 200000.0, 300000.0), material : Cesium.Color.GREEN}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-70.0, 40.0, 0.0), ellipsoid : {radii : new Cesium.Cartesian3(200000.0, 200000.0, 300000.0), material : Cesium.Color.GREEN}});
   widget.entities.add({wall : {positions : Cesium.Cartesian3.fromDegreesArray([-60, 40, -65, 40, -65, 45, -60, 45]), maximumHeights : [100000.0, 100000.0, 100000.0, 100000.0], minimumHeights : [0, 0, 0, 0], material : Cesium.Color.RED}});
   widget.entities.add({corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-120, 30, -90, 35, -60, 30]), width : 200000.0, material : Cesium.Color.RED}});
   widget.entities.add({polyline : {positions : Cesium.Cartesian3.fromDegreesArray([-120, 25, -90, 30, -60, 25]), width : 0.5, material : Cesium.Color.BLUE}});
-  widget.entities.add({polylineVolume : {positions : Cesium.Cartesian3.fromDegreesArray([-120, 20, -90, 25, -60, 20]), shape : [new Cesium.Cartesian2(-50000, -50000), new Cesium.Cartesian2(50000, -50000), new Cesium.Cartesian2(50000, 50000), new Cesium.Cartesian2(-50000, 50000)], material : Cesium.Color.GREEN}});
+  widget.entities.add({polylineVolume : {positions : Cesium.Cartesian3.fromDegreesArray([-120, 20, -90, 25, -60, 20]), shape : [new Cesium.Cartesian2(-50000.0, -50000.0), new Cesium.Cartesian2(50000.0, -50000.0), new Cesium.Cartesian2(50000.0, 50000.0), new Cesium.Cartesian2(-50000.0, 50000.0)], material : Cesium.Color.GREEN}});
   widget.zoomTo(widget.entities);
 </script>"""
         self.assertEqual(result, exp)
@@ -216,7 +216,7 @@ class TestViewer(unittest.TestCase):
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
-  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), box : {dimensions : new Cesium.Cartesian3(400000.0, 300000.0, 500000.0), material : Cesium.Color.RED}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-120.0, 40.0, 0.0), box : {dimensions : new Cesium.Cartesian3(400000.0, 300000.0, 500000.0), material : Cesium.Color.RED}});
   widget.zoomTo(widget.entities);
 </script>"""
         self.assertEqual(result, exp)
@@ -231,8 +231,8 @@ class TestViewer(unittest.TestCase):
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
-  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), box : {dimensions : new Cesium.Cartesian3(400000.0, 300000.0, 500000.0), material : Cesium.Color.RED}});
-  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-100, 80, 0), box : {dimensions : new Cesium.Cartesian3(500000.0, 600000.0, 700000.0), material : Cesium.Color.RED}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-120.0, 40.0, 0.0), box : {dimensions : new Cesium.Cartesian3(400000.0, 300000.0, 500000.0), material : Cesium.Color.RED}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-100.0, 80.0, 0.0), box : {dimensions : new Cesium.Cartesian3(500000.0, 600000.0, 700000.0), material : Cesium.Color.RED}});
   widget.zoomTo(widget.entities);
 </script>"""
         self.assertEqual(result, exp)

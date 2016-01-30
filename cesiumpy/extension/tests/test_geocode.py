@@ -49,40 +49,40 @@ class TestGeocode(unittest.TestCase):
     def test_cartesian3_geocode(self):
         try:
             result = cesiumpy.cartesian._maybe_cartesian3(u'富士山', key='geo')
-            self.assertEqual(result.script, 'new Cesium.Cartesian3(138.7277777, 35.3605555, 0)')
+            self.assertEqual(result.script, 'new Cesium.Cartesian3(138.7277777, 35.3605555, 0.0)')
 
             result = cesiumpy.cartesian._maybe_cartesian3('Los Angeles', key='geo')
-            self.assertEqual(result.script, 'new Cesium.Cartesian3(-118.2436849, 34.0522342, 0)')
+            self.assertEqual(result.script, 'new Cesium.Cartesian3(-118.2436849, 34.0522342, 0.0)')
         except geopy.exc.GeocoderQuotaExceeded:
             raise nose.SkipTest("exceeded geocoder quota")
 
     def test_entities_geocode(self):
         try:
             e = cesiumpy.Point(position='Los Angeles')
-            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}}"""
+            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0.0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}}"""
             self.assertEqual(e.script, exp)
 
             e = cesiumpy.Label(position='Los Angeles', text='xxx')
-            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), label : {text : "xxx"}}"""
+            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0.0), label : {text : "xxx"}}"""
             self.assertEqual(e.script, exp)
 
             p = cesiumpy.Pin()
             e = cesiumpy.Billboard(position='Los Angeles', image=p)
-            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48.0)}}"""
+            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0.0), billboard : {image : new Cesium.PinBuilder().fromColor(Cesium.Color.ROYALBLUE, 48.0)}}"""
             self.assertEqual(e.script, exp)
 
             e = cesiumpy.Box(position='Los Angeles', dimensions=(40e4, 30e4, 50e4))
-            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), box : {dimensions : new Cesium.Cartesian3(400000.0, 300000.0, 500000.0)}}"""
+            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0.0), box : {dimensions : new Cesium.Cartesian3(400000.0, 300000.0, 500000.0)}}"""
             self.assertEqual(e.script, exp)
 
             e = cesiumpy.Ellipse(position='Los Angeles', semiMinorAxis=25e4,
                                  semiMajorAxis=40e4)
-            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), ellipse : {semiMinorAxis : 250000.0, semiMajorAxis : 400000.0}}"""
+            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0.0), ellipse : {semiMinorAxis : 250000.0, semiMajorAxis : 400000.0}}"""
             self.assertEqual(e.script, exp)
 
             e = cesiumpy.Cylinder(position='Los Angeles', length=100e4,
                                   topRadius=10e4, bottomRadius=10e4)
-            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), cylinder : {length : 1000000.0, topRadius : 100000.0, bottomRadius : 100000.0}}"""
+            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0.0), cylinder : {length : 1000000.0, topRadius : 100000.0, bottomRadius : 100000.0}}"""
             self.assertEqual(e.script, exp)
 
             e = cesiumpy.Polygon(hierarchy=['Los Angeles', 'Las Vegas', 'San Francisco'])
@@ -93,7 +93,7 @@ class TestGeocode(unittest.TestCase):
             e = cesiumpy.Rectangle(coordinates=(-85, 40, -80, 45))
 
             e = cesiumpy.Ellipsoid(position='Los Angeles', radii=(20e4, 20e4, 30e4))
-            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), ellipsoid : {radii : new Cesium.Cartesian3(200000.0, 200000.0, 300000.0)}}"""
+            exp = """{position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0.0), ellipsoid : {radii : new Cesium.Cartesian3(200000.0, 200000.0, 300000.0)}}"""
             self.assertEqual(e.script, exp)
 
             e = cesiumpy.Wall(positions=['Los Angeles', 'Las Vegas', 'San Francisco'],
@@ -130,8 +130,8 @@ class TestGeocode(unittest.TestCase):
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
-  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0), cylinder : {length : 30000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.AQUA}});
-  widget.camera.flyTo({destination : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 100000)});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 0.0), cylinder : {length : 30000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.AQUA}});
+  widget.camera.flyTo({destination : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 100000.0)});
 </script>"""
             self.assertEqual(result, exp)
         except geopy.exc.GeocoderQuotaExceeded:
