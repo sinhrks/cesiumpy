@@ -15,7 +15,9 @@ import cesiumpy.extension.shapefile as shapefile
 class _Cartesian(_CesiumObject):
 
     _is_degrees = traitlets.Bool()
-    _is_array = traitlets.Bool()
+
+    # class property
+    _is_array = False
 
     def __init__(self):
         raise NotImplementedError
@@ -106,13 +108,14 @@ def _maybe_cartesian2_list(x, key):
 
 class Cartesian2(_Cartesian):
 
-    def __init__(self, x, y, degrees=False):
+    x = traitlets.Float()
+    y = traitlets.Float()
 
-        self.x = com.validate_numeric(x, key='x')
-        self.y = com.validate_numeric(y, key='y')
+    def __init__(self, x, y, degrees=False):
+        self.x = x
+        self.y = y
 
         self._is_degrees = degrees
-        self._is_array = False
 
         if degrees:
             com.validate_longitude(x, key='x')
@@ -136,13 +139,16 @@ class Cartesian2(_Cartesian):
 
 class Cartesian3(_Cartesian):
 
+    x = traitlets.Float()
+    y = traitlets.Float()
+    z = traitlets.Float()
+
     def __init__(self, x, y, z, degrees=False):
-        self.x = com.validate_numeric(x, key='x')
-        self.y = com.validate_numeric(y, key='y')
-        self.z = com.validate_numeric(z, key='z')
+        self.x = x
+        self.y = y
+        self.z = z
 
         self._is_degrees = degrees
-        self._is_array = False
 
         if degrees:
             com.validate_longitude(x, key='x')
@@ -154,10 +160,6 @@ class Cartesian3(_Cartesian):
 
     @classmethod
     def fromDegreesArray(cls, x):
-
-        if isinstance(x, Cartesian3) and x._is_array:
-            x = x.x
-
         # convert shaply.Polygon to coordinateslist
         x = shapefile._maybe_shapely_polygon(x)
         x = shapefile._maybe_shapely_line(x)
@@ -168,26 +170,36 @@ class Cartesian3(_Cartesian):
         elif com.is_listlike_3elem(x):
             raise NotImplementedError
 
-        x = com.validate_listlike_lonlat(x, 'x')
-        c = Cartesian3(0, 0, 0)
-        c.x = x
-        c._is_array = True
-        return c
-
-    def __len__(self):
-        # it will raise TypeError if myself is not array
-        return len(self.x)
+        return Cartesian3Array(x)
 
     def __repr__(self):
-        if self._is_array:
-            rep = """Cartesian3.fromDegreesArray({x})"""
-            return rep.format(x=self.x)
-        elif self._is_degrees:
+        if self._is_degrees:
             rep = """Cartesian3.fromDegrees({x}, {y}, {z})"""
             return rep.format(x=self.x, y=self.y, z=self.z)
         else:
             rep = """Cartesian3({x}, {y}, {z})"""
             return rep.format(x=self.x, y=self.y, z=self.z)
+
+
+class Cartesian3Array(_Cartesian):
+
+    _is_array = True
+
+    def __init__(self, x):
+        if isinstance(x, Cartesian3Array):
+            x = x.x
+
+        self.x = com.validate_listlike_lonlat(x, 'x')
+        # currently, array always be degrees
+        self._is_degrees = True
+
+    def __len__(self):
+        return len(self.x)
+
+    def __repr__(self):
+        rep = """Cartesian3.fromDegreesArray({x})"""
+        return rep.format(x=self.x)
+
 
 
 class Cartesian4(_Cartesian):
@@ -205,7 +217,6 @@ class Cartesian4(_Cartesian):
         self.w = w
 
         self._is_degrees = degrees
-        self._is_array = False
 
         if degrees:
             com.validate_longitude(x, key='x')
@@ -253,7 +264,6 @@ class Rectangle(_Cartesian):
         self.north = north
 
         self._is_degrees = degrees
-        self._is_array = False
 
         if degrees:
             self.west = com.validate_longitude(west, key='west')

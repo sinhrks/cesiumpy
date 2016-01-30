@@ -18,11 +18,11 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(c.script, '')
 
         c.flyTo((1, 2, 3))
-        exp = '{destination : Cesium.Cartesian3.fromDegrees(1, 2, 3)}'
+        exp = '{destination : Cesium.Cartesian3.fromDegrees(1.0, 2.0, 3.0)}'
         self.assertEqual(c.script, exp)
 
         c.flyTo((4, 5, 6))
-        exp = '{destination : Cesium.Cartesian3.fromDegrees(4, 5, 6)}'
+        exp = '{destination : Cesium.Cartesian3.fromDegrees(4.0, 5.0, 6.0)}'
         self.assertEqual(c.script, exp)
 
         c.flyTo((4, 5, 6, 7))
@@ -44,7 +44,7 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(repr(c), "Camera(destination=default)")
 
         c.flyTo((-130, 40, 10000))
-        self.assertEqual(repr(c), "Camera(destination=Cartesian3.fromDegrees(-130, 40, 10000))")
+        self.assertEqual(repr(c), "Camera(destination=Cartesian3.fromDegrees(-130.0, 40.0, 10000.0))")
 
     def test_widget(self):
         widget = cesiumpy.CesiumWidget(divid='cesiumwidget')
@@ -85,7 +85,7 @@ class TestCamera(unittest.TestCase):
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
-  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(120, 35, 5000), cylinder : {length : 10000.0, topRadius : 10000.0, bottomRadius : 20000.0, material : Cesium.Color.RED}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(120.0, 35.0, 5000.0), cylinder : {length : 10000.0, topRadius : 10000.0, bottomRadius : 20000.0, material : Cesium.Color.RED}});
   widget.camera.flyTo({destination : Cesium.Rectangle.fromDegrees(135.0, 30.0, 145.0, 45.0)});
 </script>"""
         self.assertEqual(result, exp)
@@ -99,8 +99,8 @@ class TestCamera(unittest.TestCase):
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
-  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(120, 35, 5000), cylinder : {length : 10000.0, topRadius : 10000.0, bottomRadius : 20000.0, material : Cesium.Color.RED}});
-  widget.camera.flyTo({destination : Cesium.Cartesian3.fromDegrees(120, 35, 5000)});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(120.0, 35.0, 5000.0), cylinder : {length : 10000.0, topRadius : 10000.0, bottomRadius : 20000.0, material : Cesium.Color.RED}});
+  widget.camera.flyTo({destination : Cesium.Cartesian3.fromDegrees(120.0, 35.0, 5000.0)});
 </script>"""
         self.assertEqual(result, exp)
 
@@ -116,7 +116,7 @@ class TestCamera(unittest.TestCase):
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
-  widget.camera.flyTo({destination : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 100000)});
+  widget.camera.flyTo({destination : Cesium.Cartesian3.fromDegrees(-118.2436849, 34.0522342, 100000.0)});
 </script>"""
             self.assertEqual(result, exp)
         except geopy.exc.GeocoderQuotaExceeded:

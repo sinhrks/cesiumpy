@@ -77,7 +77,7 @@ class TestDataSource(unittest.TestCase):
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
   widget.dataSources.add(Cesium.GeoJsonDataSource.load("./test.geojson", {markerSymbol : "?"}));
-  widget.camera.flyTo({destination : Cesium.Cartesian3.fromDegrees(-105.01621, 39.57422, 1000)});
+  widget.camera.flyTo({destination : Cesium.Cartesian3.fromDegrees(-105.01621, 39.57422, 1000.0)});
 </script>"""
         self.assertEqual(result, exp)
 

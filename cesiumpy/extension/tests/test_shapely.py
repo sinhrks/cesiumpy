@@ -70,14 +70,14 @@ class TestShapelyCartesian(unittest.TestCase):
         p = shapely.geometry.LineString([(0, 1), (2, 3)])
         res = cartesian.Cartesian3.fromDegreesArray(p)
         exp = cartesian.Cartesian3.fromDegreesArray([0., 1., 2., 3.])
-        self.assertIsInstance(res, cartesian.Cartesian3)
+        self.assertIsInstance(res, cartesian.Cartesian3Array)
         self.assertEqual(res.script, exp.script)
 
         p = shapely.geometry.LinearRing([(0, 1), (2, 3), (1, 3)])
         res = cartesian.Cartesian3.fromDegreesArray(p)
         # last element is being added
         exp = cartesian.Cartesian3.fromDegreesArray([0., 1., 2., 3., 1., 3., 0., 1.])
-        self.assertIsInstance(res, cartesian.Cartesian3)
+        self.assertIsInstance(res, cartesian.Cartesian3Array)
         self.assertEqual(res.script, exp.script)
 
     def test_polygon_to_cartesian_array(self):
@@ -88,7 +88,7 @@ class TestShapelyCartesian(unittest.TestCase):
         p = shapely.geometry.Polygon([[1, 1], [1, 2], [2, 2], [2, 1]])
         res = cartesian.Cartesian3.fromDegreesArray(p)
         exp = cartesian.Cartesian3.fromDegreesArray([1., 1., 1., 2., 2., 2., 2., 1., 1., 1.])
-        self.assertIsInstance(res, cartesian.Cartesian3)
+        self.assertIsInstance(res, cartesian.Cartesian3Array)
         self.assertEqual(res.script, exp.script)
 
 
@@ -101,7 +101,7 @@ class TestShapelyEntity(unittest.TestCase):
 
         p = shapely.geometry.Point(0, 1)
         res = cesiumpy.extension.shapefile.to_entity(p)
-        exp = """{position : Cesium.Cartesian3.fromDegrees(0.0, 1.0, 0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}}"""
+        exp = """{position : Cesium.Cartesian3.fromDegrees(0.0, 1.0, 0.0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}}"""
         self.assertEqual(res.script, exp)
 
         p = shapely.geometry.Point(0, 1, 3)
@@ -115,10 +115,10 @@ class TestShapelyEntity(unittest.TestCase):
         self.assertIsInstance(res, list)
         self.assertEqual(len(res), 4)
 
-        exp = ['{position : Cesium.Cartesian3.fromDegrees(1.0, 1.0, 0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}}',
-               '{position : Cesium.Cartesian3.fromDegrees(1.0, 2.0, 0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}}',
-               '{position : Cesium.Cartesian3.fromDegrees(2.0, 2.0, 0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}}',
-               '{position : Cesium.Cartesian3.fromDegrees(2.0, 1.0, 0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}}']
+        exp = ['{position : Cesium.Cartesian3.fromDegrees(1.0, 1.0, 0.0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}}',
+               '{position : Cesium.Cartesian3.fromDegrees(1.0, 2.0, 0.0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}}',
+               '{position : Cesium.Cartesian3.fromDegrees(2.0, 2.0, 0.0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}}',
+               '{position : Cesium.Cartesian3.fromDegrees(2.0, 1.0, 0.0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}}']
         self.assertEqual([e.script for e in res], exp)
 
     def test_line_to_entity(self):

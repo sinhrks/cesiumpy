@@ -535,7 +535,7 @@ class Polyline(_CesiumEntity):
     _klass = 'polyline'
     _props = ['positions', 'followSurface']
 
-    positions = traitlets.Instance(klass=cartesian.Cartesian3)
+    positions = traitlets.Instance(klass=cartesian.Cartesian3Array)
     followSurface = traitlets.Bool(allow_none=True)
 
     def __init__(self, positions, followSurface=None, width=None,
@@ -581,7 +581,7 @@ class PolylineVolume(_CesiumEntity):
     _klass = 'polylineVolume'
     _props = ['positions', 'shape', 'cornerType']
 
-    positions = traitlets.Instance(klass=cartesian.Cartesian3)
+    positions = traitlets.Instance(klass=cartesian.Cartesian3Array)
     shape = traitlets.List(minlen=2)
     cornerType = traitlets.Instance(klass=constants.CornerType, allow_none=True)
 
@@ -636,7 +636,7 @@ class Corridor(_CesiumEntity):
     _klass = 'corridor'
     _props = ['positions', 'cornerType']
 
-    positions = traitlets.Instance(klass=cartesian.Cartesian3)
+    positions = traitlets.Instance(klass=cartesian.Cartesian3Array)
     cornerType = traitlets.Instance(klass=constants.CornerType, allow_none=True)
 
     def __init__(self, positions, width, cornerType=None, height=None,
@@ -688,7 +688,7 @@ class Wall(_CesiumEntity):
     _klass = 'wall'
     _props = ['positions', 'maximumHeights', 'minimumHeights']
 
-    positions = traitlets.Instance(klass=cartesian.Cartesian3)
+    positions = traitlets.Instance(klass=cartesian.Cartesian3Array)
 
     def __init__(self, positions, maximumHeights, minimumHeights, show=None,
                  fill=None, material=None, outline=None, outlineColor=None,
