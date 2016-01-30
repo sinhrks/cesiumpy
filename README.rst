@@ -33,9 +33,13 @@ Documentation
 
 - http://cesiumpy.readthedocs.org/en/latest/
 
+Bundled Datasets
+----------------
+
+- World countries: https://github.com/mledoze/countries (ODbL)
 
 Dependencies
 ------------
 
-- ``geopy``, ``six`` and ``enum34`` (Python 3.3 or earlier)
+- ``geopy``, ``traitlets``, ``six`` and ``enum34`` (Python 3.3 or earlier)
 - (Optional) ``scipy`` and ``shapely``
