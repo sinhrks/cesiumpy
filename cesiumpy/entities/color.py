@@ -161,6 +161,22 @@ class ColorConstant(CssColor):
             return rep.format(name=self.name, alpha=self.alpha)
 
 
+class ColorMap(object):
+
+    def __init__(self, name):
+        plt = com._check_package('matplotlib.pyplot')
+        self.cm = plt.get_cmap(name)
+
+    def __call__(self, *args, **kwargs):
+        result = self.cm(*args, **kwargs)
+
+        if isinstance(result, tuple):
+            # single color
+            return Color(*result)
+        else:
+            return [Color(*c) for c in result]
+
+
 class ColorFactory(object):
 
     # mapped to cesiumpy.color
@@ -169,6 +185,9 @@ class ColorFactory(object):
     def Color(self):
         """ return Color class """
         return Color
+
+    def get_cmap(self, name):
+        return ColorMap(name)
 
     def choice(self):
         """

@@ -7,6 +7,7 @@ import unittest
 import traitlets
 
 import cesiumpy
+import cesiumpy.testing as tm
 
 
 class TestColor(unittest.TestCase):
@@ -140,6 +141,28 @@ class TestColor(unittest.TestCase):
         self.assertIsInstance(colors, list)
         self.assertEqual(len(colors), 5)
         self.assertTrue(all(isinstance(c, cesiumpy.color.Color) for c in colors))
+
+    def test_cmap(self):
+        tm._skip_if_no_matplotlib()
+        import matplotlib.pyplot as plt
+
+        mpl_cmap = plt.get_cmap('winter')
+        cmap = cesiumpy.color.get_cmap('winter')
+
+        res = cmap(3)
+        exp = mpl_cmap(3)
+        self.assertEqual(res.red, exp[0])
+        self.assertEqual(res.green, exp[1])
+        self.assertEqual(res.blue, exp[2])
+        self.assertEqual(res.alpha, exp[3])
+
+        res = cmap([2, 4])
+        exp = mpl_cmap([2, 4])
+        for r, e in zip(res, exp):
+            self.assertEqual(r.red, e[0])
+            self.assertEqual(r.green, e[1])
+            self.assertEqual(r.blue, e[2])
+            self.assertEqual(r.alpha, e[3])
 
 
 if __name__ == '__main__':
