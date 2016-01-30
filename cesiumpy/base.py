@@ -239,11 +239,13 @@ class RistrictedList(object):
         self._varname = varname
         self._propertyname = propertyname
 
-    def add(self, item):
+    def add(self, item, **kwargs):
         if com.is_listlike(item):
             for i in item:
-                self.add(i)
+                self.add(i, **kwargs)
         elif isinstance(item, self._allowed):
+            for key, value in six.iteritems(kwargs):
+                setattr(item, key, value)
             self._items.append(item)
         else:
             msg = 'item must be {allowed} instance: {item}'

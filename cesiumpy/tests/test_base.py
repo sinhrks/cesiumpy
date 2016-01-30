@@ -118,7 +118,6 @@ class TestViewer(unittest.TestCase):
         self.assertEqual(result, exp)
 
     def test_add_entities(self):
-
         viewer = cesiumpy.Viewer(divid="viewertest", **self.options)
 
         box = cesiumpy.Box(dimensions=(40e4, 30e4, 50e4),
@@ -206,6 +205,37 @@ class TestViewer(unittest.TestCase):
         viewer.entities.clear()
         result = viewer.to_html()
         self.assertEqual(result, exp_clear)
+
+    def test_add_entities_with_properties(self):
+        viewer = cesiumpy.Viewer(divid="viewertest")
+        box = cesiumpy.Box(dimensions=(40e4, 30e4, 50e4), position=[-120, 40, 0])
+        viewer.entities.add(box, material=cesiumpy.color.RED)
+        result = viewer.to_html()
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest");
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), box : {dimensions : new Cesium.Cartesian3(400000.0, 300000.0, 500000.0), material : Cesium.Color.RED}});
+  widget.zoomTo(widget.entities);
+</script>"""
+        self.assertEqual(result, exp)
+
+        viewer = cesiumpy.Viewer(divid="viewertest")
+        box1 = cesiumpy.Box(dimensions=(40e4, 30e4, 50e4), position=[-120, 40, 0])
+        box2 = cesiumpy.Box(dimensions=(50e4, 60e4, 70e4), position=[-100, 80, 0])
+        viewer.entities.add([box1, box2], material=cesiumpy.color.RED)
+        result = viewer.to_html()
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest");
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-120, 40, 0), box : {dimensions : new Cesium.Cartesian3(400000.0, 300000.0, 500000.0), material : Cesium.Color.RED}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(-100, 80, 0), box : {dimensions : new Cesium.Cartesian3(500000.0, 600000.0, 700000.0), material : Cesium.Color.RED}});
+  widget.zoomTo(widget.entities);
+</script>"""
+        self.assertEqual(result, exp)
 
     def test_add_scripts(self):
 
