@@ -20,6 +20,12 @@ class _CesiumObject(traitlets.HasTraits):
     JavaScript instance
     """
 
+    def __eq__(self, other):
+        # conmpare with script
+        if isinstance(other, _CesiumObject):
+            return self.script == other.script
+        return False
+
     @property
     def _klass(self):
         return "Cesium.{0}".format(self.__class__.__name__)

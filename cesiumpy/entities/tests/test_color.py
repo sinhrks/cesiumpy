@@ -12,28 +12,28 @@ import cesiumpy
 class TestColor(unittest.TestCase):
 
     def test_maybe_color(self):
-        blue = cesiumpy.color._maybe_color('blue')
+        blue = cesiumpy.entities.color._maybe_color('blue')
         exp = "Color.BLUE"
         self.assertEqual(repr(blue), exp)
         exp = "Cesium.Color.BLUE"
         self.assertEqual(blue.script, exp)
 
-        red = cesiumpy.color._maybe_color('RED')
+        red = cesiumpy.entities.color._maybe_color('RED')
         exp = "Color.RED"
         self.assertEqual(repr(red), exp)
         exp = "Cesium.Color.RED"
         self.assertEqual(red.script, exp)
 
         # do not convert
-        red = cesiumpy.color._maybe_color('NamedColor')
+        red = cesiumpy.entities.color._maybe_color('NamedColor')
         exp = "NamedColor"
         self.assertEqual(red, exp)
 
-        red = cesiumpy.color._maybe_color('x')
+        red = cesiumpy.entities.color._maybe_color('x')
         exp = "x"
         self.assertEqual(red, exp)
 
-        red = cesiumpy.color._maybe_color(1)
+        red = cesiumpy.entities.color._maybe_color(1)
         exp = 1
         self.assertEqual(red, exp)
 
@@ -85,23 +85,24 @@ class TestColor(unittest.TestCase):
             aqua.name = 'XXX'
 
     def test_single_char_color(self):
-        self.assertIs(cesiumpy.color._maybe_color('b'), cesiumpy.color.BLUE)
-        self.assertIs(cesiumpy.color._maybe_color('g'), cesiumpy.color.GREEN)
-        self.assertIs(cesiumpy.color._maybe_color('r'), cesiumpy.color.RED)
-        self.assertIs(cesiumpy.color._maybe_color('c'), cesiumpy.color.CYAN)
-        self.assertIs(cesiumpy.color._maybe_color('m'), cesiumpy.color.MAGENTA)
-        self.assertIs(cesiumpy.color._maybe_color('y'), cesiumpy.color.YELLOW)
-        self.assertIs(cesiumpy.color._maybe_color('k'), cesiumpy.color.BLACK)
-        self.assertIs(cesiumpy.color._maybe_color('w'), cesiumpy.color.WHITE)
+        _m = cesiumpy.entities.color._maybe_color
+        self.assertEqual(_m('b'), cesiumpy.color.BLUE)
+        self.assertEqual(_m('g'), cesiumpy.color.GREEN)
+        self.assertEqual(_m('r'), cesiumpy.color.RED)
+        self.assertEqual(_m('c'), cesiumpy.color.CYAN)
+        self.assertEqual(_m('m'), cesiumpy.color.MAGENTA)
+        self.assertEqual(_m('y'), cesiumpy.color.YELLOW)
+        self.assertEqual(_m('k'), cesiumpy.color.BLACK)
+        self.assertEqual(_m('w'), cesiumpy.color.WHITE)
 
-        self.assertIs(cesiumpy.color._maybe_color('B'), cesiumpy.color.BLUE)
-        self.assertIs(cesiumpy.color._maybe_color('G'), cesiumpy.color.GREEN)
-        self.assertIs(cesiumpy.color._maybe_color('R'), cesiumpy.color.RED)
-        self.assertIs(cesiumpy.color._maybe_color('C'), cesiumpy.color.CYAN)
-        self.assertIs(cesiumpy.color._maybe_color('M'), cesiumpy.color.MAGENTA)
-        self.assertIs(cesiumpy.color._maybe_color('Y'), cesiumpy.color.YELLOW)
-        self.assertIs(cesiumpy.color._maybe_color('K'), cesiumpy.color.BLACK)
-        self.assertIs(cesiumpy.color._maybe_color('W'), cesiumpy.color.WHITE)
+        self.assertEqual(_m('B'), cesiumpy.color.BLUE)
+        self.assertEqual(_m('G'), cesiumpy.color.GREEN)
+        self.assertEqual(_m('R'), cesiumpy.color.RED)
+        self.assertEqual(_m('C'), cesiumpy.color.CYAN)
+        self.assertEqual(_m('M'), cesiumpy.color.MAGENTA)
+        self.assertEqual(_m('Y'), cesiumpy.color.YELLOW)
+        self.assertEqual(_m('K'), cesiumpy.color.BLACK)
+        self.assertEqual(_m('W'), cesiumpy.color.WHITE)
 
     def test_alpha(self):
         aqua = cesiumpy.color.AQUA
