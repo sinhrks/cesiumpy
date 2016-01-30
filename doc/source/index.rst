@@ -14,6 +14,7 @@ Contents:
    basics
    entities
    plotting
+   io
    examples
 
 

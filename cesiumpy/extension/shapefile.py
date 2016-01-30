@@ -23,6 +23,7 @@ try:
     ShapelyPolygon = shapely.geometry.Polygon
     ShapelyMultiPolygon = shapely.geometry.MultiPolygon
 
+
 except ImportError:
     class DummyClass(object):
         pass
@@ -34,33 +35,6 @@ except ImportError:
     ShapelyLinearRing = DummyClass
     ShapelyPolygon = DummyClass
     ShapelyMultiPolygon = DummyClass
-
-
-def _check_shapely():
-    # ToDo: merge package availability check to single place
-    try:
-        import shapely.geometry
-    except ImportError:
-        msg = 'shapely is required to read geojson files'
-        raise ImportError
-
-
-def read_geojson(path):
-    _check_shapely()
-
-    with open(path) as f:
-        geos = json.load(f)
-
-    # shapely can't parse featurecollection directly
-    results = []
-    for feature in geos['features']:
-        shape = shapely.geometry.shape(feature['geometry'])
-        result = to_entity(shape)
-        if isinstance(result, list):
-            results.extend(result)
-        else:
-            results.append(result)
-    return results
 
 
 # --------------------------------------------------
@@ -90,7 +64,7 @@ def to_entity(shape):
     elif isinstance(shape, ShapelyPolygon):
         return cesiumpy.Polygon(hierarchy=shape)
 
-    msg = 'Unable to convert to cesiumpy entity: {shape}'.format(shape)
+    msg = 'Unable to convert to cesiumpy entity: {shape}'.format(shape=shape)
     raise ValueError(msg)
 
 

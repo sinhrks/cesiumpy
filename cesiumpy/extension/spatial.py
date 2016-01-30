@@ -13,31 +13,15 @@ class _Spatial(object):
 
     @property
     def _np(self):
-        # Though numpy must be installed to use scipy...
-        try:
-            import numpy as np
-            return np
-        except ImportError:
-            msg = 'numpy is required to use spatial function'
-            raise ImportError(msg)
+        return com._check_package('numpy')
 
     @property
     def _spatial(self):
-        try:
-            import scipy.spatial
-            return scipy.spatial
-        except ImportError:
-            msg = 'scipy.spatial is required to use spatial function'
-            raise ImportError(msg)
+        return com._check_package('scipy.spatial')
 
     @property
     def _geometry(self):
-        try:
-            import shapely.geometry
-            return shapely.geometry
-        except ImportError:
-            msg = 'shapely.geometry is required to calculate coordinates'
-            raise ImportError(msg)
+        return com._check_package('shapely.geometry')
 
 
 

@@ -4,6 +4,7 @@
 from __future__ import unicode_literals
 
 import collections
+import importlib
 import itertools
 import os
 import six
@@ -18,6 +19,14 @@ def _check_uri(sourceUri):
     if not os.path.exists(sourceUri):
         msg = "Unable to read specified path, be sure to the output HTML can read the path: {0}"
         warnings.warn(msg.format(sourceUri))
+
+
+def _check_package(package_name):
+    try:
+        return importlib.import_module(package_name)
+    except ImportError:
+        msg ='{pkg} is required to use this functionality'
+        raise ImportError(msg.format(pkg=package_name))
 
 # --------------------------------------------------
 # Validators

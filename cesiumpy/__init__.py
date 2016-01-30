@@ -20,6 +20,7 @@ from cesiumpy.entities.pinbuilder import Pin
 # extension
 import cesiumpy.extension as extension
 from cesiumpy.extension import geocode
+from cesiumpy.extension import io
 from cesiumpy.extension import spatial
 
 from cesiumpy.camera import Camera

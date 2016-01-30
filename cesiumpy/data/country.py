@@ -40,7 +40,7 @@ class CountryLoader(object):
         fname = self.countries.get(fname, fname)
         path = os.path.join(data_path, 'data', '{0}.geo.json'.format(fname))
         if os.path.exists(path):
-            from cesiumpy.extension.shapefile import read_geojson
+            from cesiumpy.extension.io import read_geojson
             return read_geojson(path)
         else:
             msg = "Unable to load country data, file not found: '{name}'"
