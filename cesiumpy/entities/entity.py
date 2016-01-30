@@ -47,6 +47,9 @@ class _CesiumEntity(_CesiumObject):
     horizontalOrigin = traitlets.Instance(klass=constants.HorizontalOrigin, allow_none=True)
     verticalOrigin = traitlets.Instance(klass=constants.VerticalOrigin, allow_none=True)
 
+    eyeOffset = traitlets.Instance(klass=cartesian.Cartesian3, allow_none=True)
+    pixelOffset = traitlets.Instance(klass=cartesian.Cartesian2, allow_none=True)
+
     position = traitlets.Instance(klass=cartesian.Cartesian3, allow_none=True)
 
     def __init__(self, width=None, height=None, extrudedHeight=None,
@@ -87,8 +90,14 @@ class _CesiumEntity(_CesiumObject):
         self.horizontalOrigin = horizontalOrigin
         self.verticalOrigin = verticalOrigin
 
-        self.eyeOffset = com.notimplemented(eyeOffset)
-        self.pixelOffset = com.notimplemented(pixelOffset)
+        if eyeOffset is not None:
+            eyeOffset = cartesian._maybe_cartesian3(eyeOffset, key='eyeOffset')
+        self.eyeOffset = eyeOffset
+
+        if pixelOffset is not None:
+            pixelOffset = cartesian._maybe_cartesian2(pixelOffset, key='pixelOffset')
+        self.pixelOffset = pixelOffset
+
         self.pixelOffsetScaleByDistance = com.notimplemented(pixelOffsetScaleByDistance)
 
         if position is not None:
@@ -296,6 +305,8 @@ class Billboard(_CesiumEntity):
     _klass = 'billboard'
     _props = ['image', 'alignedAxis', 'imageSubRegion', 'sizeInMeters']
 
+    image = traitlets.Instance(klass=cesiumpy.entities.pinbuilder._BillboardContents)
+
     def __init__(self, position, image=None, show=None, scale=None,
                  horizontalOrigin=None, verticalOrigin=None,
                  eyeOffset=None, pixelOffset=None, rotation=None,
@@ -316,10 +327,9 @@ class Billboard(_CesiumEntity):
         if image is None:
             image = Pin()
 
-        if isinstance(image, cesiumpy.Pin):
-            self.image = image
-        else:
-            self.image = com.validate_str(image, key='image')
+        if isinstance(image, six.string_types):
+            image = cesiumpy.entities.pinbuilder.Icon(image)
+        self.image = image
 
         self.alignedAxis = com.notimplemented(alignedAxis)
         self.imageSubRegion = com.notimplemented(imageSubRegion)

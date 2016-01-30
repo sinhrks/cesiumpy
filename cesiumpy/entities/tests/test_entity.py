@@ -125,6 +125,19 @@ class TestEntity(unittest.TestCase):
                                    horizontalOrigin=cesiumpy.HorizontalOrigin.RIGHT,
                                    verticalOrigin='xxx')
 
+    def test_billboard_icon(self):
+        b = cesiumpy.Billboard(position=[135, 35, 0], image='xxx.png', scale=0.1)
+        exp = """{position : Cesium.Cartesian3.fromDegrees(135, 35, 0), billboard : {image : "xxx.png", scale : 0.1}}"""
+        self.assertEqual(b.script, exp)
+
+        b = cesiumpy.Billboard(position=[135, 35, 0], image='xxx.png', scale=0.1, eyeOffset=(0, 10e4, 0))
+        exp = """{position : Cesium.Cartesian3.fromDegrees(135, 35, 0), billboard : {image : "xxx.png", scale : 0.1, eyeOffset : new Cesium.Cartesian3(0, 100000.0, 0)}}"""
+        self.assertEqual(b.script, exp)
+
+        b = cesiumpy.Billboard(position=[135, 35, 0], image='xxx.png', scale=0.1, pixelOffset=(0, 150))
+        exp = """{position : Cesium.Cartesian3.fromDegrees(135, 35, 0), billboard : {image : "xxx.png", scale : 0.1, pixelOffset : new Cesium.Cartesian2(0, 150)}}"""
+        self.assertEqual(b.script, exp)
+
     def test_ellipse(self):
         e = cesiumpy.Ellipse(position=[-110, 40, 0], semiMinorAxis=25.0, semiMajorAxis=40.0)
         exp = "{position : Cesium.Cartesian3.fromDegrees(-110, 40, 0), ellipse : {semiMinorAxis : 25.0, semiMajorAxis : 40.0}}"

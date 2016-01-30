@@ -11,8 +11,26 @@ from cesiumpy.base import _CesiumObject
 import cesiumpy.common as com
 
 
+class _BillboardContents(_CesiumObject):
+    pass
 
-class Pin(_CesiumObject):
+
+class Icon(_BillboardContents):
+
+    # different from ImageMaterialProperty
+
+    image = traitlets.Unicode()
+
+    def __init__(self, image):
+        self.image = image
+        com._check_uri(self.image)
+
+    @property
+    def script(self):
+        return '"{path}"'.format(path=self.image)
+
+
+class Pin(_BillboardContents):
 
     # default color, all attrs are mandatory
     color = cesiumpy.entities.color.ColorTrait()
