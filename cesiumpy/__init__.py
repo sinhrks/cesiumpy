@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# data
+import cesiumpy.data.country
+countries = cesiumpy.data.country.CountryLoader()
+
 # entities
 import cesiumpy.entities as entities
 import cesiumpy.entities.color as color
