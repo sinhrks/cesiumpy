@@ -192,12 +192,17 @@ class Cartesian3(_Cartesian):
 
 class Cartesian4(_Cartesian):
 
+    x = traitlets.Float()
+    y = traitlets.Float()
+    z = traitlets.Float()
+    w = traitlets.Float()
+
     def __init__(self, x, y, z, w, degrees=False):
 
-        self.x = com.validate_numeric(x, key='x')
-        self.y = com.validate_numeric(y, key='y')
-        self.z = com.validate_numeric(z, key='z')
-        self.w = com.validate_numeric(w, key='w')
+        self.x = x
+        self.y = y
+        self.z = z
+        self.w = w
 
         self._is_degrees = degrees
         self._is_array = False

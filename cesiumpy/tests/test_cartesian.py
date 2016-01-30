@@ -110,11 +110,11 @@ class TestCartesian(unittest.TestCase):
 
     def test_cartesian4(self):
         c = cesiumpy.Cartesian4(5, 10, 20, 30)
-        exp = "new Cesium.Cartesian4(5, 10, 20, 30)"
+        exp = "new Cesium.Cartesian4(5.0, 10.0, 20.0, 30.0)"
         self.assertEqual(c.script, exp)
 
         c = cesiumpy.Cartesian4.fromDegrees(5, 10, 20, 30)
-        exp = "Cesium.Cartesian4.fromDegrees(5, 10, 20, 30)"
+        exp = "Cesium.Cartesian4.fromDegrees(5.0, 10.0, 20.0, 30.0)"
         self.assertEqual(c.script, exp)
 
         msg = "x must be longitude, between -180 to 180"
@@ -127,11 +127,11 @@ class TestCartesian(unittest.TestCase):
 
     def test_cartesian4_repr(self):
         c = cesiumpy.Cartesian4(5, 10, 20, 30)
-        exp = "Cartesian4(5, 10, 20, 30)"
+        exp = "Cartesian4(5.0, 10.0, 20.0, 30.0)"
         self.assertEqual(repr(c), exp)
 
         c = cesiumpy.Cartesian4.fromDegrees(5, 10, 20, 30)
-        exp = "Cartesian4.fromDegrees(5, 10, 20, 30)"
+        exp = "Cartesian4.fromDegrees(5.0, 10.0, 20.0, 30.0)"
         self.assertEqual(repr(c), exp)
 
     def test_maybe_cartesian(self):
@@ -144,7 +144,7 @@ class TestCartesian(unittest.TestCase):
         self.assertEqual(c.script, exp)
 
         c = cesiumpy.cartesian._maybe_cartesian4((0, 10, 20, 30), key='x')
-        exp = "new Cesium.Cartesian4(0, 10, 20, 30)"
+        exp = "new Cesium.Cartesian4(0.0, 10.0, 20.0, 30.0)"
         self.assertEqual(c.script, exp)
 
         c = cesiumpy.cartesian._maybe_cartesian2([0, 10], key='x')
@@ -156,7 +156,7 @@ class TestCartesian(unittest.TestCase):
         self.assertEqual(c.script, exp)
 
         c = cesiumpy.cartesian._maybe_cartesian4([0, 10, 20, 30], key='x')
-        exp = "new Cesium.Cartesian4(0, 10, 20, 30)"
+        exp = "new Cesium.Cartesian4(0.0, 10.0, 20.0, 30.0)"
         self.assertEqual(c.script, exp)
 
         msg = "x must be list-likes: 3"
@@ -177,7 +177,7 @@ class TestCartesian(unittest.TestCase):
         self.assertEqual(c.script, exp)
 
         c = cesiumpy.cartesian._maybe_cartesian4((0, 10, 20, 30), key='x', degrees=True)
-        exp = "Cesium.Cartesian4.fromDegrees(0, 10, 20, 30)"
+        exp = "Cesium.Cartesian4.fromDegrees(0.0, 10.0, 20.0, 30.0)"
         self.assertEqual(c.script, exp)
 
         c = cesiumpy.cartesian._maybe_cartesian2([0, 10], key='x', degrees=True)
@@ -189,7 +189,7 @@ class TestCartesian(unittest.TestCase):
         self.assertEqual(c.script, exp)
 
         c = cesiumpy.cartesian._maybe_cartesian4([0, 10, 20, 30], key='x', degrees=True)
-        exp = "Cesium.Cartesian4.fromDegrees(0, 10, 20, 30)"
+        exp = "Cesium.Cartesian4.fromDegrees(0.0, 10.0, 20.0, 30.0)"
         self.assertEqual(c.script, exp)
 
         msg = "x must be list-likes: 3"
