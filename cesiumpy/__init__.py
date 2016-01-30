@@ -7,7 +7,10 @@ countries = cesiumpy.data.country.CountryLoader()
 
 # entities
 import cesiumpy.entities as entities
-import cesiumpy.entities.color as color
+import cesiumpy.entities.color
+color = cesiumpy.entities.color.ColorFactory()
+
+
 from cesiumpy.entities.entity import (Point, Label, Billboard, Ellipse,
                                       Ellipsoid, Corridor, Cylinder,
                                       Polyline, PolylineVolume, Wall,

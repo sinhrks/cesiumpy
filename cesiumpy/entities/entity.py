@@ -33,9 +33,9 @@ class _CesiumEntity(_CesiumObject):
     fill = traitlets.Bool(allow_none=True)
 
     material = cesiumpy.entities.material.MaterialTrait(allow_none=True)
-    color = cesiumpy.color.ColorTrait(allow_none=True)
+    color = cesiumpy.entities.color.ColorTrait(allow_none=True)
     outline = traitlets.Bool(allow_none=True)
-    outlineColor = cesiumpy.color.ColorTrait(allow_none=True)
+    outlineColor = cesiumpy.entities.color.ColorTrait(allow_none=True)
 
     outlineWidth = traitlets.Float(allow_none=True)
     numberOfVerticalLines = traitlets.Float(allow_none=True)
@@ -227,7 +227,7 @@ class Label(_CesiumEntity):
     _props = ['text', 'style', 'fillColor']
 
     text = traitlets.Unicode()
-    fillColor = cesiumpy.color.ColorTrait(allow_none=True)
+    fillColor = cesiumpy.entities.color.ColorTrait(allow_none=True)
 
     def __init__(self, position, text, style=None, fillColor=None,
                  outlineColor=None, outlineWidth=None, show=None,

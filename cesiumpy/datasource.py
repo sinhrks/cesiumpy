@@ -80,10 +80,10 @@ class GeoJsonDataSource(DataSource):
 
     markerSize = traitlets.Float(allow_none=True)
     markerSymbol = traitlets.Unicode(allow_none=True)
-    markerColor = cesiumpy.color.ColorTrait(allow_none=True)
-    stroke = cesiumpy.color.ColorTrait(allow_none=True)
+    markerColor = cesiumpy.entities.color.ColorTrait(allow_none=True)
+    stroke = cesiumpy.entities.color.ColorTrait(allow_none=True)
     strokeWidth = traitlets.Float(allow_none=True)
-    fill = cesiumpy.color.ColorTrait(allow_none=True)
+    fill = cesiumpy.entities.color.ColorTrait(allow_none=True)
 
     def __init__(self, sourceUri, describe=None, markerSize=None,
                  markerSymbol=None, markerColor=None, stroke=None,
