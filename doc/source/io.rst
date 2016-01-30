@@ -16,9 +16,6 @@ returns a ``list`` of ``cesiumpy.Polygon``.
 
 The file is provided by `mledoze/countries <https://github.com/mledoze/countries>`_ repositry.
 
-
-https://github.com/mledoze/countries
-
 .. code-block:: python
 
   >>> res = cesiumpy.io.read_geojson('jpn.geo.json')
