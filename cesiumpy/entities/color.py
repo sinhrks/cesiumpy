@@ -9,6 +9,7 @@ import traitlets
 import warnings
 
 import cesiumpy
+from cesiumpy.base import _CesiumObject
 import cesiumpy.common as com
 from cesiumpy.entities.material import Material
 
@@ -161,10 +162,13 @@ class ColorConstant(CssColor):
             return rep.format(name=self.name, alpha=self.alpha)
 
 
-class ColorMap(object):
+class ColorMap(_CesiumObject):
+
+    name = traitlets.Unicode()
 
     def __init__(self, name):
         plt = com._check_package('matplotlib.pyplot')
+        self.name = name
         self.cm = plt.get_cmap(name)
 
     def __call__(self, *args, **kwargs):
@@ -175,6 +179,10 @@ class ColorMap(object):
             return Color(*result)
         else:
             return [Color(*c) for c in result]
+
+    def __repr__(self):
+        rep = """ColorMap("{name}")"""
+        return rep.format(name=self.name)
 
 
 class ColorFactory(object):

@@ -149,6 +149,9 @@ class TestColor(unittest.TestCase):
         mpl_cmap = plt.get_cmap('winter')
         cmap = cesiumpy.color.get_cmap('winter')
 
+        exp = """ColorMap("winter")"""
+        self.assertEqual(repr(cmap), exp)
+
         res = cmap(3)
         exp = mpl_cmap(3)
         self.assertEqual(res.red, exp[0])

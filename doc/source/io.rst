@@ -1,5 +1,5 @@
-File IO
-=======
+Read External Files
+===================
 
 ``cesiumpy`` can read following file formats using ``io`` module. The results
 are automatically converted to ``cesiumpy`` entities and can be added to
@@ -67,3 +67,21 @@ Then, you can add the result to the map.
   >>> viewer
 
 .. image:: ./_static/io_shape01.png
+
+Bundled Data
+------------
+
+``cesiumpy`` bundles GeoJSON data provided by `mledoze/countries <https://github.com/mledoze/countries>`_ repositry. You can load them via ``cesiumpy.countries.get`` method passing country code or its name.
+
+Please refer to `countries.json <https://github.com/mledoze/countries/blob/master/countries.json>`_ file
+to check available country codes ("cca2" or "cca3") and names ("official name").
+
+.. code-block:: python
+
+  >>> usa = cesiumpy.countries.get('USA')
+  >>> viewer = cesiumpy.Viewer()
+  >>> viewer.entities.add(usa, material='red')
+  >>> viewer
+
+.. image:: ./_static/io_bundle01.png
+
