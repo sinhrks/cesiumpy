@@ -35,7 +35,7 @@ class CountryLoader(object):
             self._countries = countries
         return self._countries
 
-    def __getattr__(self, name):
+    def get(self, name):
         fname = name.lower()
         fname = self.countries.get(fname, fname)
         path = os.path.join(data_path, 'data', '{0}.geo.json'.format(fname))
@@ -43,5 +43,12 @@ class CountryLoader(object):
             from cesiumpy.extension.io import read_geojson
             return read_geojson(path)
         else:
+            msg = "Unable to load country data, file not found: '{name}'"
+            raise ValueError(msg.format(name=name))
+
+    def __getattr__(self, name):
+        try:
+            return self.get(name)
+        except ValueError:
             msg = "Unable to load country data, file not found: '{name}'"
             raise AttributeError(msg.format(name=name))

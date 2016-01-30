@@ -125,3 +125,65 @@ Both ``x`` and ``y`` must be provided at least.
   ...            color=cesiumpy.color.RED, text=['!', '?', '!?'])
 
 .. image:: ./_static/plotting_pin02.png
+
+
+Specifying Color
+----------------
+
+You can colorize each entity using ``cesiumpy.color.Color`` instance. Common
+colors are defined under ``cesiumpy.color``. Refer to `Cesium Documentation <https://cesiumjs.org/Cesium/Build/Documentation/Color.html>`_ to see the list of constants.
+
+.. code-block:: python
+
+  >>> cesiumpy.color.AQUA
+  Color.AQUA
+
+Also, you can pass RGB or RGBA values to instanciate ``Color``.
+
+.. code-block:: python
+
+  # RGB
+  >>> cesiumpy.color.Color(1, 0, 0)
+  Color(1.0, 0.0, 0.0)
+
+  # RGBA
+  >>> cesiumpy.color.Color(1, 0, 0, 0.5)
+  Color(1.0, 0.0, 0.0, 0.5)
+
+If you want to use ``str`` representation, use ``fromString`` method.
+
+.. code-block:: python
+
+  >>> cesiumpy.color.Color.fromString("#FF0000")
+  Color.fromCssColorString("#FF0000")
+
+There are 2 functions to prepare color at random.
+
+- ``choice``: Get a single color constant randomly.
+- ``sample``: Get a ``list`` of random color constants with specified length.
+
+.. code-block:: python
+
+   >>> cesiumpy.color.choice()
+   Color.DARKSLATEGREY
+
+   >>> cesiumpy.color.sample(3)
+   [Color.THISTLE, Color.PINK, Color.DARKKHAKI]
+
+ColorMap
+--------
+
+Also, ``cesiumpy`` has ``ColorMap`` class which internally uses ``matplotlib`` ``ColorMap``.
+This is convenient to prepare multiple colors based on external values.
+
+.. code-block:: python
+
+   >>> cmap = cesiumpy.color.get_cmap('winter')
+   >>> cmap
+   ColorMap("winter")
+
+   >>> cmap(0.5)
+   Color(0.0, 0.501960784314, 0.749019607843, 1.0)
+
+   >>> cmap([0.2, 0.6])
+   [Color(0.0, 0.2, 0.9, 1.0), Color(0.0, 0.6, 0.7, 1.0)]
