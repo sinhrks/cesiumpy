@@ -24,10 +24,25 @@ class TestCountry(unittest.TestCase):
         jpn = cesiumpy.countries.jpn
         self.assertIsInstance(jpn, list)
         self.assertTrue(all([isinstance(e, cesiumpy.Polygon) for e in jpn]))
+        exp = """{polygon : {hierarchy : Cesium.Cartesian3.fromDegreesArray([153.958588, 24.295, 153.953308, 24.292774, 153.946625, 24.293331, 153.942749, 24.296944, 153.939697, 24.300831, 153.938873, 24.306942, 153.940247, 24.312496, 153.947754, 24.319443, 153.952759, 24.321384, 153.960236, 24.321663, 153.96579, 24.31361, 153.96579, 24.309441, 153.963013, 24.29833, 153.958588, 24.295])}}"""
+        self.assertEqual(jpn[0].script, exp)
 
         jpn = cesiumpy.countries.JPN
         self.assertIsInstance(jpn, list)
         self.assertTrue(all([isinstance(e, cesiumpy.Polygon) for e in jpn]))
+        self.assertEqual(jpn[0].script, exp)
+
+        # 2 character
+        jpn = cesiumpy.countries.JP
+        self.assertIsInstance(jpn, list)
+        self.assertTrue(all([isinstance(e, cesiumpy.Polygon) for e in jpn]))
+        self.assertEqual(jpn[0].script, exp)
+
+        # official name
+        jpn = cesiumpy.countries.JAPAN
+        self.assertIsInstance(jpn, list)
+        self.assertTrue(all([isinstance(e, cesiumpy.Polygon) for e in jpn]))
+        self.assertEqual(jpn[0].script, exp)
 
     def test_viewer(self):
         _skip_if_no_shapely()
