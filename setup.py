@@ -43,6 +43,9 @@ setup(name=PACKAGE,
       url='http://cesiumpy.readthedocs.org/en/stable',
       license = 'Apache 2.0',
       packages=find_packages(),
+      package_data = {'cesiumpy.data': ['countries/*.json',
+                                        'countries/data/*.json',
+                                        'countries/data/*.svg']},
       install_requires=install_requires
       )
 

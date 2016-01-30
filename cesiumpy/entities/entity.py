@@ -869,3 +869,6 @@ class Polygon(_CesiumEntity):
     def positions(self):
         # for compat
         return self.hierarchy
+
+
+

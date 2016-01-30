@@ -34,10 +34,34 @@ class Pin(_CesiumObject):
 
     @classmethod
     def fromColor(self, color, size=48):
+        """
+        Create pin specifying color and size
+
+        Parameters
+        ----------
+
+        color: Color
+            A Property specifying the Color of the pin.
+        size: int, default 48
+            A Property specifying the size of the pin.
+        """
         return Pin(color=color, size=size)
 
     @classmethod
     def fromText(self, text, color=None, size=48):
+        """
+        Create pin specifying text, color and size
+
+        Parameters
+        ----------
+
+        text: str
+            A Property specifying the text of the pin.
+        color: Color
+            A Property specifying the Color of the pin.
+        size: int, default 48
+            A Property specifying the size of the pin.
+        """
         # validate text is not None
         if text is None:
             self.text.error(self.text, text)

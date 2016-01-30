@@ -115,6 +115,16 @@ class NamedColor(Color):
         return NamedColor(name=self.name, alpha=self.alpha)
 
 
+class NamedColorFactory(object):
+
+    _allowed = ['RED']
+
+    def __getattr__(self, name):
+        if name in self._allowed:
+            return NamedColor(name=name)
+        else:
+            msg = "Unable to find color name: '{name}'"
+            raise AttributeError(msg.format(name=name))
 
 # --------------------------------------------------
 # COLOR CONSTANTS
