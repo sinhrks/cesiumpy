@@ -3,6 +3,7 @@
 
 from __future__ import unicode_literals
 
+import random
 import six
 import traitlets
 import warnings
@@ -12,13 +13,6 @@ import cesiumpy.common as com
 from cesiumpy.entities.material import Material
 
 
-# matplotlib compat
-_SINGLE_COLOR_MAP = {'B': 'BLUE', 'G': 'GREEN', 'R': 'RED',
-                     'C': 'CYAN', 'M': 'MAGENTA', 'Y': 'YELLOW',
-                     'K': 'BLACK', 'W': 'WHITE'}
-
-
-
 class ColorTrait(traitlets.Instance):
 
     def __init__(self, args=None, kw=None, **metadata):
@@ -26,55 +20,90 @@ class ColorTrait(traitlets.Instance):
                                          **metadata)
 
     def validate(self, obj, value):
-        value = _maybe_color(value)
+        value = cesiumpy.color._maybe_color(value)
         return super(ColorTrait, self).validate(obj, value)
-
-
-def _maybe_color(x):
-    """ Convert str to NamedColor constant """
-
-    if isinstance(x, six.string_types):
-        cname = x.upper()
-        cname = _SINGLE_COLOR_MAP.get(cname, cname)
-
-        color = getattr(cesiumpy.color, cname, None)
-
-        if color is not None and isinstance(color, NamedColor):
-            return color
-
-    return x
-
 
 
 class Color(Material):
 
-    _props = []
+    _props = ['red', 'green', 'blue', 'alpha']
 
-    red = traitlets.Int()
-    green = traitlets.Int()
-    blue = traitlets.Int()
-    _alpha = traitlets.Float(min=0., max=1., allow_none=True)
+    red = traitlets.Float(min=0., max=1.)
+    green = traitlets.Float(min=0., max=1.)
+    blue = traitlets.Float(min=0., max=1.)
+    alpha = traitlets.Float(min=0., max=1., allow_none=True)
 
     def __init__(self, red, green, blue, alpha=None):
 
         self.red = red
         self.green = green
         self.blue = blue
-        self._alpha = alpha
-
-    @property
-    def alpha(self):
-        return self._alpha
+        self.alpha = alpha
 
     def withAlpha(self, alpha):
-        c = self.copy()
-        c._alpha = alpha
-        return c
+        self.alpha = alpha
+        return self
 
     def set_alpha(self, alpha):
         msg = "Color.set_alpha is deprecated. Use Color.withAlpha"
         warnings.warn(msg)
         return self.withAlpha(alpha)
+
+    @classmethod
+    def fromAlpha(cls, color, alpha):
+        return Color(red=color.red, green=color.green, blue=color.blue,
+                     alpha=alpha)
+
+    @classmethod
+    def fromBytes(cls, red=255, green=255, blue=255, alpha=None):
+        """
+        Creates a new Color specified using red, green, blue, and alpha values
+        that are in the range of 0 to 255, converting them internally to a range
+        of 0.0 to 1.0.
+
+        Parameters
+        ----------
+
+        red: int, default 255
+            The red component.
+        green: int, default 255
+            The green component.
+        blue: int, default 255
+            The blue component.
+        alpha: int, default None
+            The alpha component.
+        """
+        if alpha is not None:
+            alpha = alpha / 255.
+        return Color(red=red / 255., green=green / 255.,
+                     blue=blue / 255., alpha=alpha)
+
+    @classmethod
+    def fromString(self, color):
+        """
+        Creates a Color instance from a CSS color value. Shortcut for
+        Color.fromCssColorString.
+
+        Parameters
+        ----------
+
+        color: str
+            The CSS color value in #rgb, #rrggbb, rgb(), rgba(), hsl(), or hsla() format.
+        """
+        return CssColor(name=color)
+
+    @classmethod
+    def fromCssColorString(self, color):
+        """
+        Creates a Color instance from a CSS color value.
+
+        Parameters
+        ----------
+
+        color: str
+            The CSS color value in #rgb, #rrggbb, rgb(), rgba(), hsl(), or hsla() format.
+        """
+        return CssColor(name=color)
 
     def __repr__(self):
         if self.alpha is None:
@@ -87,24 +116,41 @@ class Color(Material):
 
     @property
     def script(self):
-        return 'Cesium.{rep}'.format(rep=repr(self))
+        # need new
+        return 'new Cesium.{rep}'.format(rep=repr(self))
 
     def copy(self):
         return CesiumColor(red=self.red, green=self.green,
                            blue=self.blue, alpha=self.alpha)
 
 
-class NamedColor(Color):
+class CssColor(Color):
 
-    _name = traitlets.Unicode()
+    name = traitlets.Unicode()
+    alpha = traitlets.Float(min=0., max=1., allow_none=True)
 
     def __init__(self, name, alpha=None):
-        self._name = name
-        self._alpha = alpha
+        self.name = name
+        self.alpha = alpha
+
+    def __repr__(self):
+        if self.alpha is None:
+            rep = """Color.fromCssColorString("{name}")"""
+            return rep.format(name=self.name)
+        else:
+            rep = """Color.fromCssColorString("{name}").withAlpha({alpha})"""
+            return rep.format(name=self.name, alpha=self.alpha)
 
     @property
-    def name(self):
-        return self._name
+    def script(self):
+        # no need new
+        return 'Cesium.{rep}'.format(rep=repr(self))
+
+    def copy(self):
+        return self.__class__(name=self.name, alpha=self.alpha)
+
+
+class ColorConstant(CssColor):
 
     def __repr__(self):
         if self.alpha is None:
@@ -113,9 +159,6 @@ class NamedColor(Color):
         else:
             rep = """Color.{name}.withAlpha({alpha})"""
             return rep.format(name=self.name, alpha=self.alpha)
-
-    def copy(self):
-        return NamedColor(name=self.name, alpha=self.alpha)
 
 
 class ColorFactory(object):
@@ -127,13 +170,45 @@ class ColorFactory(object):
         """ return Color class """
         return Color
 
+    def choice(self):
+        """
+        Randomly returns a single color.
+        """
+        name = random.choice(_COLORS)
+        return ColorConstant(name=name)
+
+    def sample(self, n):
+        """
+        Randomly returns list of colors which length is n.
+        """
+        names = random.sample(_COLORS, n)
+        return [ColorConstant(name=name) for name in names]
+
     def __getattr__(self, name):
         if name in _COLORS:
             # always return new instance to avoid overwrite
-            return NamedColor(name=name)
+            return ColorConstant(name=name)
         else:
             msg = "Unable to find color name: '{name}'"
             raise AttributeError(msg.format(name=name))
+
+    @classmethod
+    def _maybe_color(cls, x):
+        """ Convert str to ColorConstant """
+
+        if isinstance(x, six.string_types):
+            cname = x.upper()
+            cname = _SINGLE_COLORS.get(cname, cname)
+
+            if cname in _COLORS:
+                return ColorConstant(name=cname)
+        return x
+
+
+# matplotlib compat
+_SINGLE_COLORS = {'B': 'BLUE', 'G': 'GREEN', 'R': 'RED',
+                  'C': 'CYAN', 'M': 'MAGENTA', 'Y': 'YELLOW',
+                  'K': 'BLACK', 'W': 'WHITE'}
 
 # --------------------------------------------------
 # COLOR CONSTANTS

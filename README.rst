@@ -26,7 +26,7 @@ Running following script on ``Jupyter`` Notebook will show an embedded interacti
   ...                             material=cesiumpy.color.RED, position=(-120, 40, 0))
   >>> v
 
-.. image:: https://raw.githubusercontent.com/sinhrks/cesiumpy/master/doc/source/_static/main.png
+.. image:: https://raw.githubusercontent.com/sinhrks/cesiumpy/master/doc/source/_static/viewer01.png
 
 Documentation
 -------------

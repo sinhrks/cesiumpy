@@ -8,6 +8,7 @@ import six
 import tempfile
 import traitlets
 
+import cesiumpy
 from cesiumpy.base import _CesiumObject
 import cesiumpy.common as com
 
@@ -19,8 +20,7 @@ class MaterialTrait(traitlets.Instance):
                                          **metadata)
 
     def validate(self, obj, value):
-        from cesiumpy.entities.color import _maybe_color
-        value = _maybe_color(value)
+        value = cesiumpy.color._maybe_color(value)
         if isinstance(value, six.string_types):
             # regard value as image file path
             value = ImageMaterialProperty(value)
