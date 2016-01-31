@@ -40,6 +40,10 @@ class TestPinBuilder(unittest.TestCase):
         exp = """new Cesium.PinBuilder().fromColor(Cesium.Color.GREEN, 25.0)"""
         self.assertEqual(p.script, exp)
 
+        msg = "The 'color' trait of a Pin instance must be a Color"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
+            cesiumpy.Pin.fromColor('xyz')
+
     def test_pinbuilder_repr(self):
         p = cesiumpy.Pin('red')
         exp = """Pin(Color.RED, 48.0)"""

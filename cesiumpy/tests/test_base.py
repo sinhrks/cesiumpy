@@ -237,9 +237,21 @@ class TestViewer(unittest.TestCase):
 </script>"""
         self.assertEqual(result, exp)
 
-    def test_add_scripts(self):
-
+    def test_model(self):
         viewer = cesiumpy.Viewer(divid="viewertest")
+        m = cesiumpy.Model('xxx.gltf', modelMatrix=(-100, 40, 0), scale=200)
+        viewer.scene.primitives.add(m)
+        result = viewer.to_html()
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest");
+  widget.scene.primitives.add(Cesium.Model.fromGltf({url : "xxx.gltf", modelMatrix : Cesium.Transforms.eastNorthUpToFixedFrame(Cesium.Cartesian3.fromDegrees(-100.0, 40.0, 0.0)), scale : 200.0}));
+</script>"""
+        self.assertEqual(result, exp)
+
+    def test_add_scripts(self):
         viewer = cesiumpy.Viewer(divid="viewertest")
         viewer.scripts.add('console.log("xxx");')
         result = viewer.to_html()

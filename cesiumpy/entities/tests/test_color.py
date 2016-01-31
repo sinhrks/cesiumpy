@@ -13,30 +13,44 @@ import cesiumpy.testing as tm
 class TestColor(unittest.TestCase):
 
     def test_maybe_color(self):
-        blue = cesiumpy.color._maybe_color('blue')
-        exp = "Color.BLUE"
-        self.assertEqual(repr(blue), exp)
-        exp = "Cesium.Color.BLUE"
-        self.assertEqual(blue.script, exp)
+        blue = cesiumpy.color.Color.maybe('blue')
+        self.assertEqual(repr(blue), "Color.BLUE")
+        self.assertEqual(blue.script, "Cesium.Color.BLUE")
 
-        red = cesiumpy.color._maybe_color('RED')
-        exp = "Color.RED"
-        self.assertEqual(repr(red), exp)
-        exp = "Cesium.Color.RED"
-        self.assertEqual(red.script, exp)
+        red = cesiumpy.color.Color.maybe('RED')
+        self.assertEqual(repr(red), "Color.RED")
+        self.assertEqual(red.script, "Cesium.Color.RED")
+
+        msg = "Unable to convert to Color instance: "
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            cesiumpy.color.Color.maybe('NamedColor')
+
+        msg = "Unable to convert to Color instance: "
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            cesiumpy.color.Color.maybe('x')
+
+        msg = "Unable to convert to Color instance: "
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            cesiumpy.color.Color.maybe(1)
+
+    def test_maybe_color_listlike(self):
+        # tuple
+        c = cesiumpy.color.Color.maybe((0.5, 0.3, 0.5))
+        self.assertEqual(repr(c), "Color(0.5, 0.3, 0.5)")
+        self.assertEqual(c.script, "new Cesium.Color(0.5, 0.3, 0.5)")
+
+        c = cesiumpy.color.Color.maybe((0.5, 0.3, 0.5, 0.2))
+        self.assertEqual(repr(c), "Color(0.5, 0.3, 0.5, 0.2)")
+        self.assertEqual(c.script, "new Cesium.Color(0.5, 0.3, 0.5, 0.2)")
 
         # do not convert
-        red = cesiumpy.color._maybe_color('NamedColor')
-        exp = "NamedColor"
-        self.assertEqual(red, exp)
+        msg = "Unable to convert to Color instance: "
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            cesiumpy.color.Color.maybe((0.5, 0.3))
 
-        red = cesiumpy.color._maybe_color('x')
-        exp = "x"
-        self.assertEqual(red, exp)
-
-        red = cesiumpy.color._maybe_color(1)
-        exp = 1
-        self.assertEqual(red, exp)
+        msg = "Unable to convert to Color instance: "
+        with nose.tools.assert_raises_regexp(ValueError, msg):
+            cesiumpy.color.Color.maybe((0.5, 0.3, 0.2, 0.1, 0.5))
 
     def test_named_colors(self):
         aqua = cesiumpy.color.AQUA
@@ -69,7 +83,7 @@ class TestColor(unittest.TestCase):
         self.assertEqual(blue.script, exp)
 
     def test_single_char_color(self):
-        _m = cesiumpy.color._maybe_color
+        _m = cesiumpy.color.Color.maybe
         self.assertEqual(_m('b'), cesiumpy.color.BLUE)
         self.assertEqual(_m('g'), cesiumpy.color.GREEN)
         self.assertEqual(_m('r'), cesiumpy.color.RED)

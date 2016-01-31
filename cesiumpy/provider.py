@@ -8,7 +8,7 @@ import traitlets
 
 import cesiumpy
 from cesiumpy.base import _CesiumObject
-import cesiumpy.cartesian as cartesian
+import cesiumpy.entities.cartesian as cartesian
 import cesiumpy.common as com
 
 
@@ -175,6 +175,7 @@ class ImageryProvider(_CesiumProvider):
 
     url = traitlets.Unicode(allow_none=True)
     fileExtension = traitlets.Unicode(allow_none=True)
+    rectangle = com.MaybeTrait(klass=cartesian.Rectangle, allow_none=True)
 
     tileWidth = traitlets.Float(allow_none=True)
     tileHeight = traitlets.Float(allow_none=True)
@@ -190,9 +191,6 @@ class ImageryProvider(_CesiumProvider):
 
         self.url = url
         self.fileExtension = fileExtension
-
-        if rectangle is not None:
-            rectangle = cartesian._maybe_rectangle(rectangle, key='rectangle')
         self.rectangle = rectangle
 
         self.tillingScheme = com.notimplemented(tillingScheme)

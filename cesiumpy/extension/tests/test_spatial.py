@@ -5,9 +5,6 @@ import nose
 import unittest
 
 import cesiumpy
-import cesiumpy.cartesian as cartesian
-
-
 from cesiumpy.testing import _skip_if_no_scipy, _skip_if_no_shapely
 
 

@@ -5,6 +5,7 @@ import unittest
 import nose
 
 import six
+import traitlets
 
 import cesiumpy
 
@@ -36,6 +37,10 @@ class TestCamera(unittest.TestCase):
         msg = "y must be latitude, between -90 to 90"
         with nose.tools.assert_raises_regexp(ValueError, msg):
             c.flyTo((1, 200, 3))
+
+        msg = "The 'destination' trait of a Camera instance must be a _Cartesian or None"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
+            c.flyTo(1)
 
     def test_camera_repr(self):
         widget = cesiumpy.CesiumWidget(divid='cesiumwidget')

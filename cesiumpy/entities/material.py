@@ -13,23 +13,19 @@ from cesiumpy.base import _CesiumObject
 import cesiumpy.common as com
 
 
-class MaterialTrait(traitlets.Instance):
-
-    def __init__(self, args=None, kw=None, **metadata):
-        super(MaterialTrait, self).__init__(klass=Material, args=args, kw=kw,
-                                         **metadata)
-
-    def validate(self, obj, value):
-        value = cesiumpy.color._maybe_color(value)
-        if isinstance(value, six.string_types):
-            # regard value as image file path
-            value = ImageMaterialProperty(value)
-        return super(MaterialTrait, self).validate(obj, value)
-
-
-
 class Material(_CesiumObject):
-    pass
+
+    @classmethod
+    def maybe(cls, x):
+        try:
+            x = cesiumpy.color.Color.maybe(x)
+        except ValueError:
+            pass
+
+        if isinstance(x, six.string_types):
+            # regard value as image file path
+            x = ImageMaterialProperty(x)
+        return x
 
 
 class ImageMaterialProperty(Material):

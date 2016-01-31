@@ -48,10 +48,10 @@ class TestGeocode(unittest.TestCase):
 
     def test_cartesian3_geocode(self):
         try:
-            result = cesiumpy.cartesian._maybe_cartesian3(u'富士山', key='geo')
+            result = cesiumpy.entities.cartesian.Cartesian3.maybe(u'富士山')
             self.assertEqual(result.script, 'new Cesium.Cartesian3(138.7277777, 35.3605555, 0.0)')
 
-            result = cesiumpy.cartesian._maybe_cartesian3('Los Angeles', key='geo')
+            result = cesiumpy.entities.cartesian.Cartesian3.maybe('Los Angeles')
             self.assertEqual(result.script, 'new Cesium.Cartesian3(-118.2436849, 34.0522342, 0.0)')
         except geopy.exc.GeocoderQuotaExceeded:
             raise nose.SkipTest("exceeded geocoder quota")
