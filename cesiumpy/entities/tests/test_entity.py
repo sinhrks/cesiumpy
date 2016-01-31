@@ -115,15 +115,15 @@ class TestEntity(unittest.TestCase):
 
         msg = "The 'horizontalOrigin' trait of a Billboard instance must be a HorizontalOrigin or None"
         with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
-            b = cesiumpy.Billboard(position=[-130, 40, 0], image=p,
-                                   horizontalOrigin=1,
-                                   verticalOrigin=cesiumpy.VerticalOrigin.TOP)
+            cesiumpy.Billboard(position=[-130, 40, 0], image=p,
+                               horizontalOrigin=1,
+                               verticalOrigin=cesiumpy.VerticalOrigin.TOP)
 
         msg = "The 'verticalOrigin' trait of a Billboard instance must be a VerticalOrigin or None"
         with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
-            b = cesiumpy.Billboard(position=[-130, 40, 0], image=p,
-                                   horizontalOrigin=cesiumpy.HorizontalOrigin.RIGHT,
-                                   verticalOrigin='xxx')
+            cesiumpy.Billboard(position=[-130, 40, 0], image=p,
+                               horizontalOrigin=cesiumpy.HorizontalOrigin.RIGHT,
+                               verticalOrigin='xxx')
 
     def test_billboard_icon(self):
         b = cesiumpy.Billboard(position=[135, 35, 0], image='xxx.png', scale=0.1)
@@ -180,6 +180,10 @@ class TestEntity(unittest.TestCase):
 
         e = e.copy()
         self.assertEqual(e.script, exp)
+
+        msg = "The 'radii' trait of an Ellipsoid instance must be a Cartesian3"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
+            cesiumpy.Ellipsoid(position=(-70, 40, 0), radii=(20, 30, 40, 10, 50))
 
     def test_cylinder(self):
         e = cesiumpy.Cylinder(position=(-70, 40, 0), length=10, topRadius=100, bottomRadius=200, material=cesiumpy.color.AQUA)
@@ -370,8 +374,8 @@ class TestEntity(unittest.TestCase):
         e = e.copy()
         self.assertEqual(e.script, exp)
 
-        msg = "coordinates length must be 4:"
-        with nose.tools.assert_raises_regexp(ValueError, msg):
+        msg = "The 'coordinates' trait of a Rectangle instance must be a Rectangle"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             cesiumpy.Rectangle(coordinates=[1, 2, 3],
                                material='green', outlineColor='red')
 
@@ -389,8 +393,8 @@ class TestEntity(unittest.TestCase):
         e = e.copy()
         self.assertEqual(e.script, exp)
 
-        msg = "dimensions length must be 3 to be converted to Cartesian3: "
-        with nose.tools.assert_raises_regexp(ValueError, msg):
+        msg = "The 'dimensions' trait of a Box instance must be a Cartesian3"
+        with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             cesiumpy.Box(dimensions=(40e4, 30e4),
                          material=cesiumpy.color.RED, position=[-120, 40, 0])
 

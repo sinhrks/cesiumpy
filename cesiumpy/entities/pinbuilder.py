@@ -33,7 +33,7 @@ class Icon(_BillboardContents):
 class Pin(_BillboardContents):
 
     # default color, all attrs are mandatory
-    color = cesiumpy.entities.color.ColorTrait()
+    color = com.MaybeTrait(klass=cesiumpy.color.Color)
     size = traitlets.Float()
     text = traitlets.Unicode(allow_none=True)
 

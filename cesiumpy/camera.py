@@ -3,14 +3,18 @@
 
 from __future__ import unicode_literals
 
+import traitlets
+
 from cesiumpy.base import _CesiumObject
-import cesiumpy.cartesian as cartesian
+import cesiumpy.entities.cartesian as cartesian
 import cesiumpy.common as com
 
 
 class Camera(_CesiumObject):
 
     _props = ['destination', 'orientation']
+
+    destination = traitlets.Instance(klass=cartesian._Cartesian, allow_none=True)
 
     def __init__(self, widget):
         self.widget = widget
@@ -38,10 +42,9 @@ class Camera(_CesiumObject):
         destination = geocode._maybe_geocode(destination, height=100000)
 
         if com.is_listlike(destination) and len(destination) == 4:
-            destination = cartesian._maybe_rectangle(destination, key='destination')
+            destination = cartesian.Rectangle.maybe(destination)
         else:
-            destination = cartesian._maybe_cartesian3(destination, key='destination',
-                                                      degrees=True)
+            destination = cartesian.Cartesian3.maybe(destination, degrees=True)
         self.destination = destination
         self.orientation = com.notimplemented(orientation)
 

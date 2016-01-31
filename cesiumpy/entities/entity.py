@@ -10,7 +10,7 @@ import traitlets
 import cesiumpy
 from cesiumpy.base import _CesiumObject
 from cesiumpy.entities.pinbuilder import Pin
-import cesiumpy.cartesian as cartesian
+import cesiumpy.entities.cartesian as cartesian
 import cesiumpy.constants as constants
 import cesiumpy.common as com
 
@@ -32,10 +32,10 @@ class _CesiumEntity(_CesiumObject):
     show = traitlets.Bool(allow_none=True)
     fill = traitlets.Bool(allow_none=True)
 
-    material = cesiumpy.entities.material.MaterialTrait(allow_none=True)
-    color = cesiumpy.entities.color.ColorTrait(allow_none=True)
+    material = com.MaybeTrait(klass=cesiumpy.entities.material.Material, allow_none=True)
+    color = com.MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
     outline = traitlets.Bool(allow_none=True)
-    outlineColor = cesiumpy.entities.color.ColorTrait(allow_none=True)
+    outlineColor = com.MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
 
     outlineWidth = traitlets.Float(allow_none=True)
     numberOfVerticalLines = traitlets.Float(allow_none=True)
@@ -47,8 +47,9 @@ class _CesiumEntity(_CesiumObject):
     horizontalOrigin = traitlets.Instance(klass=constants.HorizontalOrigin, allow_none=True)
     verticalOrigin = traitlets.Instance(klass=constants.VerticalOrigin, allow_none=True)
 
-    eyeOffset = traitlets.Instance(klass=cartesian.Cartesian3, allow_none=True)
-    pixelOffset = traitlets.Instance(klass=cartesian.Cartesian2, allow_none=True)
+
+    eyeOffset = com.MaybeTrait(klass=cartesian.Cartesian3, allow_none=True)
+    pixelOffset = com.MaybeTrait(klass=cartesian.Cartesian2, allow_none=True)
 
     position = traitlets.Instance(klass=cartesian.Cartesian3, allow_none=True)
 
@@ -90,18 +91,13 @@ class _CesiumEntity(_CesiumObject):
         self.horizontalOrigin = horizontalOrigin
         self.verticalOrigin = verticalOrigin
 
-        if eyeOffset is not None:
-            eyeOffset = cartesian._maybe_cartesian3(eyeOffset, key='eyeOffset')
         self.eyeOffset = eyeOffset
-
-        if pixelOffset is not None:
-            pixelOffset = cartesian._maybe_cartesian2(pixelOffset, key='pixelOffset')
         self.pixelOffset = pixelOffset
 
         self.pixelOffsetScaleByDistance = com.notimplemented(pixelOffsetScaleByDistance)
 
         if position is not None:
-            position = cartesian._maybe_cartesian3(position, key='position', degrees=True)
+            position = cartesian.Cartesian3.maybe(position, degrees=True)
         self.position = position
 
         self.name = name
@@ -236,7 +232,7 @@ class Label(_CesiumEntity):
     _props = ['text', 'style', 'fillColor']
 
     text = traitlets.Unicode()
-    fillColor = cesiumpy.entities.color.ColorTrait(allow_none=True)
+    fillColor = com.MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
 
     def __init__(self, position, text, style=None, fillColor=None,
                  outlineColor=None, outlineWidth=None, show=None,
@@ -432,7 +428,7 @@ class Ellipsoid(_CesiumEntity):
     _klass = 'ellipsoid'
     _props = ['radii', 'subdivisions', 'stackPartitions', 'slicePartitions']
 
-    radii = traitlets.Instance(klass=cartesian.Cartesian3)
+    radii = com.MaybeTrait(klass=cartesian.Cartesian3)
     subdivisions = traitlets.Float(allow_none=True)
     stackPartitions = traitlets.Float(allow_none=True)
     slicePartitions = traitlets.Float(allow_none=True)
@@ -445,9 +441,7 @@ class Ellipsoid(_CesiumEntity):
                                         outline=outline, outlineColor=outlineColor,
                                         outlineWidth=outlineWidth,
                                         position=position, name=name)
-        radii = cartesian._maybe_cartesian3(radii, key='radii')
         self.radii = radii
-
         self.subdivisions = subdivisions
         self.stackPartitions = stackPartitions
         self.slicePartitions = slicePartitions
@@ -756,7 +750,7 @@ class Rectangle(_CesiumEntity):
     _klass = 'rectangle'
     _props = ['coordinates', 'closeTop', 'closeBottom']
 
-    positions = traitlets.Instance(klass=cartesian.Rectangle)
+    coordinates = com.MaybeTrait(klass=cartesian.Rectangle)
     closeTop = traitlets.Bool(allow_none=True)
     closeBottom = traitlets.Bool(allow_none=True)
 
@@ -772,7 +766,7 @@ class Rectangle(_CesiumEntity):
                                         outlineWidth=outlineWidth, stRotation=stRotation,
                                         granularity=granularity, name=name)
 
-        self.coordinates = cartesian._maybe_rectangle(coordinates, key='coordinates')
+        self.coordinates = coordinates
         self.closeTop = closeTop
         self.closeBottom = closeBottom
 
@@ -810,6 +804,8 @@ class Box(_CesiumEntity):
     _klass = 'box'
     _props = ['dimensions']
 
+    dimensions = com.MaybeTrait(klass=cartesian.Cartesian3)
+
     def __init__(self, position, dimensions, show=None, fill=None, material=None,
                  outline=None, outlineColor=None, outlineWidth=None,
                  name=None):
@@ -818,8 +814,6 @@ class Box(_CesiumEntity):
                                   outline=outline, outlineColor=outlineColor,
                                   outlineWidth=outlineWidth,
                                   position=position, name=name)
-
-        dimensions = cartesian._maybe_cartesian3(dimensions, key='dimensions')
         self.dimensions = dimensions
 
 

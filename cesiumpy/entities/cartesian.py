@@ -12,6 +12,15 @@ import cesiumpy.extension.geocode as geocode
 import cesiumpy.extension.shapefile as shapefile
 
 
+# --------------------------------------------------
+# Trait
+# --------------------------------------------------
+
+
+# --------------------------------------------------
+# Class
+# --------------------------------------------------
+
 class _Cartesian(_CesiumObject):
 
     _is_degrees = traitlets.Bool()
@@ -30,60 +39,6 @@ class _Cartesian(_CesiumObject):
         else:
             rep = """new Cesium.{self}"""
             return rep.format(self=self)
-
-
-
-def _maybe_cartesian2(x, key, degrees=False):
-    """ Convert list or tuple to Cartesian2 """
-    if isinstance(x, Cartesian2):
-        return x
-
-    x = shapefile._maybe_shapely_point(x)
-    x = com.validate_listlike(x, key=key)
-
-    if len(x) == 2:
-        return Cartesian2(*x, degrees=degrees)
-    else:
-        msg = '{key} length must be 2 to be converted to Cartesian2: {x}'
-        raise ValueError(msg.format(key=key, x=x))
-
-
-def _maybe_cartesian3(x, key, degrees=False):
-    """ Convert list or tuple to Cartesian3 """
-    if isinstance(x, Cartesian3):
-        return x
-
-    x = shapefile._maybe_shapely_point(x)
-
-    # currently, only Cartesian3 tries to geocode passed loc
-    x = geocode._maybe_geocode(x, height=0)
-
-    x = com.validate_listlike(x, key=key)
-
-    if len(x) == 3:
-        return Cartesian3(*x, degrees=degrees)
-    elif len(x) == 2 and degrees:
-        # if degrees is True, z can filled by 0
-        # otherwise raise (non-degrees Cartesian is used in Box)
-        return Cartesian3(x=x[0], y=x[1], z=0, degrees=degrees)
-    else:
-        msg = '{key} length must be 3 to be converted to Cartesian3: {x}'
-        raise ValueError(msg.format(key=key, x=x))
-
-
-def _maybe_cartesian4(x, key, degrees=False):
-    """ Convert list or tuple to Cartesian4 """
-    if isinstance(x, Cartesian4):
-        return x
-
-    x = shapefile._maybe_shapely_point(x)
-    x = com.validate_listlike(x, key=key)
-
-    if len(x) == 4:
-        return Cartesian4(*x, degrees=degrees)
-    else:
-        msg = '{key} length must be 4 to be converted to Cartesian4: {x}'
-        raise ValueError(msg.format(key=key, x=x))
 
 
 def _maybe_cartesian2_list(x, key):
@@ -136,6 +91,17 @@ class Cartesian2(_Cartesian):
             rep = """Cartesian2({x}, {y})"""
             return rep.format(x=self.x, y=self.y)
 
+    @classmethod
+    def maybe(cls, x, degrees=False):
+        """ Convert list or tuple to Cartesian2 """
+        if isinstance(x, Cartesian2):
+            return x
+
+        x = shapefile._maybe_shapely_point(x)
+        if com.is_listlike(x) and len(x) == 2:
+            return Cartesian2(*x, degrees=degrees)
+        return x
+
 
 class Cartesian3(_Cartesian):
 
@@ -179,6 +145,25 @@ class Cartesian3(_Cartesian):
         else:
             rep = """Cartesian3({x}, {y}, {z})"""
             return rep.format(x=self.x, y=self.y, z=self.z)
+
+    @classmethod
+    def maybe(cls, x, degrees=False):
+        """ Convert list or tuple to Cartesian3 """
+        if isinstance(x, Cartesian3):
+            return x
+
+        x = shapefile._maybe_shapely_point(x)
+
+        # currently, only Cartesian3 tries to geocode passed loc
+        x = geocode._maybe_geocode(x, height=0)
+        if com.is_listlike(x):
+            if len(x) == 3:
+                return Cartesian3(*x, degrees=degrees)
+            elif len(x) == 2 and degrees:
+                # if degrees is True, z can filled by 0
+                # otherwise raise (non-degrees Cartesian is used in Box)
+                return Cartesian3(x=x[0], y=x[1], z=0, degrees=degrees)
+        return x
 
 
 class Cartesian3Array(_Cartesian):
@@ -235,18 +220,17 @@ class Cartesian4(_Cartesian):
             rep = """Cartesian4({x}, {y}, {z}, {w})"""
             return rep.format(x=self.x, y=self.y, z=self.z, w=self.w)
 
+    @classmethod
+    def maybe(cls, x, degrees=False):
+        """ Convert list or tuple to Cartesian4 """
+        if isinstance(x, Cartesian4):
+            return x
 
-def _maybe_rectangle(x, key):
-    if isinstance(x, Rectangle):
+        x = shapefile._maybe_shapely_point(x)
+
+        if com.is_listlike(x) and len(x) == 4:
+            return Cartesian4(*x, degrees=degrees)
         return x
-
-    x = com.validate_listlike(x, key=key)
-    if com.is_listlike_2elem(x):
-        x = com._flatten_list_of_listlike(x)
-    if len(x) == 4:
-        return Rectangle.fromDegrees(*x)
-    else:
-        raise ValueError('{key} length must be 4: {x}'.format(key=key, x=x))
 
 
 class Rectangle(_Cartesian):
@@ -297,4 +281,13 @@ class Rectangle(_Cartesian):
             rep = """new Cesium.Rectangle({west}, {south}, {east}, {north})"""
             return rep.format(west=self.west, south=self.south, east=self.east, north=self.north)
 
+    @classmethod
+    def maybe(cls, x):
+        if isinstance(x, Rectangle):
+            return x
 
+        if com.is_listlike_2elem(x):
+            x = com._flatten_list_of_listlike(x)
+        if com.is_listlike(x) and len(x) == 4:
+            return Rectangle.fromDegrees(*x)
+        return x

@@ -179,35 +179,11 @@ class Viewer(_CesiumBase):
         self.automaticallyTrackDataSourceClocks = automaticallyTrackDataSourceClocks
 
         # ToDo: API to disable all flags to False
-        from cesiumpy.entities.entity import _CesiumEntity
-        self._entities = RistrictedList(self, allowed=_CesiumEntity,
-                                        varname=self._varname,
-                                        propertyname='entities')
-        from cesiumpy.datasource import DataSource
-        self._dataSources = RistrictedList(self, allowed=DataSource,
-                                           varname=self._varname,
-                                           propertyname='dataSources')
 
         if dataSources is not None:
             dataSources = com.validate_listlike(dataSources, key='dataSources')
             for ds in dataSources:
                 self._dataSources.add(ds)
-
-    @property
-    def entities(self):
-        return self._entities
-
-    @property
-    def _entities_script(self):
-        return self._entities.script
-
-    @property
-    def dataSources(self):
-        return self._dataSources
-
-    @property
-    def _dataSources_script(self):
-        return self._dataSources.script
 
     @property
     def plot(self):

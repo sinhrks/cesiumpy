@@ -29,6 +29,21 @@ def _check_package(package_name):
         raise ImportError(msg.format(pkg=package_name))
 
 # --------------------------------------------------
+# Trait
+# --------------------------------------------------
+
+class MaybeTrait(traitlets.Instance):
+
+    def validate(self, obj, value):
+        if self.allow_none is True and value is None:
+            return super(MaybeTrait, self).validate(obj, value)
+
+        try:
+            value = self.klass.maybe(value)
+        except ValueError:
+            self.error(obj, value)
+        return super(MaybeTrait, self).validate(obj, value)
+# --------------------------------------------------
 # Validators
 # --------------------------------------------------
 

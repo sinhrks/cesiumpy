@@ -179,14 +179,14 @@ class TestImageProvider(unittest.TestCase):
 
     def test_SingleTileImageryProvider(self):
         url = '../images/Cesium_Logo_overlay.png'
-        rectangle = cesiumpy.cartesian.Rectangle.fromDegrees(-75.0, 28.0, -67.0, 29.75)
+        rectangle = cesiumpy.entities.cartesian.Rectangle.fromDegrees(-75.0, 28.0, -67.0, 29.75)
         imageryProvider = cesiumpy.SingleTileImageryProvider(url=url, rectangle=rectangle)
         result = imageryProvider.script
         exp = """new Cesium.SingleTileImageryProvider({url : "../images/Cesium_Logo_overlay.png", rectangle : Cesium.Rectangle.fromDegrees(-75.0, 28.0, -67.0, 29.75)})"""
         self.assertEqual(result, exp)
 
         url = '../images/Cesium_Logo_overlay.png'
-        rectangle = cesiumpy.cartesian.Rectangle.fromDegrees(-115.0, 38.0, -107, 39.75)
+        rectangle = cesiumpy.entities.cartesian.Rectangle.fromDegrees(-115.0, 38.0, -107, 39.75)
         imageryProvider = cesiumpy.SingleTileImageryProvider(url=url, rectangle=rectangle)
         result = imageryProvider.script
         exp = """new Cesium.SingleTileImageryProvider({url : "../images/Cesium_Logo_overlay.png", rectangle : Cesium.Rectangle.fromDegrees(-115.0, 38.0, -107.0, 39.75)})"""

@@ -124,8 +124,17 @@ class _CesiumBase(_CesiumObject):
         from cesiumpy.camera import Camera
         self._camera = Camera(self)
 
+        from cesiumpy.scene import Scene
+        self._scene = Scene(self)
+
+        from cesiumpy.entities.entity import _CesiumEntity
+        self._entities = RistrictedList(self, allowed=_CesiumEntity,
+                                        propertyname='entities')
+        from cesiumpy.datasource import DataSource
+        self._dataSources = RistrictedList(self, allowed=DataSource,
+                                           propertyname='dataSources')
+
         self._scripts = RistrictedList(self, allowed=six.string_types,
-                                       varname=self._varname,
                                        propertyname='script')
 
     @property
@@ -175,25 +184,12 @@ class _CesiumBase(_CesiumObject):
             script = script.format(varname=self._varname, klass=self._klass,
                                    divid=self.divid)
         return ([script] +
-                self._entities_script +
-                self._dataSources_script +
+                self._entities.script +
+                self._dataSources.script +
                 [self._camera_script] +
+                self._scene.script +
                 self.scripts._items
                 )
-
-    @property
-    def entities(self):
-        return []
-
-    @property
-    def _entities_script(self):
-        # temp, should return list
-        return []
-
-    @property
-    def _dataSources_script(self):
-        # temp, should return list
-        return []
 
     @property
     def camera(self):
@@ -213,6 +209,18 @@ class _CesiumBase(_CesiumObject):
             return script.format(varname=self._varname)
         else:
             return ''
+
+    @property
+    def entities(self):
+        return self._entities
+
+    @property
+    def dataSources(self):
+        return self._dataSources
+
+    @property
+    def scene(self):
+        return self._scene
 
     @property
     def scripts(self):
@@ -235,14 +243,15 @@ class _CesiumBase(_CesiumObject):
         return [indent + s for s in script]
 
 
-class RistrictedList(object):
+class RistrictedList(_CesiumObject):
 
-    def __init__(self, widget, allowed, varname, propertyname):
+    widget = traitlets.Instance(klass=_CesiumBase)
+
+    def __init__(self, widget, allowed, propertyname):
         self.widget = widget
 
         self._items = []
         self._allowed = allowed
-        self._varname = varname
         self._propertyname = propertyname
 
     def add(self, item, **kwargs):
@@ -281,7 +290,7 @@ class RistrictedList(object):
         results = []
         for item in self._items:
             script = """{varname}.{propertyname}.add({item});"""
-            script = script.format(varname=self._varname,
+            script = script.format(varname=self.widget._varname,
                                    propertyname=self._propertyname,
                                    item=item.script)
             results.append(script)

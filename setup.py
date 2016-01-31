@@ -36,7 +36,7 @@ if sys.version_info < (3, 4, 0):
 
 setup(name=PACKAGE,
       version=VERSION,
-      description='python wrapper for cesium.js',
+      description='python wrapper of cesium.js for 3D geospatial visualization',
       long_description=read(README),
       author='sinhrks',
       author_email='sinhrks@gmail.com',

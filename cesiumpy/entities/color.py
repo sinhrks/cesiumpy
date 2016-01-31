@@ -14,17 +14,6 @@ import cesiumpy.common as com
 from cesiumpy.entities.material import Material
 
 
-class ColorTrait(traitlets.Instance):
-
-    def __init__(self, args=None, kw=None, **metadata):
-        super(ColorTrait, self).__init__(klass=Color, args=args, kw=kw,
-                                         **metadata)
-
-    def validate(self, obj, value):
-        value = cesiumpy.color._maybe_color(value)
-        return super(ColorTrait, self).validate(obj, value)
-
-
 class Color(Material):
 
     _props = ['red', 'green', 'blue', 'alpha']
@@ -124,6 +113,25 @@ class Color(Material):
         return CesiumColor(red=self.red, green=self.green,
                            blue=self.blue, alpha=self.alpha)
 
+    @classmethod
+    def maybe(cls, x):
+        """ Convert str or tuple to ColorConstant """
+        if isinstance(x, Color):
+            return x
+
+        if isinstance(x, six.string_types):
+            cname = x.upper()
+            cname = _SINGLE_COLORS.get(cname, cname)
+
+            if cname in _COLORS:
+                return ColorConstant(name=cname)
+        elif com.is_listlike(x):
+            if len(x) in (3, 4):
+                return Color(*x)
+
+        msg = 'Unable to convert to Color instance: {x}'
+        raise ValueError(msg.format(x=x))
+
 
 class CssColor(Color):
 
@@ -218,18 +226,6 @@ class ColorFactory(object):
         else:
             msg = "Unable to find color name: '{name}'"
             raise AttributeError(msg.format(name=name))
-
-    @classmethod
-    def _maybe_color(cls, x):
-        """ Convert str to ColorConstant """
-
-        if isinstance(x, six.string_types):
-            cname = x.upper()
-            cname = _SINGLE_COLORS.get(cname, cname)
-
-            if cname in _COLORS:
-                return ColorConstant(name=cname)
-        return x
 
 
 # matplotlib compat

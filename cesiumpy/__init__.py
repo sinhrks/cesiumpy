@@ -10,12 +10,14 @@ import cesiumpy.entities as entities
 import cesiumpy.entities.color
 color = cesiumpy.entities.color.ColorFactory()
 
-
+from cesiumpy.entities.cartesian import Cartesian2, Cartesian3, Cartesian4
 from cesiumpy.entities.entity import (Point, Label, Billboard, Ellipse,
                                       Ellipsoid, Corridor, Cylinder,
                                       Polyline, PolylineVolume, Wall,
                                       Rectangle, Box, Polygon)
+from cesiumpy.entities.model import Model
 from cesiumpy.entities.pinbuilder import Pin
+from cesiumpy.entities.transform import Transforms
 
 # extension
 import cesiumpy.extension as extension
@@ -24,7 +26,6 @@ from cesiumpy.extension import io
 from cesiumpy.extension import spatial
 
 from cesiumpy.camera import Camera
-from cesiumpy.cartesian import Cartesian2, Cartesian3, Cartesian4
 from cesiumpy.constants import (VerticalOrigin, HorizontalOrigin,
                                 CornerType, Math)
 
