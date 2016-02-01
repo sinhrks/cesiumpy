@@ -5,7 +5,7 @@ import nose
 import unittest
 
 import cesiumpy
-from cesiumpy.testing import _skip_if_no_numpy
+from cesiumpy.testing import _skip_if_no_numpy, _skip_if_no_matplotlib
 
 
 class TestScatter(unittest.TestCase):
@@ -521,6 +521,32 @@ class TestNumpyLike(unittest.TestCase):
         self.assertEqual(res.to_html(), exp)
         # entities must be added to original instance
         self.assertEqual(v.to_html(), exp)
+
+
+class TestContour(unittest.TestCase):
+
+    def test_contour_xyz(self):
+        _skip_if_no_matplotlib()
+        import numpy as np
+        import matplotlib.mlab as mlab
+
+        delta = 0.025
+        x = np.arange(-3.0, 3.0, delta)
+        y = np.arange(-2.0, 2.0, delta)
+        X, Y = np.meshgrid(x, y)
+        Z1 = mlab.bivariate_normal(X, Y, 1.0, 1.0, 0.0, 0.0)
+        Z2 = mlab.bivariate_normal(X, Y, 1.5, 0.5, 1, 1)
+        # difference of Gaussians
+        Z = 10.0 * (Z2 - Z1)
+
+        viewer = cesiumpy.Viewer()
+        viewer.plot.contour(X, Y, Z)
+        self.assertEqual(len(viewer.entities), 7)
+        self.assertTrue(all(isinstance(x, cesiumpy.Polyline)
+                            for x in viewer.entities))
+        self.assertEqual(viewer.entities[0].material,
+                         cesiumpy.color.Color(0.0, 0.0, 0.5, 1.0))
+
 
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],

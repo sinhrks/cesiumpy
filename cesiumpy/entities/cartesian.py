@@ -11,15 +11,6 @@ import cesiumpy.extension.geocode as geocode
 import cesiumpy.extension.shapefile as shapefile
 
 
-# --------------------------------------------------
-# Trait
-# --------------------------------------------------
-
-
-# --------------------------------------------------
-# Class
-# --------------------------------------------------
-
 class _Cartesian(_CesiumObject):
 
     _is_degrees = traitlets.Bool()
