@@ -5,13 +5,12 @@ import nose
 import os
 import unittest
 
-import traitlets
-
 import cesiumpy
 from cesiumpy.testing import _skip_if_no_shapely
 
 
 current_dir = os.path.dirname(__file__)
+
 
 class TestIO(unittest.TestCase):
 
@@ -39,6 +38,5 @@ class TestIO(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    import nose
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)

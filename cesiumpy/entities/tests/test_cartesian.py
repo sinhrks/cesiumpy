@@ -160,7 +160,6 @@ class TestCartesian(unittest.TestCase):
         exp = "new Cesium.Cartesian4(0.0, 10.0, 20.0, 30.0)"
         self.assertEqual(c.script, exp)
 
-
         # do not convert
         res = cartesian.Cartesian2.maybe(3)
         self.assertEqual(res, 3)
@@ -200,7 +199,6 @@ class TestCartesian(unittest.TestCase):
         res = cartesian.Cartesian3.maybe((1, 2, 3, 5, 5), degrees=True)
         self.assertEqual(res, [1, 2, 3, 5, 5])
 
-
     def test_rectangle(self):
         c = cartesian.Rectangle(5, 10, 20, 30)
         exp = "new Cesium.Rectangle(5.0, 10.0, 20.0, 30.0)"
@@ -237,6 +235,5 @@ class TestCartesian(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    import nose
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)

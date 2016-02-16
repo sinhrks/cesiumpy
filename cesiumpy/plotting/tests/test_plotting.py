@@ -3,7 +3,6 @@
 
 import nose
 import unittest
-import traitlets
 
 import cesiumpy
 
@@ -200,10 +199,10 @@ class TestBar(unittest.TestCase):
         self.assertEqual(v.to_html(), exp)
 
     def test_bar_bottom(self):
-      v = cesiumpy.Viewer('viewertest')
-      v.plot.bar([130, 140, 150], [30, 40, 50], [10e5, 20e5, 30e5], color=cesiumpy.color.RED)
-      v.plot.bar([130, 140, 150], [30, 40, 50], [30e5, 20e5, 10e5], color=cesiumpy.color.BLUE, bottom=[10e5, 20e5, 30e5])
-      exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+        v = cesiumpy.Viewer('viewertest')
+        v.plot.bar([130, 140, 150], [30, 40, 50], [10e5, 20e5, 30e5], color=cesiumpy.color.RED)
+        v.plot.bar([130, 140, 150], [30, 40, 50], [30e5, 20e5, 10e5], color=cesiumpy.color.BLUE, bottom=[10e5, 20e5, 30e5])
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
 <link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
@@ -216,7 +215,7 @@ class TestBar(unittest.TestCase):
   widget.entities.add({position : Cesium.Cartesian3.fromDegrees(150.0, 50.0, 3500000.0), cylinder : {length : 1000000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.BLUE}});
   widget.zoomTo(widget.entities);
 </script>"""
-      self.assertEqual(v.to_html(), exp)
+        self.assertEqual(v.to_html(), exp)
 
 
 class TestLabel(unittest.TestCase):
@@ -468,6 +467,5 @@ class TestPin(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    import nose
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)

@@ -4,8 +4,6 @@
 import nose
 import unittest
 
-import traitlets
-
 import cesiumpy
 from cesiumpy.testing import _skip_if_no_shapely
 
@@ -22,7 +20,6 @@ class TestCountry(unittest.TestCase):
 
     def test_country_jpn(self):
         _skip_if_no_shapely()
-        import shapely.geometry
 
         jpn = cesiumpy.countries.jpn
         self.assertIsInstance(jpn, list)
@@ -49,7 +46,6 @@ class TestCountry(unittest.TestCase):
 
     def test_country_get_jpn(self):
         _skip_if_no_shapely()
-        import shapely.geometry
 
         jpn = cesiumpy.countries.get('jpn')
         self.assertIsInstance(jpn, list)
@@ -73,8 +69,6 @@ class TestCountry(unittest.TestCase):
         self.assertEqual(res, exp)
 
 
-
 if __name__ == '__main__':
-    import nose
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)

@@ -5,7 +5,6 @@ from __future__ import unicode_literals
 
 import traitlets
 
-import cesiumpy
 from cesiumpy.base import _CesiumObject
 import cesiumpy.common as com
 from cesiumpy.entities.transform import Transforms
@@ -97,4 +96,3 @@ class Model(_CesiumObject):
     def script(self):
         script = """Cesium.Model.fromGltf({script})"""
         return script.format(script=super(Model, self).script)
-

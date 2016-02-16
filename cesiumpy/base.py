@@ -4,7 +4,6 @@
 from __future__ import unicode_literals
 
 import collections
-import json
 import os
 import six
 import traitlets
@@ -295,5 +294,3 @@ class RistrictedList(_CesiumObject):
                                    item=item.script)
             results.append(script)
         return results
-
-

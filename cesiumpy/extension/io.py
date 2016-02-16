@@ -42,4 +42,3 @@ def read_shape(path):
             else:
                 results.append(result)
     return results
-

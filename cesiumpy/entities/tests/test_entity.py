@@ -18,7 +18,7 @@ class TestEntity(unittest.TestCase):
                     cesiumpy.Rectangle, cesiumpy.Box, cesiumpy.Polygon]
 
         for entity in entities:
-        # validate for development purpose, should be moved to tests
+            # validate for development purpose, should be moved to tests
             for p in entity._props:
                 self.assertFalse(p in entity._common_props)
             self.assertFalse('name' in entity._props)
@@ -255,7 +255,6 @@ class TestEntity(unittest.TestCase):
                                     shape=[cesiumpy.Cartesian2(1, 2), cesiumpy.Cartesian3(1, 2, 3),
                                            cesiumpy.Cartesian2(3, 4)],
                                     material=cesiumpy.color.GREEN)
-
 
     def test_corridor(self):
         e = cesiumpy.Corridor(positions=[-120, 30, -90, 35, -60, 30],
@@ -545,6 +544,5 @@ class TestEntity(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    import nose
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)

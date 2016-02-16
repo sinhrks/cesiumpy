@@ -4,16 +4,14 @@
 import unittest
 import nose
 
-import six
 import geopy
-import nose
 
 import cesiumpy
 
 
 class TestGeocode(unittest.TestCase):
 
-    def test_geocode_unicode(self):
+    def test_geocode(self):
         try:
             result = cesiumpy.geocode._maybe_geocode('Los Angeles')
             self.assertEqual(result, (-118.2436849, 34.0522342))
@@ -21,8 +19,8 @@ class TestGeocode(unittest.TestCase):
             result = cesiumpy.geocode._maybe_geocode(['Los Angeles', 'Las Vegas'])
             self.assertEqual(result, [(-118.2436849, 34.0522342), (-115.1398296, 36.1699412)])
 
-            result = cesiumpy.geocode._maybe_geocode(['Los Angeles', 'Las Vegas', (1, 2)])
-            self.assertEqual(result, [(-118.2436849, 34.0522342), (-115.1398296, 36.1699412), (1, 2)])
+            result = cesiumpy.geocode._maybe_geocode(['Los Angeles', 'Las Vegas', [1, 2]])
+            self.assertEqual(result, [(-118.2436849, 34.0522342), (-115.1398296, 36.1699412), [1, 2]])
 
             # do not convert
             result = cesiumpy.geocode._maybe_geocode(3)
@@ -139,6 +137,5 @@ class TestGeocode(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    import nose
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)

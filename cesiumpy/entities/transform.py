@@ -10,7 +10,6 @@ from cesiumpy.base import _CesiumObject
 import cesiumpy.common as com
 
 
-
 class Transforms(_CesiumObject):
 
     origin = com.MaybeTrait(klass=cesiumpy.Cartesian3)
@@ -23,9 +22,9 @@ class Transforms(_CesiumObject):
 
     @property
     def script(self):
-      script = "Cesium.Transforms.{transform}({script})"
-      return script.format(transform=self.transform,
-                           script=self.origin.script)
+        script = "Cesium.Transforms.{transform}({script})"
+        return script.format(transform=self.transform,
+                             script=self.origin.script)
 
     @classmethod
     def eastNorthUpToFixedFrame(cls, origin):
@@ -86,4 +85,3 @@ class Transforms(_CesiumObject):
             The center point of the local reference frame.
         """
         return Transforms(origin, transform='northUpEastToFixedFrame')
-

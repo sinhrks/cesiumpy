@@ -3,12 +3,10 @@
 
 from __future__ import unicode_literals
 
-import collections
 import traitlets
 
 import cesiumpy
 from cesiumpy.base import _CesiumObject, _CesiumBase, RistrictedList
-import cesiumpy.common as com
 
 
 class Scene(_CesiumObject):
@@ -26,5 +24,4 @@ class Scene(_CesiumObject):
 
     @property
     def script(self):
-      return self._primitives.script
-
+        return self._primitives.script

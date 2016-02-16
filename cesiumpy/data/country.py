@@ -5,11 +5,6 @@ from __future__ import unicode_literals
 
 import os
 import json
-import six
-
-import cesiumpy
-import cesiumpy.common as com
-
 
 current_dir = os.path.dirname(__file__)
 data_path = os.path.join(current_dir, 'countries')
@@ -23,8 +18,9 @@ class CountryLoader(object):
     @property
     def countries(self):
         if self._countries is None:
-            countries ={}
+            countries = {}
             path = os.path.join(data_path, 'countries.json')
+
             with open(path) as f:
                 data = json.load(f)
                 for entry in data:

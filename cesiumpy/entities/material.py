@@ -104,7 +104,6 @@ class TemporaryImage(_CesiumObject):
         else:
             raise ValueError(figure)
 
-
     @property
     def script(self):
         return '{0}'.format(os.path.basename(self.path))
@@ -112,4 +111,3 @@ class TemporaryImage(_CesiumObject):
     def __del__(self):
         if os.path.exists(self.path):
             os.remove(self.path)
-

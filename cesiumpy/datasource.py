@@ -4,7 +4,6 @@
 from __future__ import unicode_literals
 
 import traitlets
-import warnings
 
 from cesiumpy.base import _CesiumObject
 import cesiumpy.common as com
@@ -112,4 +111,3 @@ class KmlDataSource(DataSource):
     """
 
     pass
-
