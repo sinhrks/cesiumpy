@@ -3,7 +3,6 @@
 
 from __future__ import unicode_literals
 
-import six
 import traitlets
 
 from cesiumpy.base import _CesiumObject
@@ -186,7 +185,6 @@ class Cartesian3Array(_Cartesian):
         return rep.format(x=self.x)
 
 
-
 class Cartesian4(_Cartesian):
 
     x = traitlets.Float()
@@ -206,7 +204,6 @@ class Cartesian4(_Cartesian):
         if degrees:
             com.validate_longitude(x, key='x')
             com.validate_latitude(y, key='y')
-
 
     @classmethod
     def fromDegrees(cls, x, y, z, w):

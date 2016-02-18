@@ -92,7 +92,6 @@ class TestTerrainProvider(unittest.TestCase):
         self.assertEqual(result, exp)
 
 
-
 class TestImageProvider(unittest.TestCase):
 
     def test_provider_klass(self):
@@ -301,8 +300,6 @@ class TestImageProvider(unittest.TestCase):
         self.assertEqual(result, exp)
 
 
-
 if __name__ == '__main__':
-    import nose
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)

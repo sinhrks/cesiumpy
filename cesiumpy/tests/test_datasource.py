@@ -4,8 +4,6 @@
 import unittest
 import nose
 
-import six
-
 import cesiumpy
 
 
@@ -33,7 +31,6 @@ class TestDataSource(unittest.TestCase):
         ds = cesiumpy.GeoJsonDataSource.load('xxx.geojson', markerColor=cesiumpy.color.RED,
                                              stroke=cesiumpy.color.BLUE, fill=cesiumpy.color.GREEN)
         self.assertEqual(ds.script, exp)
-
 
         ds = cesiumpy.GeoJsonDataSource('xxx.geojson', markerColor='red',
                                         stroke='blue', fill='green')
@@ -83,6 +80,5 @@ class TestDataSource(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    import nose
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)

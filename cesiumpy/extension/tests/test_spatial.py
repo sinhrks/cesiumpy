@@ -103,7 +103,6 @@ class TestVoronoi(unittest.TestCase):
             self.assertEqual(polygon.hierarchy.x, exp)
 
 
-
 class TestConvex(unittest.TestCase):
 
     def test_convexhull(self):
@@ -138,8 +137,6 @@ class TestConvex(unittest.TestCase):
         self.assertEqual(polyline.positions.x, expected)
 
 
-
 if __name__ == '__main__':
-    import nose
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)

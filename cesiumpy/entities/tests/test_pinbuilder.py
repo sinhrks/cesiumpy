@@ -4,7 +4,6 @@
 import unittest
 import nose
 
-import six
 import traitlets
 
 import cesiumpy
@@ -29,7 +28,6 @@ class TestPinBuilder(unittest.TestCase):
         msg = "The 'text' trait of an Unicode instance must be a unicode string"
         with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             cesiumpy.Pin.fromText(None, color='red', size=52)
-
 
     def test_pinbuilder_fromcolor(self):
         p = cesiumpy.Pin.fromColor('red')
@@ -59,6 +57,5 @@ class TestPinBuilder(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    import nose
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)

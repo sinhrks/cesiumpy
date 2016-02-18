@@ -15,6 +15,7 @@ import traitlets
 # Misc
 # --------------------------------------------------
 
+
 def _check_uri(sourceUri):
     if not os.path.exists(sourceUri):
         msg = "Unable to read specified path, be sure to the output HTML can read the path: {0}"
@@ -25,12 +26,13 @@ def _check_package(package_name):
     try:
         return importlib.import_module(package_name)
     except ImportError:
-        msg ='{pkg} is required to use this functionality'
+        msg = '{pkg} is required to use this functionality'
         raise ImportError(msg.format(pkg=package_name))
 
 # --------------------------------------------------
 # Trait
 # --------------------------------------------------
+
 
 class MaybeTrait(traitlets.Instance):
 
@@ -43,9 +45,11 @@ class MaybeTrait(traitlets.Instance):
         except ValueError:
             self.error(obj, value)
         return super(MaybeTrait, self).validate(obj, value)
+
 # --------------------------------------------------
 # Validators
 # --------------------------------------------------
+
 
 def notimplemented(x):
     if x is not None:
@@ -94,6 +98,7 @@ def validate_listlike_even(x, key):
     if len(x) % 2 != 0:
         raise ValueError('{key} length must be an even number: {x}'.format(key=key, x=x))
     return x
+
 
 def validate_listlike_lonlat(x, key):
     """ validate whether x is list-likes consists from lon, lat pairs """
@@ -176,6 +181,7 @@ def to_jsscalar(x):
         x = '[{0}]'.format(', '.join(x))
     return x
 
+
 def to_jsobject(x):
     """ convert x to JavaScript Object """
 
@@ -191,13 +197,10 @@ def to_jsobject(x):
     if len(x) == 0:
         return ['']
 
-    # count valid args
-    last = len(x) - 1
-
     for key, val in six.iteritems(x):
         val = to_jsscalar(val)
         results.append('{0} : {1}, '.format(key, val))
-    results[-1] = results[-1][:-2] # remove final comma
+    results[-1] = results[-1][:-2]     # remove final comma
     results.append('}')
     return results
 

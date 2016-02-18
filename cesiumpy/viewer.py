@@ -3,11 +3,9 @@
 
 from __future__ import unicode_literals
 
-import collections
-import json
 import traitlets
 
-from cesiumpy.base import _CesiumBase, RistrictedList
+from cesiumpy.base import _CesiumBase
 import cesiumpy.common as com
 
 
@@ -189,4 +187,3 @@ class Viewer(_CesiumBase):
     def plot(self):
         from cesiumpy.plotting.plot import PlottingAccessor
         return PlottingAccessor(self)
-

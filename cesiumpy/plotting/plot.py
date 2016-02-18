@@ -3,9 +3,6 @@
 
 from __future__ import unicode_literals
 
-import six
-import traitlets
-
 import cesiumpy
 import cesiumpy.common as com
 

@@ -47,7 +47,6 @@ class _CesiumEntity(_CesiumObject):
     horizontalOrigin = traitlets.Instance(klass=constants.HorizontalOrigin, allow_none=True)
     verticalOrigin = traitlets.Instance(klass=constants.VerticalOrigin, allow_none=True)
 
-
     eyeOffset = com.MaybeTrait(klass=cartesian.Cartesian3, allow_none=True)
     pixelOffset = com.MaybeTrait(klass=cartesian.Cartesian2, allow_none=True)
 
@@ -772,7 +771,7 @@ class Rectangle(_CesiumEntity):
 
     def __repr__(self):
         rep = """{klass}({rep})""".format(klass=self.__class__.__name__,
-                                        rep=self.coordinates._inner_repr)
+                                          rep=self.coordinates._inner_repr)
         return rep
 
 
@@ -873,6 +872,3 @@ class Polygon(_CesiumEntity):
     def positions(self):
         # for compat
         return self.hierarchy
-
-
-

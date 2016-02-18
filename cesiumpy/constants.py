@@ -80,4 +80,3 @@ class Math(_CesiumEnum):
 
     # The number of radians in an arc second.
     RADIANS_PER_ARCSECOND = 'RADIANS_PER_ARCSECOND'
-

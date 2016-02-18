@@ -3,7 +3,6 @@
 
 from __future__ import unicode_literals
 
-import six
 import traitlets
 
 import cesiumpy
@@ -102,4 +101,3 @@ class Pin(_BillboardContents):
         else:
             rep = """new Cesium.PinBuilder().fromText("{text}", {color}, {size})"""
             return rep.format(text=self.text, color=self.color.script, size=self.size)
-

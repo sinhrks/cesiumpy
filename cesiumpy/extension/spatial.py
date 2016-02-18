@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import collections
 
 import cesiumpy.common as com
-from cesiumpy.entities.entity import Polygon, Wall, Polyline
+from cesiumpy.entities.entity import Polygon, Polyline
 
 
 class _Spatial(object):
@@ -22,7 +22,6 @@ class _Spatial(object):
     @property
     def _geometry(self):
         return com._check_package('shapely.geometry')
-
 
 
 class Voronoi(_Spatial):
@@ -104,9 +103,9 @@ class Voronoi(_Spatial):
                     continue
 
                 # Compute the missing endpoint of an infinite ridge
-                t = self.vor.points[p2] - self.vor.points[p1] # tangent
+                t = self.vor.points[p2] - self.vor.points[p1]       # tangent
                 t /= self._np.linalg.norm(t)
-                n = self._np.array([-t[1], t[0]])  # normal
+                n = self._np.array([-t[1], t[0]])                   # normal
 
                 midpoint = self.vor.points[[p1, p2]].mean(axis=0)
                 direction = self._np.sign((midpoint - center).dot(n)) * n
@@ -118,7 +117,7 @@ class Voronoi(_Spatial):
             # sort region counterclockwise
             vs = self._np.asarray([new_vertices[v] for v in new_region])
             c = vs.mean(axis=0)
-            angles = self._np.arctan2(vs[:,1] - c[1], vs[:,0] - c[0])
+            angles = self._np.arctan2(vs[:, 1] - c[1], vs[:, 0] - c[0])
             new_region = self._np.array(new_region)[angles.argsort()]
 
             # finish
@@ -164,5 +163,3 @@ class ConvexHull(_Spatial):
         # append 1st element to last to make loop
         points.append(points[0])
         return points
-
-

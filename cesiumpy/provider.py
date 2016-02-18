@@ -3,7 +3,6 @@
 
 from __future__ import unicode_literals
 
-import six
 import traitlets
 
 import cesiumpy
@@ -115,7 +114,6 @@ class CesiumTerrainProvider(TerrainProvider):
                                                     ellipsoid=ellipsoid, credit=credit)
         self.requestVertexNormals = requestVertexNormals
         self.requestWaterMask = requestWaterMask
-
 
 
 class EllipsoidTerrainProvider(TerrainProvider):
@@ -514,8 +512,8 @@ class TileCoordinatesImageryProvider(ImageryProvider):
 
         if color is not None:
             color = cesiumpy.color._maybe_color(color)
-            if not isinstance(material, cesiumpy.color.Color):
-                msg = 'material must be a Color instance: {0}'
+            if not isinstance(color, cesiumpy.color.Color):
+                msg = 'color must be a Color instance: {0}'
                 raise ValueError(msg.format(type(color)))
         self.color = color
 
@@ -565,7 +563,6 @@ class TileMapServiceImageryProvider(ImageryProvider):
                                                             minimumLevel=minimumLevel,
                                                             maximumLevel=maximumLevel,
                                                             credit=credit, proxy=proxy)
-
 
 
 class UrlTemplateImageryProvider(ImageryProvider):
@@ -722,4 +719,3 @@ class WebMapTileServiceImageryProvider(ImageryProvider):
         self.tileMatrixSetID = tileMatrixSetID
 
         self.tileMatrixLabels = com.notimplemented(tileMatrixLabels)
-

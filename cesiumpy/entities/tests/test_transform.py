@@ -4,10 +4,7 @@
 import nose
 import unittest
 
-import traitlets
-
 import cesiumpy
-import cesiumpy.testing as tm
 
 
 class TestTransform(unittest.TestCase):
@@ -28,6 +25,5 @@ class TestTransform(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    import nose
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)
