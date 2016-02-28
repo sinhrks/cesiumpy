@@ -268,68 +268,6 @@ Passing ``requestWaterMask=True`` enables water effects.
 
 .. image:: ./_static/terrain02.png
 
-
-Add Data Sources
-----------------
-
-`Cesium.js <http://cesiumjs.org/>`_ has a ``DataSource`` function which
-can draw external data as entities.
-
-``cesiumpy`` currently supports following ``DataSource``.
-
-- ``CzmlJsonDataSource``
-- ``GeoJsonDataSource``
-- ``KmlDataSource``
-
-Assuming we hanve following ``.geojson`` file named "example.geojson".
-
-::
-
-  {
-      "type": "Point",
-      "coordinates": [-118.27, 34.05 ]
-  }
-
-You can create ``GeoJsonDataSource`` instannce then add to ``Viewer.DataSources``.
-``markerSymbol`` option specifies the symbol displayed on the marker.
-
-.. code-block:: python
-
-  >>> ds = cesiumpy.GeoJsonDataSource('./example.geojson', markerSymbol='!')
-  >>> v = cesiumpy.Viewer()
-  >>> v.dataSources.add(ds)
-  >>> v
-
-.. image:: ./_static/datasources01.png
-
-Or, you can use ``load`` class method to instanciate ``DataSource`` like ``Cesium.js``.
-
-.. code-block:: python
-
-  >>> cesiumpy.GeoJsonDataSource.load('./example.geojson', markerSymbol='!')
-
-You can use ``KmlDataSource`` to read ``.kml`` files. Assuming we have following content:
-
-::
-
-  <?xml version="1.0" encoding="UTF-8"?>
-  <kml xmlns="http://www.opengis.net/kml/2.2"> <Placemark>
-   <name>?</name>
-   <Point>
-   <coordinates>-118.27,34.05,0</coordinates>
-   </Point>
-   </Placemark> </kml>
-
-
-.. code-block:: python
-
-  >>> ds = cesiumpy.KmlDataSource(os.path.join('data', 'example.kml'))
-  >>> v = cesiumpy.Viewer()
-  >>> v.dataSources.add(ds)
-  >>> v
-
-.. image:: ./_static/datasources02.png
-
 Geocoding
 ---------
 
@@ -350,3 +288,4 @@ You can use ``str`` specifying location where you can use coordinates as below.
   >>> v
 
 .. image:: ./_static/geocoding01.png
+
