@@ -4,6 +4,14 @@
 from __future__ import unicode_literals
 
 
+def _skip_if_no_numpy():
+    try:
+        import numpy                # noqa
+    except ImportError:
+        import nose
+        raise nose.SkipTest("no numpy module")
+
+
 def _skip_if_no_scipy():
     try:
         import scipy.spatial         # noqa

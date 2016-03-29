@@ -13,15 +13,18 @@ class PlottingAccessor(object):
         self.widget = widget
 
     def _fill_by(self, x, length, key, default=None):
-        if com.is_listlike(x):
-            if len(x) != length:
-                msg = "{key} length must be {length}: {x}"
-                raise ValueError(msg.format(key=key, length=length, x=x))
-        else:
+        if not com.is_listlike(x):
             if x is None:
                 # fill by other default if specified
                 x = default
             x = [x] * length
+
+        # to support array interface
+        x = com.validate_listlike(x, key)
+
+        if len(x) != length:
+            msg = "{key} length must be {length}: {x}"
+            raise ValueError(msg.format(key=key, length=length, x=x))
         return x
 
     def __call__(self):

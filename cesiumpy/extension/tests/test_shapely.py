@@ -6,8 +6,6 @@ import unittest
 
 import cesiumpy
 import cesiumpy.entities.cartesian as cartesian
-
-
 from cesiumpy.testing import _skip_if_no_shapely
 
 
