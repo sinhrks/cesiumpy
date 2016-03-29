@@ -5,9 +5,27 @@ import unittest
 import nose
 
 import cesiumpy.common as com
+from cesiumpy.testing import _skip_if_no_numpy
 
 
 class TestChecker(unittest.TestCase):
+
+    def test_islistlike(self):
+        self.assertTrue(com.is_listlike([10]))
+        self.assertTrue(com.is_listlike((1.5, 2)))
+
+        self.assertFalse(com.is_listlike(None))
+        self.assertFalse(com.is_listlike('1.5'))
+
+    def test_islistlike_numpy(self):
+        _skip_if_no_numpy()
+        import numpy as np
+
+        self.assertTrue(com.is_listlike(np.ndarray([10])))
+        self.assertTrue(com.is_listlike(np.array([1.5, 2])))
+
+        self.assertFalse(com.is_listlike(np.int64(2)))
+        self.assertFalse(com.is_listlike(np.array(1)))
 
     def test_isnumeric(self):
         self.assertTrue(com.is_numeric(10))

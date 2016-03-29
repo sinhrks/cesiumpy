@@ -87,8 +87,14 @@ def validate_latitude(x, key):
 
 def validate_listlike(x, key):
     """ validate whether x is list-likes """
-    if not isinstance(x, listlike_types):
+    if not is_listlike(x):
         raise ValueError('{key} must be list-likes: {x}'.format(key=key, x=x))
+    if hasattr(x, '__array__'):
+        # array interface, 0 dimensional array raises ValueError in
+        # previous block
+        x = x.__array__()
+        # convert to python list as traitlets doesn't handle numpy scalar
+        x = x.tolist()
     return x
 
 
@@ -135,25 +141,35 @@ def is_latitude(x):
         return -90 <= x <= 90
     return False
 
-# may support np.array?
-listlike_types = (list, tuple)
+
+try:
+    import numpy as np
+    listlike_types = (list, tuple, np.ndarray)
+except ImportError:
+    listlike_types = (list, tuple)
 
 
 def is_listlike(x):
     """ whether the input can be regarded as list """
+    if hasattr(x, '__array__'):
+        # array interface
+        x = x.__array__()
+        if x.ndim == 0:
+            # 0 dimensional array
+            return False
     return isinstance(x, listlike_types)
 
 
 def is_listlike_2elem(x):
-    if isinstance(x, listlike_types):
-        if all(isinstance(e, listlike_types) and len(e) == 2 for e in x):
+    if is_listlike(x):
+        if all(is_listlike(e) and len(e) == 2 for e in x):
             return True
     return False
 
 
 def is_listlike_3elem(x):
-    if isinstance(x, list):
-        if all(isinstance(e, listlike_types) and len(e) == 2 for e in x):
+    if is_listlike(x):
+        if all(is_listlike(e) and len(e) == 2 for e in x):
             return True
     return False
 

@@ -5,6 +5,7 @@ import nose
 import unittest
 
 import cesiumpy
+from cesiumpy.testing import _skip_if_no_numpy
 
 
 class TestScatter(unittest.TestCase):
@@ -465,6 +466,61 @@ class TestPin(unittest.TestCase):
 </script>"""
         self.assertEqual(v.to_html(), exp)
 
+
+class TestNumpyLike(unittest.TestCase):
+
+    def test_scatter_xy(self):
+        _skip_if_no_numpy()
+        import numpy as np
+
+        v = cesiumpy.Viewer(divid='viewertest')
+        res = v.plot.scatter(np.array([130, 140, 150]), np.array([30, 40, 50]))
+        self.assertIsInstance(v, cesiumpy.Viewer)
+
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest");
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(130.0, 30.0, 0.0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(140.0, 40.0, 0.0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(150.0, 50.0, 0.0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}});
+  widget.zoomTo(widget.entities);
+</script>"""
+        self.assertEqual(res.to_html(), exp)
+        # entities must be added to original instance
+        self.assertEqual(v.to_html(), exp)
+
+    def test_scatter_array_interface(self):
+        _skip_if_no_numpy()
+        import numpy as np
+
+        class ExtendedArray(object):
+
+            def __init__(self, values):
+                self.values = values
+
+            def __array__(self):
+                return np.array(self.values)
+
+        v = cesiumpy.Viewer(divid='viewertest')
+        res = v.plot.scatter(ExtendedArray([130, 140, 150]),
+                             ExtendedArray([30, 40, 50]))
+        self.assertIsInstance(v, cesiumpy.Viewer)
+
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest");
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(130.0, 30.0, 0.0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(140.0, 40.0, 0.0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(150.0, 50.0, 0.0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}});
+  widget.zoomTo(widget.entities);
+</script>"""
+        self.assertEqual(res.to_html(), exp)
+        # entities must be added to original instance
+        self.assertEqual(v.to_html(), exp)
 
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
