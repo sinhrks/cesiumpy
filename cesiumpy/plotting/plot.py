@@ -183,3 +183,31 @@ class PlottingAccessor(object):
                                scale=_size, fillColor=_color)
             self.widget.entities.add(p)
         return self.widget
+
+    def contour(self, x, y, z):
+        """
+        Plot contours using cesiumpy.Polyline
+
+        Parameters
+        ----------
+
+        X: np.ndarray
+        Y: np.ndarray
+        Y: np.ndarray
+
+        *X* and *Y* must both be 2-D with the same shape as *Z*, or they
+        must both be 1-D such that ``len(X)`` is the number of columns in
+        *Z* and ``len(Y)`` is the number of rows in *Z*.
+        """
+
+        plt = com._check_package('matplotlib.pyplot')
+        contours = plt.contour(x, y, z)
+
+        for segs, c in zip(contours.allsegs, contours.tcolors):
+            c = cesiumpy.color.Color(*c[0])
+            for seg in segs:
+                pos = seg.flatten().tolist()
+                p = cesiumpy.Polyline(positions=pos, material=c)
+                self.widget.entities.add(p)
+        plt.close()
+        return self.widget
