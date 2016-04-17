@@ -64,11 +64,7 @@ Even though ``Viewer`` also has various type of user control menus, below exampl
 
 .. image:: ./_static/viewer01.png
 
-Refer to following document to see the whole list of `Cesium.js <http://cesiumjs.org/>`_ entities:
-
-- http://cesiumjs.org/tutorials/Visualizing-Spatial-Data/
-
-``cesiumpy`` currently supports following entities. Refer to ``cesiumpy`` API document for more details.
+``cesiumpy`` currently supports following entities. Refer to :ref:`Entities <entities.list>` section for more details.
 
 - ``Point``
 - ``Label``

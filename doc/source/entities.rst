@@ -1,3 +1,6 @@
+
+.. _entities.list:
+
 Entities
 ========
 
