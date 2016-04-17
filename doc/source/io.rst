@@ -1,6 +1,8 @@
+Read External Files
+==================================
 
 Read External Files as Data Source
-==================================
+----------------------------------
 
 `Cesium.js <http://cesiumjs.org/>`_ has a ``DataSource`` class which
 can draw external data as entities.
@@ -12,7 +14,7 @@ can draw external data as entities.
 - ``CzmlDataSource``
 
 GeoJSON
--------
+^^^^^^^
 
 Assuming we hanve following ``.geojson`` file named "example.geojson".
 
@@ -42,7 +44,7 @@ Or, you can use ``load`` class method to instanciate ``DataSource`` like ``Cesiu
   >>> cesiumpy.GeoJsonDataSource.load('./example.geojson', markerSymbol='!')
 
 KML
----
+^^^
 
 You can use ``KmlDataSource`` to read ``.kml`` files. Assuming we have following content:
 
@@ -67,7 +69,7 @@ You can use ``KmlDataSource`` to read ``.kml`` files. Assuming we have following
 .. image:: ./_static/datasources02.png
 
 CZML
-----
+^^^^
 
 The last example is use ``.czml`` file downloaded from the
 `Cesium.js repository <https://github.com/AnalyticalGraphicsInc/cesium/blob/master/Apps/SampleData/simple.czml>`_
@@ -82,7 +84,7 @@ The last example is use ``.czml`` file downloaded from the
 .. image:: ./_static/datasources03.png
 
 Read External Files as Entities
-===============================
+-------------------------------
 
 ``cesiumpy`` can read following file formats using ``io`` module. The results
 are automatically converted to ``cesiumpy`` entities and can be added to
@@ -92,7 +94,7 @@ map directly.
 - Shapefile
 
 GeoJSON
--------
+^^^^^^^
 
 This example reads GeoJSON file of Japanese land area. ``cesiumpy.io.read_geojson``
 returns a ``list`` of ``cesiumpy.Polygon``.
@@ -126,7 +128,7 @@ If you want to change some properties, passing keyword arguments via ``entities.
 .. image:: ./_static/io_geojson02.png
 
 Shapefile
----------
+^^^^^^^^^
 
 This example reads Shapefile of Japanese coastal lines. ``cesiumpy.io.read_shape``
 returns a ``list`` of ``cesiumpy.Polyline``.
@@ -170,7 +172,7 @@ to check available country codes ("cca2" or "cca3") and names ("official name").
 
 
 Read 3D Models
-==============
+--------------
 
 `Cesium.js <http://cesiumjs.org/>`_ can handle 3D Model on the map.
 For ``Cesium.js`` functionality, please refer to `3D Model Tutorial <https://cesiumjs.org/tutorials/3D-Models-Tutorial/>`_.
