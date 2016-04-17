@@ -24,7 +24,7 @@ install:
   - conda create -q -n test-environment python=$PYTHON pip nose
   - source activate test-environment
   - if [[ "$SHAPELY" == "true" ]]; then
-      conda install numpy scipy shapely fiona matplotlib;
+      conda install numpy scipy pandas shapely fiona matplotlib;
     fi
   - python -m pip install flake8
   - python setup.py install

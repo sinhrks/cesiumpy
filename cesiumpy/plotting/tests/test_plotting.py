@@ -5,7 +5,8 @@ import nose
 import unittest
 
 import cesiumpy
-from cesiumpy.testing import _skip_if_no_numpy, _skip_if_no_matplotlib
+from cesiumpy.testing import (_skip_if_no_numpy, _skip_if_no_pandas,
+                              _skip_if_no_matplotlib)
 
 
 class TestScatter(unittest.TestCase):
@@ -120,6 +121,42 @@ class TestScatter(unittest.TestCase):
         with nose.tools.assert_raises_regexp(ValueError, msg):
             v.plot.scatter([130, 140, 150], [30, 40, 50], size=[1, 2])
 
+    def test_scatter_pandas(self):
+        _skip_if_no_pandas()
+        import pandas as pd
+        df = pd.DataFrame({'lon': [130, 140, 150],
+                           'lat': [50, 60, 70],
+                           'r': [10, 20, 30],
+                           'c': ['r', 'g', 'b']})
+        # we can't use size column
+        v = cesiumpy.Viewer(divid='viewertest')
+        v.plot.scatter(x=df.lon, y=df.lat, size=df.r)
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest");
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(130.0, 50.0, 0.0), point : {pixelSize : 10.0, color : Cesium.Color.WHITE}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(140.0, 60.0, 0.0), point : {pixelSize : 20.0, color : Cesium.Color.WHITE}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(150.0, 70.0, 0.0), point : {pixelSize : 30.0, color : Cesium.Color.WHITE}});
+  widget.zoomTo(widget.entities);
+</script>"""
+        self.assertEqual(v.to_html(), exp)
+
+        v = cesiumpy.Viewer(divid='viewertest')
+        v.plot.scatter(x=df.lon, y=df.lat, size=df.r, color=df.c)
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest");
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(130.0, 50.0, 0.0), point : {pixelSize : 10.0, color : Cesium.Color.RED}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(140.0, 60.0, 0.0), point : {pixelSize : 20.0, color : Cesium.Color.GREEN}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(150.0, 70.0, 0.0), point : {pixelSize : 30.0, color : Cesium.Color.BLUE}});
+  widget.zoomTo(widget.entities);
+</script>"""
+        self.assertEqual(v.to_html(), exp)
+
 
 class TestBar(unittest.TestCase):
 
@@ -214,6 +251,27 @@ class TestBar(unittest.TestCase):
   widget.entities.add({position : Cesium.Cartesian3.fromDegrees(130.0, 30.0, 2500000.0), cylinder : {length : 3000000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.BLUE}});
   widget.entities.add({position : Cesium.Cartesian3.fromDegrees(140.0, 40.0, 3000000.0), cylinder : {length : 2000000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.BLUE}});
   widget.entities.add({position : Cesium.Cartesian3.fromDegrees(150.0, 50.0, 3500000.0), cylinder : {length : 1000000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.BLUE}});
+  widget.zoomTo(widget.entities);
+</script>"""
+        self.assertEqual(v.to_html(), exp)
+
+    def test_bar_pandas(self):
+        _skip_if_no_pandas()
+        import pandas as pd
+        df = pd.DataFrame({'lon': [130, 140, 150],
+                           'lat': [50, 60, 70],
+                           'h': [1e5, 2e5, 3e5],
+                           'c': ['r', 'g', 'b']})
+        v = cesiumpy.Viewer(divid='viewertest')
+        v.plot.bar(x=df.lon, y=df.lat, z=df.h, color=df.c)
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest");
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(130.0, 50.0, 50000.0), cylinder : {length : 100000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.RED}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(140.0, 60.0, 100000.0), cylinder : {length : 200000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.GREEN}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(150.0, 70.0, 150000.0), cylinder : {length : 300000.0, topRadius : 10000.0, bottomRadius : 10000.0, material : Cesium.Color.BLUE}});
   widget.zoomTo(widget.entities);
 </script>"""
         self.assertEqual(v.to_html(), exp)
@@ -323,6 +381,28 @@ class TestLabel(unittest.TestCase):
   widget.entities.add({position : Cesium.Cartesian3.fromDegrees(130.0, 30.0, 0.0), label : {text : "A", scale : 2.0}});
   widget.entities.add({position : Cesium.Cartesian3.fromDegrees(140.0, 40.0, 0.0), label : {text : "B", scale : 3.0}});
   widget.entities.add({position : Cesium.Cartesian3.fromDegrees(150.0, 50.0, 0.0), label : {text : "C", scale : 0.5}});
+  widget.zoomTo(widget.entities);
+</script>"""
+        self.assertEqual(v.to_html(), exp)
+
+    def test_label_pandas(self):
+        _skip_if_no_pandas()
+        import pandas as pd
+        df = pd.DataFrame({'lon': [130, 140, 150],
+                           'lat': [50, 60, 70],
+                           's': [1, 2, 3],
+                           'label': ['a', 'b', 'c'],
+                           'c': ['r', 'g', 'b']})
+        v = cesiumpy.Viewer(divid='viewertest')
+        v.plot.label(df.label, x=df.lon, y=df.lat, size=df.s, color=df.c)
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest");
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(130.0, 50.0, 0.0), label : {text : "a", fillColor : Cesium.Color.RED, scale : 1.0}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(140.0, 60.0, 0.0), label : {text : "b", fillColor : Cesium.Color.GREEN, scale : 2.0}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(150.0, 70.0, 0.0), label : {text : "c", fillColor : Cesium.Color.BLUE, scale : 3.0}});
   widget.zoomTo(widget.entities);
 </script>"""
         self.assertEqual(v.to_html(), exp)
@@ -546,6 +626,28 @@ class TestContour(unittest.TestCase):
                             for x in viewer.entities))
         self.assertEqual(viewer.entities[0].material,
                          cesiumpy.color.Color(0.0, 0.0, 0.5, 1.0))
+
+    def test_pin_pandas(self):
+        _skip_if_no_pandas()
+        import pandas as pd
+        df = pd.DataFrame({'lon': [130, 140, 150],
+                           'lat': [50, 60, 70],
+                           's': [10, 20, 30],
+                           'label': ['a', 'b', 'c'],
+                           'c': ['r', 'g', 'b']})
+        v = cesiumpy.Viewer(divid='viewertest')
+        v.plot.pin(x=df.lon, y=df.lat, size=df.s, color=df.c, text=df.label)
+        exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
+<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<div id="viewertest" style="width:100%; height:100%;"><div>
+<script type="text/javascript">
+  var widget = new Cesium.Viewer("viewertest");
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(130.0, 50.0, 0.0), billboard : {image : new Cesium.PinBuilder().fromText("a", Cesium.Color.RED, 10.0)}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(140.0, 60.0, 0.0), billboard : {image : new Cesium.PinBuilder().fromText("b", Cesium.Color.GREEN, 20.0)}});
+  widget.entities.add({position : Cesium.Cartesian3.fromDegrees(150.0, 70.0, 0.0), billboard : {image : new Cesium.PinBuilder().fromText("c", Cesium.Color.BLUE, 30.0)}});
+  widget.zoomTo(widget.entities);
+</script>"""
+        self.assertEqual(v.to_html(), exp)
 
 
 if __name__ == '__main__':

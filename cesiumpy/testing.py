@@ -12,6 +12,14 @@ def _skip_if_no_numpy():
         raise nose.SkipTest("no numpy module")
 
 
+def _skip_if_no_pandas():
+    try:
+        import pandas               # noqa
+    except ImportError:
+        import nose
+        raise nose.SkipTest("no pandas module")
+
+
 def _skip_if_no_scipy():
     try:
         import scipy.spatial         # noqa
