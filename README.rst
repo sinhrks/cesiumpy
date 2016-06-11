@@ -1,6 +1,17 @@
 cesiumpy
 ========
 
+.. image:: https://img.shields.io/pypi/v/cesiumpy.svg
+    :target: https://pypi.python.org/pypi/cesiumpy/
+.. image:: https://readthedocs.org/projects/cesiumpy/badge/?version=latest
+    :target: http://cesiumpy.readthedocs.org/en/latest/
+    :alt: Latest Docs
+.. image:: https://travis-ci.org/sinhrks/cesiumpy.svg?branch=master
+    :target: https://travis-ci.org/sinhrks/cesiumpy
+.. image:: https://coveralls.io/repos/sinhrks/cesiumpy/badge.svg?branch=master&service=github
+    :target: https://coveralls.io/github/sinhrks/cesiumpy?branch=master
+
+
 Lightweight Python wrapper for `Cesium.js <http://cesiumjs.org/>`_. Mainly intended to be used with ``Jupyter Notebook``.
 
 Installation

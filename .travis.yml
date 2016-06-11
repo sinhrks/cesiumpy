@@ -8,11 +8,10 @@ env:
     - PYTHON=3.5 SHAPELY=false
 
 install:
-  - sudo pip install python-coveralls coverage
   - if [[ "$PYTHON" == "2.7" ]]; then
-      wget http://repo.continuum.io/miniconda/Miniconda-3.4.2-Linux-x86_64.sh -O miniconda.sh;
+      wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
     else
-      wget http://repo.continuum.io/miniconda/Miniconda3-3.4.2-Linux-x86_64.sh -O miniconda.sh;
+      wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
     fi
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
@@ -26,7 +25,7 @@ install:
   - if [[ "$SHAPELY" == "true" ]]; then
       conda install numpy scipy pandas shapely fiona matplotlib;
     fi
-  - python -m pip install flake8
+  - python -m pip install flake8 python-coveralls coverage
   - python setup.py install
 
 before_script:
@@ -35,7 +34,7 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script:
-  - nosetests --with-coverage
+  - nosetests --with-coverage --cover-package=cesiumpy
   - flake8 --ignore E501 cesiumpy
 
 after_success:
