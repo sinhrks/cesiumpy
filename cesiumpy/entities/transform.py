@@ -41,7 +41,7 @@ class Transforms(_CesiumObject):
         Parameters
         ----------
 
-        origin: Cartesian3
+        origin : Cartesian3
             The center point of the local reference frame.
         """
         return Transforms(origin, transform='eastNorthUpToFixedFrame')
@@ -61,7 +61,7 @@ class Transforms(_CesiumObject):
         Parameters
         ----------
 
-        origin: Cartesian3
+        origin : Cartesian3
             The center point of the local reference frame.
         """
         return Transforms(origin, transform='northEastDownToFixedFrame')
@@ -81,7 +81,7 @@ class Transforms(_CesiumObject):
         Parameters
         ----------
 
-        origin: Cartesian3
+        origin : Cartesian3
             The center point of the local reference frame.
         """
         return Transforms(origin, transform='northUpEastToFixedFrame')

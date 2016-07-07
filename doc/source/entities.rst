@@ -4,8 +4,7 @@
 Entities
 ========
 
-This section describes the basic usage of ``cesiumpy``. ``cesiumpy`` is the lightweight
-wrapper for `Cesium.js <http://cesiumjs.org/>`_.
+This section introduces various kinds of Entities supported by `Cesium.js <http://cesiumjs.org/>`_.
 
 Cartesian
 ---------

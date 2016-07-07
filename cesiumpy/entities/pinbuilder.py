@@ -57,9 +57,9 @@ class Pin(_BillboardContents):
         Parameters
         ----------
 
-        color: Color
+        color : Color
             A Property specifying the Color of the pin.
-        size: int, default 48
+        size : int, default 48
             A Property specifying the size of the pin.
         """
         return Pin(color=color, size=size)
@@ -72,11 +72,11 @@ class Pin(_BillboardContents):
         Parameters
         ----------
 
-        text: str
+        text : str
             A Property specifying the text of the pin.
-        color: Color
+        color : Color
             A Property specifying the Color of the pin.
-        size: int, default 48
+        size : int, default 48
             A Property specifying the size of the pin.
         """
         # validate text is not None

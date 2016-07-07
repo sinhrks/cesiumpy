@@ -57,17 +57,17 @@ class ArcGisImageServerTerrainProvider(TerrainProvider):
     Parameters
     ----------
 
-    url: str
+    url : str
         The URL of the ArcGIS ImageServer service.
-    token: str
+    token : str
         The authorization token to use to connect to the service.
-    proxy: Proxy
+    proxy : Proxy
         A proxy to use for requests. This object is expected to have a getURL function which returns the proxied URL, if needed.
-    tilingScheme: TilingScheme, default new GeographicTilingScheme()
+    tilingScheme : TilingScheme, default new GeographicTilingScheme()
         The tiling scheme specifying how the terrain is broken into tiles. If this parameter is not provided, a GeographicTilingScheme is used.
-    ellipsoid: Ellipsoid
+    ellipsoid : Ellipsoid
         The ellipsoid. If the tilingScheme is specified, this parameter is ignored and the tiling scheme's ellipsoid is used instead. If neither parameter is specified, the WGS84 ellipsoid is used.
-    credit: Credit or str
+    credit : Credit or str
         The credit, which will is displayed on the canvas.
     """
 
@@ -89,17 +89,17 @@ class CesiumTerrainProvider(TerrainProvider):
     Parameters
     ----------
 
-    url: str
+    url : str
         The URL of the Cesium terrain server.
-    proxy: Proxy
+    proxy : Proxy
         A proxy to use for requests. This object is expected to have a getURL function which returns the proxied URL, if needed.
-    requestVertexNormals: bool, default False
+    requestVertexNormals : bool, default False
         Flag that indicates if the client should request additional lighting information from the server, in the form of per vertex normals if available.
-    requestWaterMask: bool, default False
+    requestWaterMask : bool, default False
         Flag that indicates if the client should request per tile water masks from the server, if available.
-    ellipsoid: Ellipsoid
+    ellipsoid : Ellipsoid
         The ellipsoid. If not specified, the WGS84 ellipsoid is used.
-    credit: Credit or str
+    credit : Credit or str
         A credit for the data source, which is displayed on the canvas.
     """
 
@@ -123,9 +123,9 @@ class EllipsoidTerrainProvider(TerrainProvider):
     Parameters
     ----------
 
-    tilingScheme: TilingScheme, default new GeographicTilingScheme()
+    tilingScheme : TilingScheme, default new GeographicTilingScheme()
         The tiling scheme specifying how the ellipsoidal surface is broken into tiles. If this parameter is not provided, a GeographicTilingScheme is used.
-    ellipsoid: Ellipsoid
+    ellipsoid : Ellipsoid
         The ellipsoid. If the tilingScheme is specified, this parameter is ignored and the tiling scheme's ellipsoid is used instead. If neither parameter is specified, the WGS84 ellipsoid is used.
     """
 
@@ -143,13 +143,13 @@ class VRTheWorldTerrainProvider(TerrainProvider):
 
     Parameters
     ----------
-    url: str
+    url : str
         The URL of the VR-TheWorld TileMap.
-    proxy: Proxy
+    proxy : Proxy
         A proxy to use for requests. This object is expected to have a getURL function which returns the proxied URL, if needed.
-    ellipsoid: Ellipsoid, default Ellipsoid.WGS84
+    ellipsoid : Ellipsoid, default Ellipsoid.WGS84
         The ellipsoid. If this parameter is not specified, the WGS84 ellipsoid is used.
-    credit: Credit or str
+    credit : Credit or str
         A credit for the data source, which is displayed on the canvas.
     """
     def __init__(self, url, proxy=None, ellipsoid=None, credit=None):
@@ -214,32 +214,31 @@ class ArcGisMapServerImageryProvider(ImageryProvider):
     Parameters
     ----------
 
-    url: str
+    url : str
         The URL of the ArcGIS MapServer service.
-    token: str
+    token : str
         The ArcGIS token used to authenticate with the ArcGIS MapServer service.
-    usePreCachedTilesIfAvailable: bool, default True
+    usePreCachedTilesIfAvailable : bool, default True
         If true, the server's pre-cached tiles are used if they are available. If false, any pre-cached tiles are ignored and the 'export' service is used.
-    layers: str
+    layers : str
         A comma-separated list of the layers to show, or undefined if all layers should be shown.
-    enablePickFeatures: bool, default True
+    enablePickFeatures : bool, default True
         If true, ArcGisMapServerImageryProvider#pickFeatures will invoke the Identify service on the MapServer and return the features included in the response. If false, ArcGisMapServerImageryProvider#pickFeatures will immediately return undefined (indicating no pickable features) without communicating with the server. Set this property to false if you don't want this provider's features to be pickable.
-    rectangle: Rectangle, default Rectangle.MAX_VALUE
+    rectangle : Rectangle, default Rectangle.MAX_VALUE
         The rectangle of the layer. This parameter is ignored when accessing a tiled layer.
-    tilingScheme: TilingScheme, default new GeographicTilingScheme()
+    tilingScheme : TilingScheme, default new GeographicTilingScheme()
         The tiling scheme to use to divide the world into tiles. This parameter is ignored when accessing a tiled server.
-    ellipsoid: Ellipsoid
+    ellipsoid : Ellipsoid
         The ellipsoid. If the tilingScheme is specified and used, this parameter is ignored and the tiling scheme's ellipsoid is used instead. If neither parameter is specified, the WGS84 ellipsoid is used.
-    tileWidth: int, default 256
+    tileWidth : int, default 256
         The width of each tile in pixels. This parameter is ignored when accessing a tiled server.
-    tileHeight: int, default 256
+    tileHeight : int, default 256
         The height of each tile in pixels. This parameter is ignored when accessing a tiled server.
-    tileDiscardPolicy: TileDiscardPolicy
+    tileDiscardPolicy : TileDiscardPolicy
         The policy that determines if a tile is invalid and should be discarded. If this value is not specified, a default DiscardMissingTileImagePolicy is used for tiled map servers, and a NeverTileDiscardPolicy is used for non-tiled map servers. In the former case, we request tile 0,0 at the maximum tile level and check pixels (0,0), (200,20), (20,200), (80,110), and (160, 130). If all of these pixels are transparent, the discard check is disabled and no tiles are discarded. If any of them have a non-transparent color, any tile that has the same values in these pixel locations is discarded. The end result of these defaults should be correct tile discarding for a standard ArcGIS Server. To ensure that no tiles are discarded, construct and pass a NeverTileDiscardPolicy for this parameter.
-
-    maximumLevel: int
+    maximumLevel : int
         The maximum tile level to request, or undefined if there is no maximum. This parameter is ignored when accessing a tiled server.
-    proxy: Proxy
+    proxy : Proxy
         A proxy to use for requests. This object is expected to have a getURL function which returns the proxied URL, if needed.
     """
 
@@ -279,21 +278,21 @@ class BingMapsImageryProvider(ImageryProvider):
     Parameters
     ----------
 
-    url: str
+    url : str
         The url of the Bing Maps server hosting the imagery.
-    key: str
+    key : str
         The Bing Maps key for your application, which can be created at https://www.bingmapsportal.com/. If this parameter is not provided, BingMapsApi.defaultKey is used. If BingMapsApi.defaultKey is undefined as well, a message is written to the console reminding you that you must create and supply a Bing Maps key as soon as possible. Please do not deploy an application that uses Bing Maps imagery without creating a separate key for your application.
-    tileProtocol: str
+    tileProtocol : str
         The protocol to use when loading tiles, e.g. 'http:' or 'https:'. By default, tiles are loaded using the same protocol as the page.
-    mapStyle: str, default BingMapsStyle.AERIAL
+    mapStyle : str, default BingMapsStyle.AERIAL
         The type of Bing Maps imagery to load.
-    culture: str, default ''
+    culture : str, default ''
         The culture to use when requesting Bing Maps imagery. Not all cultures are supported. See http://msdn.microsoft.com/en-us/library/hh441729.aspx for information on the supported cultures.
-    ellipsoid: Ellipsoid
+    ellipsoid : Ellipsoid
         The ellipsoid. If not specified, the WGS84 ellipsoid is used.
-    tileDiscardPolicy: TileDiscardPolicy
+    tileDiscardPolicy : TileDiscardPolicy
         The policy that determines if a tile is invalid and should be discarded. If this value is not specified, a default DiscardMissingTileImagePolicy is used which requests tile 0,0 at the maximum tile level and checks pixels (0,0), (120,140), (130,160), (200,50), and (200,200). If all of these pixels are transparent, the discard check is disabled and no tiles are discarded. If any of them have a non-transparent color, any tile that has the same values in these pixel locations is discarded. The end result of these defaults should be correct tile discarding for a standard Bing Maps server. To ensure that no tiles are discarded, construct and pass a NeverTileDiscardPolicy for this parameter.
-    proxy: Proxy
+    proxy : Proxy
         A proxy to use for requests. This object is expected to have a getURL function which returns the proxied URL, if needed.
     """
 
@@ -325,19 +324,19 @@ class GoogleEarthImageryProvider(ImageryProvider):
     Parameters
     ----------
 
-    url: str
+    url : str
         The url of the Google Earth server hosting the imagery.
-    channel: int
+    channel : int
         The channel (id) to be used when requesting data from the server. The channel number can be found by looking at the json file located at: earth.localdomain/default_map/query?request=Json&vars=geeServerDefs The /default_map path may differ depending on your Google Earth Enterprise server configuration. Look for the "id" that is associated with a "ImageryMaps" requestType. There may be more than one id available. Example: { layers: [ { id: 1002, requestType: "ImageryMaps" }, { id: 1007, requestType: "VectorMapsRaster" } ] }
-    path: str, default "/default_map"
+    path : str, default "/default_map"
         The path of the Google Earth server hosting the imagery.
-    ellipsoid: Ellipsoid
+    ellipsoid : Ellipsoid
         The ellipsoid. If not specified, the WGS84 ellipsoid is used.
-    tileDiscardPolicy: TileDiscardPolicy
+    tileDiscardPolicy : TileDiscardPolicy
         The policy that determines if a tile is invalid and should be discarded. To ensure that no tiles are discarded, construct and pass a NeverTileDiscardPolicy for this parameter.
-    maximumLevel: int
+    maximumLevel : int
         The maximum level-of-detail supported by the Google Earth Enterprise server, or undefined if there is no limit.
-    proxy: Proxy
+    proxy : Proxy
         A proxy to use for requests. This object is expected to have a getURL function which returns the proxied URL, if needed.
     """
 
@@ -373,25 +372,25 @@ class MapboxImageryProvider(ImageryProvider):
     Parameters
     ----------
 
-    url: str, default '//api.mapbox.com/v4/'
+    url : str, default '//api.mapbox.com/v4/'
         The Mapbox server url.
-    mapId: str
+    mapId : str
         The Mapbox Map ID.
-    accessToken: str
+    accessToken : str
         The public access token for the imagery.
-    format: str, default 'png'
+    format : str, default 'png'
         The format of the image request.
-    rectangle: Rectangle, default Rectangle.MAX_VALUE
+    rectangle : Rectangle, default Rectangle.MAX_VALUE
         The rectangle, in radians, covered by the image.
-    ellipsoid: Ellipsoid
+    ellipsoid : Ellipsoid
         The ellipsoid. If not specified, the WGS84 ellipsoid is used.
-    minimumLevel: int, default 0
+    minimumLevel : int, default 0
         The minimum level-of-detail supported by the imagery provider. Take care when specifying this that the number of tiles at the minimum level is small, such as four or less. A larger number is likely to result in rendering problems.
-    maximumLevel: int, default 0
+    maximumLevel : int, default 0
         The maximum level-of-detail supported by the imagery provider, or undefined if there is no limit.
-    credit: Credit or str
+    credit : Credit or str
         A credit for the data source, which is displayed on the canvas.
-    proxy: Proxy
+    proxy : Proxy
         A proxy to use for requests. This object is expected to have a getURL function which returns the proxied URL.
     """
 
@@ -423,21 +422,21 @@ class OpenStreetMapImageryProvider(ImageryProvider):
     Parameters
     ----------
 
-    url: str, default '//a.tile.openstreetmap.org'
+    url : str, default '//a.tile.openstreetmap.org'
         The OpenStreetMap server url.
-    fileExtension: str, default 'png'
+    fileExtension : str, default 'png'
         The file extension for images on the server.
-    rectangle: Rectangle, default Rectangle.MAX_VALUE
+    rectangle : Rectangle, default Rectangle.MAX_VALUE
         The rectangle of the layer.
-    ellipsoid: Ellipsoid
+    ellipsoid : Ellipsoid
         The ellipsoid. If not specified, the WGS84 ellipsoid is used.
-    minimumLevel: int, default 0
+    minimumLevel : int, default 0
         The minimum level-of-detail supported by the imagery provider.
-    maximumLevel: int
+    maximumLevel : int
         The maximum level-of-detail supported by the imagery provider, or undefined if there is no limit.
-    credit: Credit or str, default 'MapQuest, Open Street Map and contributors, CC-BY-SA'
+    credit : Credit or str, default 'MapQuest, Open Street Map and contributors, CC-BY-SA'
         A credit for the data source, which is displayed on the canvas.
-    proxy: Proxy
+    proxy : Proxy
         A proxy to use for requests. This object is expected to have a getURL function which returns the proxied URL.
     """
 
@@ -460,15 +459,15 @@ class SingleTileImageryProvider(ImageryProvider):
     Parameters
     ----------
 
-    url: str
+    url : str
         The url for the tile.
-    rectangle: Rectangle, default Rectangle.MAX_VALUE
+    rectangle : Rectangle, default Rectangle.MAX_VALUE
         The rectangle, in radians, covered by the image.
-    ellipsoid: Ellipsoid
+    ellipsoid : Ellipsoid
         The ellipsoid. If not specified, the WGS84 ellipsoid is used.
-    credit: Credit or str
+    credit : Credit or str
         A credit for the data source, which is displayed on the canvas.
-    proxy: Proxy
+    proxy : Proxy
         A proxy to use for requests. This object is expected to have a getURL function which returns the proxied URL, if needed.
     """
 
@@ -490,15 +489,15 @@ class TileCoordinatesImageryProvider(ImageryProvider):
     Parameters
     ----------
 
-    color: cesiumpy.color.Color, default YELLOW
+    color : cesiumpy.color.Color, default YELLOW
         The color to draw the tile box and label.
-    tilingScheme: TilingScheme, default new GeographicTilingScheme()
+    tilingScheme : TilingScheme, default new GeographicTilingScheme()
         The tiling scheme for which to draw tiles.
-    ellipsoid: Ellipsoid
+    ellipsoid : Ellipsoid
         The ellipsoid. If the tilingScheme is specified, this parameter is ignored and the tiling scheme's ellipsoid is used instead. If neither parameter is specified, the WGS84 ellipsoid is used.
-    tileWidth: int, default 256
+    tileWidth : int, default 256
         The width of the tile for level-of-detail selection purposes.
-    tileHeight: int, default 256
+    tileHeight : int, default 256
         The height of the tile for level-of-detail selection purposes.
     """
 
@@ -525,27 +524,27 @@ class TileMapServiceImageryProvider(ImageryProvider):
     Parameters
     ----------
 
-    url: str, default '.'
+    url : str, default '.'
         Path to image tiles on server.
-    fileExtension: default 'png'
+    fileExtension : default 'png'
         The file extension for images on the server.
-    rectangle: Rectangle, default Rectangle.MAX_VALUE
+    rectangle : Rectangle, default Rectangle.MAX_VALUE
         The rectangle, in radians, covered by the image.
-    tilingScheme: TilingScheme, default new GeographicTilingScheme()
+    tilingScheme : TilingScheme, default new GeographicTilingScheme()
         The tiling scheme specifying how the ellipsoidal surface is broken into tiles. If this parameter is not provided, a WebMercatorTilingScheme is used.
-    ellipsoid: Ellipsoid
+    ellipsoid : Ellipsoid
         The ellipsoid. If the tilingScheme is specified, this parameter is ignored and the tiling scheme's ellipsoid is used instead. If neither parameter is specified, the WGS84 ellipsoid is used.
-    tileWidth: int, default 256
+    tileWidth : int, default 256
         Pixel width of image tiles.
-    tileHeight: int, default 256
+    tileHeight : int, default 256
         Pixel height of image tiles.
-    minimumLevel: int, default 0
+    minimumLevel : int, default 0
         The minimum level-of-detail supported by the imagery provider. Take care when specifying this that the number of tiles at the minimum level is small, such as four or less. A larger number is likely to result in rendering problems.
-    maximumLevel: int
+    maximumLevel : int
         The maximum level-of-detail supported by the imagery provider, or undefined if there is no limit.
-    credit: Credit or str, default ''
+    credit : Credit or str, default ''
         A credit for the data source, which is displayed on the canvas.
-    proxy: Proxy
+    proxy : Proxy
         A proxy to use for requests. This object is expected to have a getURL function which returns the proxied URL.
     """
 
@@ -578,37 +577,37 @@ class WebMapServiceImageryProvider(ImageryProvider):
     Parameters
     ----------
 
-    url: str
+    url : str
         The URL of the WMS service. The URL supports the same keywords as the UrlTemplateImageryProvider.
-    layers: str
+    layers : str
         The layers to include, separated by commas.
-    parameters: Object, default WebMapServiceImageryProvider.DefaultParameters
+    parameters : Object, default WebMapServiceImageryProvider.DefaultParameters
         Additional parameters to pass to the WMS server in the GetMap URL.
-    getFeatureInfoParameters: Object, default WebMapServiceImageryProvider.GetFeatureInfoDefaultParameters
+    getFeatureInfoParameters : Object, default WebMapServiceImageryProvider.GetFeatureInfoDefaultParameters
         Additional parameters to pass to the WMS server in the GetFeatureInfo URL.
-    enablePickFeatures: bool, default True
+    enablePickFeatures : bool, default True
         If true, WebMapServiceImageryProvider#pickFeatures will invoke the GetFeatureInfo operation on the WMS server and return the features included in the response. If false, WebMapServiceImageryProvider#pickFeatures will immediately return undefined (indicating no pickable features) without communicating with the server. Set this property to false if you know your WMS server does not support GetFeatureInfo or if you don't want this provider's features to be pickable.
-    getFeatureInfoFormats: list of GetFeatureInfoFormat, default WebMapServiceImageryProvider.DefaultGetFeatureInfoFormats
+    getFeatureInfoFormats : list of GetFeatureInfoFormat, default WebMapServiceImageryProvider.DefaultGetFeatureInfoFormats
         The formats in which to try WMS GetFeatureInfo requests.
-    rectangle: Rectangle, default Rectangle.MAX_VALUE
+    rectangle : Rectangle, default Rectangle.MAX_VALUE
         The rectangle of the layer.
-    tilingScheme: TilingScheme, default new GeographicTilingScheme()
+    tilingScheme : TilingScheme, default new GeographicTilingScheme()
         The tiling scheme to use to divide the world into tiles.
-    ellipsoid: Ellipsoid
+    ellipsoid : Ellipsoid
         The ellipsoid. If the tilingScheme is specified, this parameter is ignored and the tiling scheme's ellipsoid is used instead. If neither parameter is specified, the WGS84 ellipsoid is used.
-    tileWidth: int, default 256
+    tileWidth : int, default 256
         The width of each tile in pixels.
-    tileHeight: int, default 256
+    tileHeight : int, default 256
         The height of each tile in pixels.
-    minimumLevel: int, default 0
+    minimumLevel : int, default 0
         The minimum level-of-detail supported by the imagery provider. Take care when specifying this that the number of tiles at the minimum level is small, such as four or less. A larger number is likely to result in rendering problems.
-    maximumLevel: int
+    maximumLevel : int
         The maximum level-of-detail supported by the imagery provider, or undefined if there is no limit. If not specified, there is no limit.
-    credit: Credit or str
+    credit : Credit or str
         A credit for the data source, which is displayed on the canvas.
-    proxy: Proxy
+    proxy : Proxy
         A proxy to use for requests. This object is expected to have a getURL function which returns the proxied URL, if needed.
-    subdomains: str or list of str, default 'abc'
+    subdomains : str or list of str, default 'abc'
     """
 
     _props = ['url', 'layers', 'parameters', 'getFeatureInfoParameters',
@@ -654,37 +653,37 @@ class WebMapTileServiceImageryProvider(ImageryProvider):
     Parameters
     ----------
 
-    url: str
+    url : str
         The base URL for the WMTS GetTile operation (for KVP-encoded requests) or the tile-URL template (for RESTful requests). The tile-URL template should contain the following variables: {style}, {TileMatrixSet}, {TileMatrix}, {TileRow}, {TileCol}. The first two are optional if actual values are hardcoded or not required by the server. The {s} keyword may be used to specify subdomains.
-    layer: str
+    layer : str
         The layer name for WMTS requests.
-    style: str
+    style : str
         The style name for WMTS requests.
-    format: str, default 'image/jpeg'
+    format : str, default 'image/jpeg'
         The MIME type for images to retrieve from the server.
-    tileMatrixSetID: str
+    tileMatrixSetID : str
         The identifier of the TileMatrixSet to use for WMTS requests.
-    tileMatrixLabels: list
+    tileMatrixLabels : list
         optional A list of identifiers in the TileMatrix to use for WMTS requests, one per TileMatrix level.
-    rectangle: Rectangle, default Rectangle.MAX_VALUE
+    rectangle : Rectangle, default Rectangle.MAX_VALUE
         The rectangle covered by the layer.
-    tilingScheme: TilingScheme, default new GeographicTilingScheme()
+    tilingScheme : TilingScheme, default new GeographicTilingScheme()
         The tiling scheme corresponding to the organization of the tiles in the TileMatrixSet.
-    ellipsoid: Ellipsoid
+    ellipsoid : Ellipsoid
         The ellipsoid. If not specified, the WGS84 ellipsoid is used.
-    tileWidth: int, default 256
+    tileWidth : int, default 256
         optional The tile width in pixels.
-    tileHeight: int, default 256
+    tileHeight : int, default 256
         The tile height in pixels.
-    minimumLevel: int, default 0
+    minimumLevel : int, default 0
         The minimum level-of-detail supported by the imagery provider.
-    maximumLevel: int
+    maximumLevel : int
         The maximum level-of-detail supported by the imagery provider, or undefined if there is no limit.
-    credit: Credit or str
+    credit : Credit or str
         A credit for the data source, which is displayed on the canvas.
-    proxy: Proxy
+    proxy : Proxy
         A proxy to use for requests. This object is expected to have a getURL function which returns the proxied URL.
-    subdomains: str or list of str, default 'abc'
+    subdomains : str or list of str, default 'abc'
         The subdomains to use for the {s} placeholder in the URL template. If this parameter is a single string, each character in the string is a subdomain. If it is an array, each element in the array is a subdomain.
     """
 

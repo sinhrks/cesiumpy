@@ -37,17 +37,17 @@ class PlottingAccessor(object):
         Parameters
         ----------
 
-        x: list
+        x : list
             List of longitudes
-        y: list
+        y : list
             List of latitudes
-        z: list
+        z : list
             List of bar heights
-        size: list or float, default 10e3
+        size : list or float, default 10e3
             Radius of cylinder
-        color: list or Color
+        color : list or Color
             Cylinder color
-        bottom: list or float, default 0
+        bottom : list or float, default 0
             Bottom heights
         """
         x = com.validate_listlike(x, key='x')
@@ -81,15 +81,15 @@ class PlottingAccessor(object):
         Parameters
         ----------
 
-        x: list
+        x : list
             List of longitudes
-        y: list
+        y : list
             List of latitudes
-        z: list or float
+        z : list or float
             Height
-        size: list or float
+        size : list or float
             Pixel size
-        color: list or Color
+        color : list or Color
             Point color
         """
         x = com.validate_listlike(x, key='x')
@@ -116,17 +116,17 @@ class PlottingAccessor(object):
         Parameters
         ----------
 
-        x: list
+        x : list
             List of longitudes
-        y: list
+        y : list
             List of latitudes
-        z: list or float
+        z : list or float
             Heights
-        text: list
+        text : list
             List of labels
-        size: list or float
+        size : list or float
             Text size
-        color: list or Color
+        color : list or Color
             Text color
         """
         x = com.validate_listlike(x, key='x')
@@ -153,17 +153,17 @@ class PlottingAccessor(object):
         Parameters
         ----------
 
-        text: list
+        text : list
             List of labels
-        x: list
+        x : list
             List of longitudes
-        y: list
+        y : list
             List of latitudes
-        z: list or float
+        z : list or float
             Heights
-        size: list or float
+        size : list or float
             Text size
-        color: list or Color
+        color : list or Color
             Text color
         """
         x = com.validate_listlike(x, key='x')
@@ -191,9 +191,9 @@ class PlottingAccessor(object):
         Parameters
         ----------
 
-        X: np.ndarray
-        Y: np.ndarray
-        Y: np.ndarray
+        X : np.ndarray
+        Y : np.ndarray
+        Y : np.ndarray
 
         *X* and *Y* must both be 2-D with the same shape as *Z*, or they
         must both be 1-D such that ``len(X)`` is the number of columns in
