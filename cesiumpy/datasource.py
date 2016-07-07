@@ -56,21 +56,21 @@ class GeoJsonDataSource(DataSource):
     Parameters
     ----------
 
-    sourceUri: str
+    sourceUri : str
         Overrides the url to use for resolving relative links.
-    describe: GeoJsonDataSource~describe, default GeoJsonDataSource.defaultDescribeProperty
+    describe : GeoJsonDataSource~describe, default GeoJsonDataSource.defaultDescribeProperty
         A function which returns a Property object (or just a string), which converts the properties into an html description.
-    markerSize: int, default GeoJsonDataSource.markerSize
+    markerSize : int, default GeoJsonDataSource.markerSize
         The default size of the map pin created for each point, in pixels.
-    markerSymbol: str, default GeoJsonDataSource.markerSymbol
+    markerSymbol : str, default GeoJsonDataSource.markerSymbol
         The default symbol of the map pin created for each point.
-    markerColor: Color, default GeoJsonDataSource.markerColor
+    markerColor : Color, default GeoJsonDataSource.markerColor
         The default color of the map pin created for each point.
-    stroke: Color, default GeoJsonDataSource.stroke
+    stroke : Color, default GeoJsonDataSource.stroke
         The default color of polylines and polygon outlines.
-    strokeWidth: int, GeoJsonDataSource.strokeWidth
+    strokeWidth : int, GeoJsonDataSource.strokeWidth
         The default width of polylines and polygon outlines.
-    fill: Color, default GeoJsonDataSource.fill
+    fill : Color, default GeoJsonDataSource.fill
         The default color for polygon interiors.
     """
 
@@ -106,7 +106,7 @@ class KmlDataSource(DataSource):
     Parameters
     ----------
 
-    sourceUri: str
+    sourceUri : str
         Overrides the url to use for resolving relative links and other KML network features.
     """
 

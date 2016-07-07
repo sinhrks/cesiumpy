@@ -35,9 +35,9 @@ class ImageMaterialProperty(Material):
     Parameters
     ----------
 
-    image: str
+    image : str
         A Property specifying the Image, URL, Canvas, or Video.
-    repeat: Cartesian2, default new Cartesian2(1.0, 1.0)
+    repeat : Cartesian2, default new Cartesian2(1.0, 1.0)
         A Cartesian2 Property specifying the number of times
     """
 
@@ -70,10 +70,10 @@ class TemporaryImage(_CesiumObject):
     Parameters
     ----------
 
-    figure: matplotib Figure or Axes
+    figure : matplotib Figure or Axes
         Instance to be drawn as an image.
         When trim is True, figure should only contain a single Axes.
-    trim: bool, default True
+    trim : bool, default True
         Whether to trim margins of
     """
 

@@ -17,31 +17,31 @@ class Model(_CesiumObject):
     Parameters
     ----------
 
-    url: str
+    url : str
         The object for the glTF JSON or an arraybuffer of Binary glTF defined by the KHR_binary_glTF extension.
-    modelMatrix: Matrix4, default Matrix4.IDENTITY
+    modelMatrix : Matrix4, default Matrix4.IDENTITY
         The 4x4 transformation matrix that transforms the model from model to world coordinates.
-    basePath: str, default ''
+    basePath : str, default ''
         The base path that paths in the glTF JSON are relative to.
-    show: bool, default True
+    show : bool, default True
         Determines if the model primitive will be shown.
-    scale: float, default 1.0
+    scale : float, default 1.0
         A uniform scale applied to this model.
-    minimumPixelSize: float, default 0.0
+    minimumPixelSize : float, default 0.0
         The approximate minimum pixel size of the model regardless of zoom.
-    maximumScale: float
+    maximumScale : float
         The maximum scale size of a model. An upper limit for minimumPixelSize.
-    id:
+    id :
         A user-defined object to return when the model is picked with Scene#pick.
-    allowPicking: bool, default True
+    allowPicking : bool, default True
         When true, each glTF mesh and primitive is pickable with Scene#pick.
-    incrementallyLoadTextures: bool, default True
+    incrementallyLoadTextures : bool, default True
         Determine if textures may continue to stream in after the model is loaded.
-    asynchronous: bool, default True
+    asynchronous : bool, default True
         Determines if model WebGL resource creation will be spread out over several frames or block until completion once all glTF files are loaded.
-    debugShowBoundingVolume: bool, default False
+    debugShowBoundingVolume : bool, default False
         For debugging only. Draws the bounding sphere for each draw command in the model.
-    debugWireframe: bool, default False
+    debugWireframe : bool, default False
         For debugging only. Draws the model in wireframe.
     """
 
