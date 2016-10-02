@@ -4,7 +4,7 @@
 from __future__ import unicode_literals
 
 import cesiumpy
-import cesiumpy.common as com
+import cesiumpy.util.common as com
 
 
 class PlottingAccessor(object):

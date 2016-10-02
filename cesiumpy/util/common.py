@@ -6,20 +6,11 @@ from __future__ import unicode_literals
 import collections
 import importlib
 import itertools
-import os
 import six
-import warnings
-import traitlets
 
 # --------------------------------------------------
 # Misc
 # --------------------------------------------------
-
-
-def _check_uri(sourceUri):
-    if not os.path.exists(sourceUri):
-        msg = "Unable to read specified path, be sure to the output HTML can read the path: {0}"
-        warnings.warn(msg.format(sourceUri))
 
 
 def _check_package(package_name):
@@ -29,22 +20,6 @@ def _check_package(package_name):
         msg = '{pkg} is required to use this functionality'
         raise ImportError(msg.format(pkg=package_name))
 
-# --------------------------------------------------
-# Trait
-# --------------------------------------------------
-
-
-class MaybeTrait(traitlets.Instance):
-
-    def validate(self, obj, value):
-        if self.allow_none is True and value is None:
-            return super(MaybeTrait, self).validate(obj, value)
-
-        try:
-            value = self.klass.maybe(value)
-        except ValueError:
-            self.error(obj, value)
-        return super(MaybeTrait, self).validate(obj, value)
 
 # --------------------------------------------------
 # Validators

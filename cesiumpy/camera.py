@@ -7,7 +7,7 @@ import traitlets
 
 from cesiumpy.base import _CesiumObject
 import cesiumpy.entities.cartesian as cartesian
-import cesiumpy.common as com
+import cesiumpy.util.common as com
 
 
 class Camera(_CesiumObject):

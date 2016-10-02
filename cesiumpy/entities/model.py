@@ -6,8 +6,9 @@ from __future__ import unicode_literals
 import traitlets
 
 from cesiumpy.base import _CesiumObject
-import cesiumpy.common as com
 from cesiumpy.entities.transform import Transforms
+import cesiumpy.util.common as com
+from cesiumpy.util.trait import URITrait
 
 
 class Model(_CesiumObject):
@@ -50,7 +51,7 @@ class Model(_CesiumObject):
               'incrementallyLoadTextures', 'asynchronous',
               'debugShowBoundingVolume', 'debugWireframe']
 
-    url = traitlets.Unicode()
+    url = URITrait()
     modelMatrix = traitlets.Instance(klass=Transforms)
 
     basePath = traitlets.Unicode(allow_none=True)
@@ -72,7 +73,6 @@ class Model(_CesiumObject):
                  debugWireframe=None):
 
         self.url = url
-        com._check_uri(self.url)
 
         self.modelMatrix = Transforms.eastNorthUpToFixedFrame(modelMatrix)
 

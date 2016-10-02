@@ -5,8 +5,8 @@ from __future__ import unicode_literals
 
 import json
 
-import cesiumpy.common as com
 from cesiumpy.extension.shapefile import to_entity
+import cesiumpy.util.common as com
 
 
 def read_geojson(path):

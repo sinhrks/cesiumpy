@@ -6,19 +6,19 @@ from __future__ import unicode_literals
 import traitlets
 
 from cesiumpy.base import _CesiumObject
-import cesiumpy.common as com
 import cesiumpy.entities.color
+import cesiumpy.util.common as com
+from cesiumpy.util.trait import MaybeTrait, URITrait
 
 
 class DataSource(_CesiumObject):
 
     _props = []
 
-    sourceUri = traitlets.Unicode()
+    sourceUri = URITrait()
 
     def __init__(self, sourceUri):
         self.sourceUri = sourceUri
-        com._check_uri(self.sourceUri)
 
     @property
     def script(self):
@@ -79,10 +79,10 @@ class GeoJsonDataSource(DataSource):
 
     markerSize = traitlets.Float(allow_none=True)
     markerSymbol = traitlets.Unicode(allow_none=True)
-    markerColor = com.MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
-    stroke = com.MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
+    markerColor = MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
+    stroke = MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
     strokeWidth = traitlets.Float(allow_none=True)
-    fill = com.MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
+    fill = MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
 
     def __init__(self, sourceUri, describe=None, markerSize=None,
                  markerSymbol=None, markerColor=None, stroke=None,

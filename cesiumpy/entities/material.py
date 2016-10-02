@@ -10,7 +10,8 @@ import traitlets
 
 import cesiumpy
 from cesiumpy.base import _CesiumObject
-import cesiumpy.common as com
+import cesiumpy.util.common as com
+from cesiumpy.util.trait import URITrait
 
 
 class Material(_CesiumObject):
@@ -42,14 +43,12 @@ class ImageMaterialProperty(Material):
     """
 
     _props = ['image', 'repeat']
-    image = traitlets.Unicode()
+    image = URITrait()
 
     def __init__(self, image, repeat=None):
         if isinstance(image, TemporaryImage):
             image = image.script
         self.image = image
-        com._check_uri(self.image)
-
         self.repeat = com.notimplemented(repeat)
 
     def __repr__(self):

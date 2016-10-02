@@ -121,7 +121,7 @@ class TestColor(unittest.TestCase):
         exp = "Cesium.Color.AQUA.withAlpha(0.0)"
         self.assertEqual(res.script, exp)
 
-        msg = "The value of the 'alpha' trait of a ColorConstant instance should be between"
+        msg = "The value of the 'alpha' trait of a ColorConstant instance should"
         with nose.tools.assert_raises_regexp(traitlets.TraitError, msg):
             aqua.withAlpha(1.1)
 

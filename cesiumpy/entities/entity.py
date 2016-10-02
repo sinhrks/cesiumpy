@@ -12,7 +12,8 @@ from cesiumpy.base import _CesiumObject
 from cesiumpy.entities.pinbuilder import Pin
 import cesiumpy.entities.cartesian as cartesian
 import cesiumpy.constants as constants
-import cesiumpy.common as com
+import cesiumpy.util.common as com
+from cesiumpy.util.trait import MaybeTrait
 
 
 class _CesiumEntity(_CesiumObject):
@@ -32,10 +33,10 @@ class _CesiumEntity(_CesiumObject):
     show = traitlets.Bool(allow_none=True)
     fill = traitlets.Bool(allow_none=True)
 
-    material = com.MaybeTrait(klass=cesiumpy.entities.material.Material, allow_none=True)
-    color = com.MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
+    material = MaybeTrait(klass=cesiumpy.entities.material.Material, allow_none=True)
+    color = MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
     outline = traitlets.Bool(allow_none=True)
-    outlineColor = com.MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
+    outlineColor = MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
 
     outlineWidth = traitlets.Float(allow_none=True)
     numberOfVerticalLines = traitlets.Float(allow_none=True)
@@ -47,8 +48,8 @@ class _CesiumEntity(_CesiumObject):
     horizontalOrigin = traitlets.Instance(klass=constants.HorizontalOrigin, allow_none=True)
     verticalOrigin = traitlets.Instance(klass=constants.VerticalOrigin, allow_none=True)
 
-    eyeOffset = com.MaybeTrait(klass=cartesian.Cartesian3, allow_none=True)
-    pixelOffset = com.MaybeTrait(klass=cartesian.Cartesian2, allow_none=True)
+    eyeOffset = MaybeTrait(klass=cartesian.Cartesian3, allow_none=True)
+    pixelOffset = MaybeTrait(klass=cartesian.Cartesian2, allow_none=True)
 
     position = traitlets.Instance(klass=cartesian.Cartesian3, allow_none=True)
 
@@ -231,7 +232,7 @@ class Label(_CesiumEntity):
     _props = ['text', 'style', 'fillColor']
 
     text = traitlets.Unicode()
-    fillColor = com.MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
+    fillColor = MaybeTrait(klass=cesiumpy.color.Color, allow_none=True)
 
     def __init__(self, position, text, style=None, fillColor=None,
                  outlineColor=None, outlineWidth=None, show=None,
@@ -427,7 +428,7 @@ class Ellipsoid(_CesiumEntity):
     _klass = 'ellipsoid'
     _props = ['radii', 'subdivisions', 'stackPartitions', 'slicePartitions']
 
-    radii = com.MaybeTrait(klass=cartesian.Cartesian3)
+    radii = MaybeTrait(klass=cartesian.Cartesian3)
     subdivisions = traitlets.Float(allow_none=True)
     stackPartitions = traitlets.Float(allow_none=True)
     slicePartitions = traitlets.Float(allow_none=True)
@@ -749,7 +750,7 @@ class Rectangle(_CesiumEntity):
     _klass = 'rectangle'
     _props = ['coordinates', 'closeTop', 'closeBottom']
 
-    coordinates = com.MaybeTrait(klass=cartesian.Rectangle)
+    coordinates = MaybeTrait(klass=cartesian.Rectangle)
     closeTop = traitlets.Bool(allow_none=True)
     closeBottom = traitlets.Bool(allow_none=True)
 
@@ -803,7 +804,7 @@ class Box(_CesiumEntity):
     _klass = 'box'
     _props = ['dimensions']
 
-    dimensions = com.MaybeTrait(klass=cartesian.Cartesian3)
+    dimensions = MaybeTrait(klass=cartesian.Cartesian3)
 
     def __init__(self, position, dimensions, show=None, fill=None, material=None,
                  outline=None, outlineColor=None, outlineWidth=None,

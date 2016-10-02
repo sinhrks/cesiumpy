@@ -7,12 +7,12 @@ import traitlets
 
 import cesiumpy
 from cesiumpy.base import _CesiumObject
-import cesiumpy.common as com
+from cesiumpy.util.trait import MaybeTrait
 
 
 class Transforms(_CesiumObject):
 
-    origin = com.MaybeTrait(klass=cesiumpy.Cartesian3)
+    origin = MaybeTrait(klass=cesiumpy.Cartesian3)
     transform = traitlets.Unicode()
 
     def __init__(self, origin, transform):

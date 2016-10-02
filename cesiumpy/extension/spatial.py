@@ -5,8 +5,8 @@ from __future__ import unicode_literals
 
 import collections
 
-import cesiumpy.common as com
 from cesiumpy.entities.entity import Polygon, Polyline
+import cesiumpy.util.common as com
 
 
 class _Spatial(object):

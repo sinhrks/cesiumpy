@@ -7,7 +7,7 @@ import traitlets
 
 import cesiumpy
 from cesiumpy.base import _CesiumObject
-import cesiumpy.common as com
+from cesiumpy.util.trait import MaybeTrait, URITrait
 
 
 class _BillboardContents(_CesiumObject):
@@ -18,11 +18,10 @@ class Icon(_BillboardContents):
 
     # different from ImageMaterialProperty
 
-    image = traitlets.Unicode()
+    image = URITrait()
 
     def __init__(self, image):
         self.image = image
-        com._check_uri(self.image)
 
     @property
     def script(self):
@@ -32,7 +31,7 @@ class Icon(_BillboardContents):
 class Pin(_BillboardContents):
 
     # default color, all attrs are mandatory
-    color = com.MaybeTrait(klass=cesiumpy.color.Color)
+    color = MaybeTrait(klass=cesiumpy.color.Color)
     size = traitlets.Float()
     text = traitlets.Unicode(allow_none=True)
 
