@@ -9,7 +9,7 @@ import traitlets
 import warnings
 
 from cesiumpy.base import _CesiumObject
-import cesiumpy.common as com
+import cesiumpy.util.common as com
 from cesiumpy.entities.material import Material
 
 

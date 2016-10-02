@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import six
 from geopy.geocoders import GoogleV3
 
-import cesiumpy.common as com
+import cesiumpy.util.common as com
 
 # ToDo: want different geocoders?
 _GEOCODER = GoogleV3()

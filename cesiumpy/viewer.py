@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import traitlets
 
 from cesiumpy.base import _CesiumBase
-import cesiumpy.common as com
+import cesiumpy.util.common as com
 
 
 class Viewer(_CesiumBase):

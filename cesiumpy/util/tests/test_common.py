@@ -4,7 +4,7 @@
 import unittest
 import nose
 
-import cesiumpy.common as com
+import cesiumpy.util.common as com
 from cesiumpy.testing import _skip_if_no_numpy
 
 

@@ -34,7 +34,7 @@ class TestWidget(unittest.TestCase):
         result = widget.to_html()
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
 <link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
-<div id="namechange" style="width:50%; height:70%;"><div>
+<div id="namechange" style="width:70%; height:50%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.CesiumWidget("namechange");
 </script>"""
@@ -45,7 +45,7 @@ class TestWidget(unittest.TestCase):
 
     def test_random_divid(self):
         widget = cesiumpy.CesiumWidget()
-        self.assertIsInstance(widget.divid, six.string_types)
+        self.assertIsInstance(widget.div.divid, six.string_types)
 
 
 class TestViewer(unittest.TestCase):

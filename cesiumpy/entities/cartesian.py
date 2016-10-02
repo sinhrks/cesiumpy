@@ -6,9 +6,9 @@ from __future__ import unicode_literals
 import traitlets
 
 from cesiumpy.base import _CesiumObject
-import cesiumpy.common as com
 import cesiumpy.extension.geocode as geocode
 import cesiumpy.extension.shapefile as shapefile
+import cesiumpy.util.common as com
 
 
 class _Cartesian(_CesiumObject):
