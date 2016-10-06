@@ -17,7 +17,7 @@ class TestScatter(unittest.TestCase):
         self.assertIsInstance(v, cesiumpy.Viewer)
 
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -34,7 +34,7 @@ class TestScatter(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.scatter([130, 140, 150], [30, 40, 50], [1e05, 2e05, 3e05])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -49,7 +49,7 @@ class TestScatter(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.scatter([130, 140, 150], [30, 40, 50], color=cesiumpy.color.BLUE)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -65,7 +65,7 @@ class TestScatter(unittest.TestCase):
         v.plot.scatter([130, 140, 150], [30, 40, 50],
                        color=[cesiumpy.color.BLUE, cesiumpy.color.RED, cesiumpy.color.GREEN])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -80,7 +80,7 @@ class TestScatter(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.scatter([130, 140, 150], [30, 40, 50], size=50)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -95,7 +95,7 @@ class TestScatter(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.scatter([130, 140, 150], [30, 40, 50], size=[20, 30, 40])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -132,7 +132,7 @@ class TestScatter(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.scatter(x=df.lon, y=df.lat, size=df.r)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -146,7 +146,7 @@ class TestScatter(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.scatter(x=df.lon, y=df.lat, size=df.r, color=df.c)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -164,7 +164,7 @@ class TestBar(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.bar([130, 140, 150], [30, 40, 50], [10e5, 20e5, 30e5])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -179,7 +179,7 @@ class TestBar(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.bar([130, 140, 150], [30, 40, 50], [10e5, 20e5, 30e5], color=cesiumpy.color.BLUE)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -195,7 +195,7 @@ class TestBar(unittest.TestCase):
         v.plot.bar([130, 140, 150], [30, 40, 50], [10e5, 20e5, 30e5],
                    color=[cesiumpy.color.BLUE, cesiumpy.color.RED, cesiumpy.color.GREEN])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -210,7 +210,7 @@ class TestBar(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.bar([130, 140, 150], [30, 40, 50], [10e5, 20e5, 30e5], size=1e5)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -225,7 +225,7 @@ class TestBar(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.bar([130, 140, 150], [30, 40, 50], [10e5, 20e5, 30e5], size=[1e3, 1e4, 1e5])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -241,7 +241,7 @@ class TestBar(unittest.TestCase):
         v.plot.bar([130, 140, 150], [30, 40, 50], [10e5, 20e5, 30e5], color=cesiumpy.color.RED)
         v.plot.bar([130, 140, 150], [30, 40, 50], [30e5, 20e5, 10e5], color=cesiumpy.color.BLUE, bottom=[10e5, 20e5, 30e5])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -265,7 +265,7 @@ class TestBar(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.bar(x=df.lon, y=df.lat, z=df.h, color=df.c)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -283,7 +283,7 @@ class TestLabel(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.label(['A', 'B', 'C'], [130, 140, 150], [30, 40, 50])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -298,7 +298,7 @@ class TestLabel(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.label(['A', 'B', 'C'], [130, 140, 150], [30, 40, 50], 10e5)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -313,7 +313,7 @@ class TestLabel(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.label(['A', 'B', 'C'], [130, 140, 150], [30, 40, 50], [10e4, 10e5, 10e4])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -328,7 +328,7 @@ class TestLabel(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.label(['A', 'B', 'C'], [130, 140, 150], [30, 40, 50], color=cesiumpy.color.GREEN)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -344,7 +344,7 @@ class TestLabel(unittest.TestCase):
         v.plot.label(['A', 'B', 'C'], [130, 140, 150], [30, 40, 50],
                      color=[cesiumpy.color.BLUE, cesiumpy.color.RED, cesiumpy.color.GREEN])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -359,7 +359,7 @@ class TestLabel(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.label(['A', 'B', 'C'], [130, 140, 150], [30, 40, 50], size=2)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -374,7 +374,7 @@ class TestLabel(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.label(['A', 'B', 'C'], [130, 140, 150], [30, 40, 50], size=[2, 3, 0.5])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -396,7 +396,7 @@ class TestLabel(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.label(df.label, x=df.lon, y=df.lat, size=df.s, color=df.c)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -414,7 +414,7 @@ class TestPin(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.pin([130, 140, 150], [30, 40, 50])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -429,7 +429,7 @@ class TestPin(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.pin([130, 140, 150], [30, 40, 50], z=1e6)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -444,7 +444,7 @@ class TestPin(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.pin([130, 140, 150], [30, 40, 50], [10e4, 10e5, 10e4])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -459,7 +459,7 @@ class TestPin(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.pin([130, 140, 150], [30, 40, 50], color=cesiumpy.color.GREEN)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -475,7 +475,7 @@ class TestPin(unittest.TestCase):
         v.plot.pin([130, 140, 150], [30, 40, 50],
                    color=[cesiumpy.color.BLUE, cesiumpy.color.RED, cesiumpy.color.GREEN])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -490,7 +490,7 @@ class TestPin(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.pin([130, 140, 150], [30, 40, 50], size=24)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -505,7 +505,7 @@ class TestPin(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.pin([130, 140, 150], [30, 40, 50], size=[12, 24, 48])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -520,7 +520,7 @@ class TestPin(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.pin([130, 140, 150], [30, 40, 50], text='!')
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -535,7 +535,7 @@ class TestPin(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.pin([130, 140, 150], [30, 40, 50], text=['!', '?', 'XXX'])
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -558,7 +558,7 @@ class TestNumpyLike(unittest.TestCase):
         self.assertIsInstance(v, cesiumpy.Viewer)
 
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -589,7 +589,7 @@ class TestNumpyLike(unittest.TestCase):
         self.assertIsInstance(v, cesiumpy.Viewer)
 
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -638,7 +638,7 @@ class TestContour(unittest.TestCase):
         v = cesiumpy.Viewer(divid='viewertest')
         v.plot.pin(x=df.lon, y=df.lat, size=df.s, color=df.c, text=df.label)
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");

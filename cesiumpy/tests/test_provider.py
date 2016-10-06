@@ -35,7 +35,7 @@ class TestTerrainProvider(unittest.TestCase):
         result = v.to_html()
 
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest", {baseLayerPicker : false, imageryProvider : new Cesium.ArcGisMapServerImageryProvider({url : "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"})});
@@ -134,7 +134,7 @@ class TestImageProvider(unittest.TestCase):
         result = v.to_html()
 
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest", {baseLayerPicker : false, terrainProvider : new Cesium.CesiumTerrainProvider({url : "//assets.agi.com/stk-terrain/world", requestWaterMask : true})});
