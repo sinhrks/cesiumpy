@@ -22,7 +22,7 @@ class TestWidget(unittest.TestCase):
     def test_html(self):
         result = self.widget.to_html()
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="widgettest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.CesiumWidget("widgettest");
@@ -33,7 +33,7 @@ class TestWidget(unittest.TestCase):
         widget = cesiumpy.CesiumWidget(divid='namechange', height='50%', width='70%')
         result = widget.to_html()
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="namechange" style="width:70%; height:50%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.CesiumWidget("namechange");
@@ -65,7 +65,7 @@ class TestViewer(unittest.TestCase):
     def test_html(self):
         result = self.viewer.to_html()
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest", {animation : true, baseLayerPicker : false, fullscreenButton : false, geocoder : false, homeButton : false, infoBox : false, sceneModePicker : true, selectionIndicator : false, timeline : false, navigationHelpButton : false, navigationInstructionsInitiallyVisible : false});
@@ -82,7 +82,7 @@ class TestViewer(unittest.TestCase):
 
         # entity name must come first
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest", {animation : true, baseLayerPicker : false, fullscreenButton : false, geocoder : false, homeButton : false, infoBox : false, sceneModePicker : true, selectionIndicator : false, timeline : false, navigationHelpButton : false, navigationInstructionsInitiallyVisible : false});
@@ -108,7 +108,7 @@ class TestViewer(unittest.TestCase):
         result = viewer.to_html()
 
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest", {animation : true, baseLayerPicker : false, fullscreenButton : false, geocoder : false, homeButton : false, infoBox : false, sceneModePicker : true, selectionIndicator : false, timeline : false, navigationHelpButton : false, navigationInstructionsInitiallyVisible : false});
@@ -166,7 +166,7 @@ class TestViewer(unittest.TestCase):
         result = viewer.to_html()
 
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest", {animation : true, baseLayerPicker : false, fullscreenButton : false, geocoder : false, homeButton : false, infoBox : false, sceneModePicker : true, selectionIndicator : false, timeline : false, navigationHelpButton : false, navigationInstructionsInitiallyVisible : false});
@@ -188,7 +188,7 @@ class TestViewer(unittest.TestCase):
         viewer.entities.clear()
         result = viewer.to_html()
         exp_clear = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest", {animation : true, baseLayerPicker : false, fullscreenButton : false, geocoder : false, homeButton : false, infoBox : false, sceneModePicker : true, selectionIndicator : false, timeline : false, navigationHelpButton : false, navigationInstructionsInitiallyVisible : false});
@@ -212,7 +212,7 @@ class TestViewer(unittest.TestCase):
         viewer.entities.add(box, material=cesiumpy.color.RED)
         result = viewer.to_html()
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -227,7 +227,7 @@ class TestViewer(unittest.TestCase):
         viewer.entities.add([box1, box2], material=cesiumpy.color.RED)
         result = viewer.to_html()
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -243,7 +243,7 @@ class TestViewer(unittest.TestCase):
         viewer.scene.primitives.add(m)
         result = viewer.to_html()
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -256,7 +256,7 @@ class TestViewer(unittest.TestCase):
         viewer.scripts.add('console.log("xxx");')
         result = viewer.to_html()
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
@@ -268,7 +268,7 @@ class TestViewer(unittest.TestCase):
         viewer.scripts.add(['console.log("xxx");', 'console.log("yyy");'])
         result = viewer.to_html()
         exp = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>
-<link rel="stylesheet" href="http://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
+<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">
 <div id="viewertest" style="width:100%; height:100%;"><div>
 <script type="text/javascript">
   var widget = new Cesium.Viewer("viewertest");
