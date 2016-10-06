@@ -4,7 +4,7 @@ env:
     - PYTHON=2.7 SHAPELY=true
     - PYTHON=2.7 SHAPELY=false
     - PYTHON=3.4 SHAPELY=true
-    - PYTHON=3.5 SHAPELY=true
+    - PYTHON=3.5 SHAPELY=true COVERAGE=true
     - PYTHON=3.5 SHAPELY=false
 
 install:
@@ -38,5 +38,6 @@ script:
   - flake8 --ignore E501 cesiumpy
 
 after_success:
-  - coveralls
-
+  - if [ "$COVERAGE" ]; then
+      coveralls;
+    fi
