@@ -44,6 +44,7 @@ class TestTempImageMaterial(unittest.TestCase):
             cesiumpy.entities.material.ImageMaterialProperty(img)
         plt.close()
 
+
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)
