@@ -71,7 +71,7 @@ You can use ``KmlDataSource`` to read ``.kml`` files. Assuming we have following
 CZML
 ^^^^
 
-The last example is use ``.czml`` file downloaded from the
+The last example uses ``CzmlDataSource`` to read ``.czml`` file downloaded from the
 `Cesium.js repository <https://github.com/AnalyticalGraphicsInc/cesium/blob/master/Apps/SampleData/simple.czml>`_
 
 .. code-block:: python
