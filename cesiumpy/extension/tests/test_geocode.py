@@ -17,10 +17,10 @@ class TestGeocode(unittest.TestCase):
             self.assertEqual(result, (-118.2436849, 34.0522342))
 
             result = cesiumpy.geocode._maybe_geocode(['Los Angeles', 'Las Vegas'])
-            self.assertEqual(result, [(-118.2436849, 34.0522342), (-115.1728497, 36.1147074)])
+            self.assertEqual(result, [(-118.2436849, 34.0522342), (-115.1398296, 36.1699412)])
 
             result = cesiumpy.geocode._maybe_geocode(['Los Angeles', 'Las Vegas', [1, 2]])
-            self.assertEqual(result, [(-118.2436849, 34.0522342), (-115.1728497, 36.1147074), [1, 2]])
+            self.assertEqual(result, [(-118.2436849, 34.0522342), (-115.1398296, 36.1699412), [1, 2]])
 
             # do not convert
             result = cesiumpy.geocode._maybe_geocode(3)
@@ -84,7 +84,7 @@ class TestGeocode(unittest.TestCase):
             self.assertEqual(e.script, exp)
 
             e = cesiumpy.Polygon(hierarchy=['Los Angeles', 'Las Vegas', 'San Francisco'])
-            exp = """{polygon : {hierarchy : Cesium.Cartesian3.fromDegreesArray([-118.2436849, 34.0522342, -115.1728497, 36.1147074, -122.4194155, 37.7749295])}}"""
+            exp = """{polygon : {hierarchy : Cesium.Cartesian3.fromDegreesArray([-118.2436849, 34.0522342, -115.1398296, 36.1699412, -122.4194155, 37.7749295])}}"""
             self.assertEqual(e.script, exp)
 
             # not supported, Unabel to create rectangle from single geolocation
@@ -96,20 +96,20 @@ class TestGeocode(unittest.TestCase):
 
             e = cesiumpy.Wall(positions=['Los Angeles', 'Las Vegas', 'San Francisco'],
                               maximumHeights=10e4, minimumHeights=0)
-            exp = "{wall : {positions : Cesium.Cartesian3.fromDegreesArray([-118.2436849, 34.0522342, -115.1728497, 36.1147074, -122.4194155, 37.7749295]), maximumHeights : [100000.0, 100000.0, 100000.0], minimumHeights : [0, 0, 0]}}"
+            exp = "{wall : {positions : Cesium.Cartesian3.fromDegreesArray([-118.2436849, 34.0522342, -115.1398296, 36.1699412, -122.4194155, 37.7749295]), maximumHeights : [100000.0, 100000.0, 100000.0], minimumHeights : [0, 0, 0]}}"
             self.assertEqual(e.script, exp)
 
             e = cesiumpy.Corridor(positions=['Los Angeles', 'Las Vegas', 'San Francisco'], width=2e5)
-            exp = """{corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-118.2436849, 34.0522342, -115.1728497, 36.1147074, -122.4194155, 37.7749295]), width : 200000.0}}"""
+            exp = """{corridor : {positions : Cesium.Cartesian3.fromDegreesArray([-118.2436849, 34.0522342, -115.1398296, 36.1699412, -122.4194155, 37.7749295]), width : 200000.0}}"""
             self.assertEqual(e.script, exp)
 
             e = cesiumpy.Polyline(positions=['Los Angeles', 'Las Vegas', 'San Francisco'], width=0.5)
-            exp = """{polyline : {positions : Cesium.Cartesian3.fromDegreesArray([-118.2436849, 34.0522342, -115.1728497, 36.1147074, -122.4194155, 37.7749295]), width : 0.5}}"""
+            exp = """{polyline : {positions : Cesium.Cartesian3.fromDegreesArray([-118.2436849, 34.0522342, -115.1398296, 36.1699412, -122.4194155, 37.7749295]), width : 0.5}}"""
             self.assertEqual(e.script, exp)
 
             e = cesiumpy.PolylineVolume(positions=['Los Angeles', 'Las Vegas', 'San Francisco'],
                                         shape=[-5e4, -5e4, 5e4, -5e4, 5e4, 5e4, -5e4, 5e4])
-            exp = """{polylineVolume : {positions : Cesium.Cartesian3.fromDegreesArray([-118.2436849, 34.0522342, -115.1728497, 36.1147074, -122.4194155, 37.7749295]), shape : [new Cesium.Cartesian2(-50000.0, -50000.0), new Cesium.Cartesian2(50000.0, -50000.0), new Cesium.Cartesian2(50000.0, 50000.0), new Cesium.Cartesian2(-50000.0, 50000.0)]}}"""
+            exp = """{polylineVolume : {positions : Cesium.Cartesian3.fromDegreesArray([-118.2436849, 34.0522342, -115.1398296, 36.1699412, -122.4194155, 37.7749295]), shape : [new Cesium.Cartesian2(-50000.0, -50000.0), new Cesium.Cartesian2(50000.0, -50000.0), new Cesium.Cartesian2(50000.0, 50000.0), new Cesium.Cartesian2(-50000.0, 50000.0)]}}"""
             self.assertEqual(e.script, exp)
         except geopy.exc.GeocoderQuotaExceeded:
             raise nose.SkipTest("exceeded geocoder quota")
