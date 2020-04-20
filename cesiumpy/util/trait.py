@@ -99,7 +99,7 @@ class _DIV(_HTMLObject):
     def __init__(self, divid=None, width='100%', height='100%'):
 
         if divid is None:
-            divid = 'container-{0}'.format(id(self))
+            divid = 'cesiumContainer'
         self.divid = divid
 
         self.width = width
