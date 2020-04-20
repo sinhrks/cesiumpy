@@ -101,10 +101,11 @@ class _CesiumBase(_CesiumObject):
 
     @property
     def _load_scripts(self):
-        js = """<script src="https://cesiumjs.org/Cesium/Build/Cesium/Cesium.js"></script>"""
-        css = """<link rel="stylesheet" href="https://cesiumjs.org/Cesium/Build/Cesium/Widgets/widgets.css" type="text/css">"""
+        meta = """<meta charset="utf-8">"""
+        js = """<script src="https://cesium.com/downloads/cesiumjs/releases/1.68/Build/Cesium/Cesium.js"></script>"""
+        css = """<link href="https://cesium.com/downloads/cesiumjs/releases/1.68/Build/Cesium/Widgets/widgets.css" rel="stylesheet">"""
 
-        return [js, css]
+        return [meta, js, css]
 
     @property
     def container(self):

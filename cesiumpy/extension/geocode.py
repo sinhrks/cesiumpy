@@ -9,7 +9,7 @@ from geopy.geocoders import GoogleV3
 import cesiumpy.util.common as com
 
 # ToDo: want different geocoders?
-_GEOCODER = GoogleV3()
+_GEOCODER = GeocodeFarm()
 
 
 def _maybe_geocode(x, height=None):
