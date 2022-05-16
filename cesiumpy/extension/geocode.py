@@ -8,8 +8,15 @@ from geopy.geocoders import GoogleV3
 
 import cesiumpy.util.common as com
 
-# ToDo: want different geocoders?
-_GEOCODER = GoogleV3()
+_GEOCODER = None
+
+
+def _get_geocoder():
+    global _GEOCODER
+    if _GEOCODER is None:
+        # ToDo: want different geocoders?
+        _GEOCODER = GoogleV3()
+    return _GEOCODER
 
 
 def _maybe_geocode(x, height=None):
@@ -18,7 +25,7 @@ def _maybe_geocode(x, height=None):
     height can be used to create base data for Cartesian3
     """
     if isinstance(x, six.string_types):
-        loc = _GEOCODER.geocode(x)
+        loc = _get_geocoder().geocode(x)
         if loc is not None:
             if height is None:
                 # return x, y order
